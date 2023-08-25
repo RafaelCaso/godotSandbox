@@ -48,7 +48,7 @@ func _physics_process(delta: float) -> void:
 			else:
 				state = IDLE;
 
-func _on_Hurtbox_area_entered(area: Area2D) -> void:
+func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 	stats.health -= 1;
 	
 	
@@ -78,7 +78,7 @@ func apply_knockback_from(position: Vector2, force: float) -> void:
 	velocity += knockback_direction.normalized() * force;
 
 
-func _on_Hitbox_area_entered(area: Area2D) -> void:
+func _on_Hitbox_area_entered(_area: Area2D) -> void:
 	player_stats.health -= 1;
 	hurtBox.create_hit_effect();
 	

@@ -1,6 +1,8 @@
 extends KinematicBody2D
 
-onready var LaserScene = preload("res://Weapons/Laser.tscn");
+signal energy_changed(new_energy);
+
+onready var LaserScene = preload("res://Weapons/TestLaser.tscn");
 onready var laser = null;
 onready var playerSprite = $Sprite;
 onready var hurtBox = $Hurtbox;
@@ -13,12 +15,13 @@ var strafe_force = 500;
 var velocity = Vector2();
 var player_stats = PlayerStats;
 var max_speed = 1000;
-var laser_energy_consumption = 25;
 var energy_recharge_rate = 10;
 var thrust_energy_consumption = 15;
+var weapons = [];
 
 
-
+func add_weapon(weapon):
+	weapons.append(weapon);
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,10 +37,11 @@ func main_propulsion(delta, hasSufficientEnergy):
 	if hasSufficientEnergy:
 		thrust = 10;
 	else:
-		thrust = 5;
+		thrust = 2;
 	var direction = Vector2(0, -1).rotated(rotation)
 	velocity += direction * thrust
 	fusionReactorCore.deplete_energy(thrust_energy_consumption * delta)
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -51,9 +55,25 @@ func _process(delta: float) -> void:
 	var direction_to_mouse = (mouse_pos - global_position).normalized();
 	rotation = direction_to_mouse.angle() + PI/2;
 	
+	# *************** JUST TESTING SHIFTING LASERS THIS WORKS BUT CODE NEEDS TO BE OPTIMIZED/CORRECT *************
+	if Input.is_action_just_pressed("weapon1"):
+		var LaserScene1 = load("res://Weapons/Laser.tscn")
+		var laserScene1 = LaserScene1.instance();
+		laser = laserScene1;
+		add_child(laser)
+		laser.position.x = playerSprite.global_position.x;
+		laser.position.y = playerSprite.global_position.y - 35;
+	if Input.is_action_just_pressed("weapon2"):
+		var LaserScene2 = load("res://Weapons/TestLaser.tscn")
+		var laserScene2 = LaserScene2.instance();
+		laser = laserScene2;
+		add_child(laser)
+		laser.position.x = playerSprite.global_position.x;
+		laser.position.y = playerSprite.global_position.y - 35;
+		
+		
 	# Forward Propulsion
 	if Input.is_action_pressed("main_propulsion"):
-		print(thrust)
 		if fusionReactorCore.has_energy(10):
 			main_propulsion(delta, true);
 		else:
@@ -80,15 +100,14 @@ func _process(delta: float) -> void:
 		velocity += down_direction * strafe_force * delta;
 		
 	if Input.is_action_pressed("laser") && fusionReactorCore.has_energy(25):
-		fusionReactorCore.deplete_energy(laser_energy_consumption * delta);
-		print(fusionReactorCore.energy)
+		fusionReactorCore.deplete_energy(laser.laser_energy_consumption * delta);
 		fire_laser();
 	else:
-		print(fusionReactorCore.energy)
 		stop_laser();
 	
-	fusionReactorCore.set_energy_recharge(energy_recharge_rate * delta)
 	
+	fusionReactorCore.set_energy_recharge(energy_recharge_rate * delta)
+	emit_signal("energy_changed", fusionReactorCore.energy)
 	
 func _physics_process(_delta: float) -> void:
 	velocity = move_and_slide(velocity).clamped(max_speed);
@@ -114,6 +133,9 @@ func stop_laser():
 		laser.set_is_casting(false);
 
 
-func _on_Hurtbox_area_entered(area: Area2D) -> void:
+func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 	hurtBox.start_invincible(0.5);
 	hurtBox.create_hit_effect();
+
+func _on_Energy_changed():
+	emit_signal("energy_changed", fusionReactorCore.energy)

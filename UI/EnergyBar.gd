@@ -1,4 +1,4 @@
-extends Label
+extends TextureProgress
 
 
 # Declare member variables here. Examples:
@@ -17,4 +17,4 @@ func _ready() -> void:
 
 
 func _on_Player_energy_changed(new_energy) -> void:
-	text = str(int(new_energy)) + "%";
+	value = new_energy;

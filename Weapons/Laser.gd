@@ -3,12 +3,15 @@
 # You can attach it to a weapon or a ship; the laser will rotate with its parent.
 extends RayCast2D
 
+
 # Speed at which the laser extends when first fired, in pixels per seconds.
-export var cast_speed := 7000.0
+var cast_speed := 7000.0
 # Maximum length of the laser in pixels.
-export var max_length := 400.0
+var max_length := 400.0
 # Base duration of the tween animation in seconds.
-export var growth_time := 0.1
+var growth_time := 0.1
+
+var laser_energy_consumption := 25;
 
 # If `true`, the laser is firing.
 # It plays appearing and disappearing animations when it's not animating.
@@ -22,6 +25,7 @@ onready var collision_particles := $CollisionParticles2D
 onready var beam_particles := $BeamParticles2D
 onready var hitbox_area := $Area2D/CollisionShape2D;
 onready var line_width: float = fill.width
+
 
 
 func _ready() -> void:
@@ -92,3 +96,11 @@ func disappear() -> void:
 	hitbox_area.disabled = true;
 	fill.width = 0;
 	
+
+# for use in laser subclasses to set laser color. For now, by default, there will be no gradient between casting and colliding particles
+func set_laser_color(hexcode):
+	casting_particles.process_material.set("color", hexcode)
+	collision_particles.process_material.set("color", hexcode)
+	collision_particles.process_material.set("hue_variation", 0)
+	fill.gradient = null;
+	fill.default_color = hexcode;

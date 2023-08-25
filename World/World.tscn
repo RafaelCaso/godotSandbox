@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://World/0022SpaceBG2.png" type="Texture" id=2]
@@ -12,6 +12,9 @@
 [ext_resource path="res://UI/HealthUI.tscn" type="PackedScene" id=10]
 [ext_resource path="res://World/WorldCamera.gd" type="Script" id=11]
 [ext_resource path="res://UI/EnergyUI.gd" type="Script" id=12]
+[ext_resource path="res://UI/0026FullEnergyCore.png" type="Texture" id=13]
+[ext_resource path="res://UI/0025EmptyEnergyCore.png" type="Texture" id=14]
+[ext_resource path="res://UI/EnergyBar.gd" type="Script" id=15]
 
 [node name="World" type="Node2D"]
 
@@ -321,17 +324,31 @@ layer = 0
 
 [node name="HealthUI" parent="HUD" instance=ExtResource( 10 )]
 
-[node name="EnergyUI" type="Control" parent="HUD"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="EnergyUI" type="Label" parent="HUD"]
+margin_left = 89.0
+margin_top = 40.0
+margin_right = 212.0
+margin_bottom = 70.0
+align = 1
+valign = 1
 script = ExtResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="HUD/EnergyUI"]
-margin_right = 40.0
-margin_bottom = 14.0
+[node name="EnergyBar" type="TextureProgress" parent="HUD"]
+margin_left = -9.0
+margin_top = 23.0
+margin_right = 503.0
+margin_bottom = 279.0
+rect_scale = Vector2( 0.28, 0.25 )
+value = 100.0
+texture_under = ExtResource( 14 )
+texture_progress = ExtResource( 13 )
+script = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( -6.10352e-05, 0.000137329 )
@@ -340,6 +357,9 @@ scale = Vector2( 0.999999, 1 )
 current = true
 process_mode = 0
 script = ExtResource( 11 )
+
+[connection signal="energy_changed" from="Actors/Player" to="HUD/EnergyUI" method="_on_Player_energy_changed"]
+[connection signal="energy_changed" from="Actors/Player" to="HUD/EnergyBar" method="_on_Player_energy_changed"]
 
 [editable path="Background/Planet2"]
 [editable path="Background/Planet"]

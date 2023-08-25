@@ -1,4 +1,4 @@
-extends Label
+extends "res://Attributes/FusionReactorCore.gd"
 
 
 # Declare member variables here. Examples:
@@ -14,7 +14,3 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
 #	pass
-
-
-func _on_Player_energy_changed(new_energy) -> void:
-	text = str(int(new_energy)) + "%";
