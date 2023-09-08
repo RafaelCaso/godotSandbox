@@ -1,0 +1,52 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://TestPopup2.gd" type="Script" id=1]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WindowDialog" type="WindowDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -313.5
+margin_top = -190.5
+margin_right = 313.5
+margin_bottom = 190.5
+window_title = "PickAName"
+
+[node name="NameBox" type="OptionButton" parent="WindowDialog"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -10.0
+margin_bottom = 10.0
+
+[node name="Button" type="Button" parent="WindowDialog"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -39.0
+margin_bottom = 1.0
+text = "OK"
+
+[node name="Button" type="Button" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -48.0
+text = "Choose Name"
+
+[node name="Label" type="Label" parent="."]
+anchor_right = 1.0
+margin_bottom = 14.0
+
+[connection signal="button_up" from="WindowDialog/Button" to="." method="_on_ok_Button_button_up"]
+[connection signal="button_up" from="Button" to="." method="_on_choose_Button_button_up"]

@@ -1,12 +1,14 @@
 extends KinematicBody2D
 
 signal energy_changed(new_energy);
+signal change_scene(new_scene_path);
 
 onready var LaserScene = preload("res://Weapons/TestLaser.tscn");
 onready var laser = null;
 onready var playerSprite = $Sprite;
 onready var hurtBox = $Hurtbox;
 onready var fusionReactorCore = $FusionReactorCore;
+onready var laserSpawnPoint = $LaserSpawnPoint;
 
 var rotation_speed = 500;
 var thrust = 10;
@@ -20,16 +22,18 @@ var thrust_energy_consumption = 15;
 var weapons = [];
 
 
-func add_weapon(weapon):
-	weapons.append(weapon);
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	player_stats.connect("no_health", self, "queue_free")
 	laser = LaserScene.instance();
 	add_child(laser);
-	laser.position.x = playerSprite.global_position.x;
-	laser.position.y = playerSprite.global_position.y - 35;
+	laser.global_position.x = laserSpawnPoint.global_position.x;
+	laser.global_position.y = laserSpawnPoint.global_position.y;
+#	add_weapon("weapon 1 kaplow!")
+#	add_weapon("weapon 2 Bzzzzamt!")
+	
 
 
 func main_propulsion(delta, hasSufficientEnergy):
@@ -54,22 +58,11 @@ func _process(delta: float) -> void:
 	var mouse_pos = get_global_mouse_position();
 	var direction_to_mouse = (mouse_pos - global_position).normalized();
 	rotation = direction_to_mouse.angle() + PI/2;
-	
-	# *************** JUST TESTING SHIFTING LASERS THIS WORKS BUT CODE NEEDS TO BE OPTIMIZED/CORRECT *************
+
 	if Input.is_action_just_pressed("weapon1"):
-		var LaserScene1 = load("res://Weapons/Laser.tscn")
-		var laserScene1 = LaserScene1.instance();
-		laser = laserScene1;
-		add_child(laser)
-		laser.position.x = playerSprite.global_position.x;
-		laser.position.y = playerSprite.global_position.y - 35;
+		equip_weapon("res://Weapons/TestLaser.tscn");
 	if Input.is_action_just_pressed("weapon2"):
-		var LaserScene2 = load("res://Weapons/TestLaser.tscn")
-		var laserScene2 = LaserScene2.instance();
-		laser = laserScene2;
-		add_child(laser)
-		laser.position.x = playerSprite.global_position.x;
-		laser.position.y = playerSprite.global_position.y - 35;
+		equip_weapon("res://Weapons/Laser.tscn");
 		
 		
 	# Forward Propulsion
@@ -109,6 +102,10 @@ func _process(delta: float) -> void:
 	fusionReactorCore.set_energy_recharge(energy_recharge_rate * delta)
 	emit_signal("energy_changed", fusionReactorCore.energy)
 	
+	if Input.is_action_just_pressed("test_button"):
+		emit_signal("change_scene", "res://World2.tscn");
+	
+		
 func _physics_process(_delta: float) -> void:
 	velocity = move_and_slide(velocity).clamped(max_speed);
 	
@@ -139,3 +136,15 @@ func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 
 func _on_Energy_changed():
 	emit_signal("energy_changed", fusionReactorCore.energy)
+
+func add_weapon(weapon):
+	weapons.append(weapon);
+
+func equip_weapon(weapon):
+	remove_child(laser);
+	var LaserToEquip = load(weapon);
+	var laser_to_equip = LaserToEquip.instance();
+	add_child(laser_to_equip);
+	laser = laser_to_equip;
+	laser_to_equip.global_position.x = laserSpawnPoint.global_position.x;
+	laser_to_equip.global_position.y = laserSpawnPoint.global_position.y;

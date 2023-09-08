@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=2]
+
+[sub_resource type="Curve" id=1]
+max_value = 200.0
+_data = [ Vector2( 0, -46.3636 ), 0.0, 0.0, 0, 0, Vector2( 0.521614, 197.273 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
+
+[sub_resource type="Gradient" id=3]
+colors = PoolColorArray( 0.312424, 0.772691, 0.878906, 1, 0.145619, 0.0682373, 0.335938, 1 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+trail_divisor = 5
+trail_color_modifier = SubResource( 4 )
+emission_shape = 5
+emission_ring_radius = 5.0
+emission_ring_inner_radius = 0.0
+emission_ring_height = 1.0
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = -0.05
+orbit_velocity_random = 0.0
+tangential_accel_curve = SubResource( 2 )
+
+[node name="WarpGateBG" type="Particles2D"]
+amount = 31
+process_material = SubResource( 5 )

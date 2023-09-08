@@ -1,0 +1,61 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://WarpPopupTest.gd" type="Script" id=1]
+[ext_resource path="res://warpgate.png" type="Texture" id=2]
+[ext_resource path="res://WarpGateBG.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 366.35
+
+[node name="WarpGate" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+visible = true
+margin_left = 396.0
+margin_top = 238.0
+margin_right = 596.0
+margin_bottom = 308.0
+window_title = "Warp to Sector 2?"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 493, 121 )
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 517, 122 )
+z_index = -1
+texture = ExtResource( 2 )
+
+[node name="WarpGateBG" parent="." instance=ExtResource( 3 )]
+position = Vector2( 493, 120 )
+scale = Vector2( 4, 4 )
+
+[node name="WarpGateBG2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 493, 121 )
+rotation = 1.5708
+scale = Vector2( 3, 3 )
+
+[node name="WarpGateBG3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 493, 120 )
+rotation = 3.14159
+scale = Vector2( 4, 4 )
+
+[node name="WarpGateBG4" parent="." instance=ExtResource( 3 )]
+position = Vector2( 493, 120 )
+rotation = 4.71239
+scale = Vector2( 3, 3 )
+
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]

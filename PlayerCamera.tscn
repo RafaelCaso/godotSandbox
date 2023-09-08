@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://World/WorldCamera.gd" type="Script" id=1]
+
+[node name="Camera2D" type="Camera2D"]
+position = Vector2( 509.896, 298.38 )
+rotation = 1.5708
+scale = Vector2( 0.999999, 1 )
+current = true
+process_mode = 0
+script = ExtResource( 1 )

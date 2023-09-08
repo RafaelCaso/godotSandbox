@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/0019Neptune.png-8aca5b90169e83a3f6f64aef6b1f958e.stex"
+path="res://.import/AsteroidCluster.png-8f0abdeef9c6b3eee517f15300aeea7f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://World/0019Neptune.png"
-dest_files=[ "res://.import/0019Neptune.png-8aca5b90169e83a3f6f64aef6b1f958e.stex" ]
+source_file="res://AsteroidCluster.png"
+dest_files=[ "res://.import/AsteroidCluster.png-8f0abdeef9c6b3eee517f15300aeea7f.stex" ]
 
 [params]
 
@@ -24,7 +24,7 @@ flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
-process/fix_alpha_border=true
+process/fix_alpha_border=false
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false

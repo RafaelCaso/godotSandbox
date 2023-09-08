@@ -13,6 +13,8 @@ var growth_time := 0.1
 
 var laser_energy_consumption := 25;
 
+var path = "res://Weapons/Laser.tscn";
+
 # If `true`, the laser is firing.
 # It plays appearing and disappearing animations when it's not animating.
 # See `appear()` and `disappear()` for more information.

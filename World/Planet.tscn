@@ -1,5 +1,6 @@
 [gd_scene format=2]
 
 [node name="Planet" type="Node2D"]
+light_mask = 0
 
 [node name="Sprite" type="Sprite" parent="."]

@@ -32,7 +32,7 @@ func _physics_process(delta: float) -> void:
 			seek_player();
 			if wanderController.get_time_left() == 0:
 				state = pick_random_state([IDLE, WANDER]);
-				wanderController.start_wander_timer(rand_range(1, 3))
+				wanderController.start_wander_timer(rand_range(1, 10))
 				
 			var direction = global_position.direction_to(wanderController.target_position);
 			velocity = Vector2.move_toward(direction * max_speed, acceleration * delta);
