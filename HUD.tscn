@@ -2,21 +2,16 @@
 
 [ext_resource path="res://UI/EnergyUI.gd" type="Script" id=1]
 [ext_resource path="res://UI/EnergyBar.gd" type="Script" id=2]
-[ext_resource path="res://UI/HealthUI.gd" type="Script" id=3]
+[ext_resource path="res://HUD.gd" type="Script" id=3]
 [ext_resource path="res://UI/HealthUI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://UI/0025EmptyEnergyCore.png" type="Texture" id=5]
 [ext_resource path="res://UI/0026FullEnergyCore.png" type="Texture" id=6]
 
 [node name="HUD" type="CanvasLayer"]
 layer = 0
-
-[node name="HealthUI" type="Control" parent="." instance=ExtResource( 4 )]
-margin_right = 40.0
-margin_bottom = 40.0
 script = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="HealthUI" parent="." instance=ExtResource( 4 )]
 
 [node name="EnergyUI" type="Label" parent="."]
 margin_left = 89.0

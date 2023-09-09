@@ -15,7 +15,6 @@ var thrust = 10;
 var deceleration_speed = 1000;
 var strafe_force = 500;
 var velocity = Vector2();
-var player_stats = PlayerStats;
 var max_speed = 1000;
 var energy_recharge_rate = 10;
 var thrust_energy_consumption = 15;
@@ -26,13 +25,12 @@ var weapons = [];
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	player_stats.connect("no_health", self, "queue_free")
+	PlayerStats.connect("no_health", self, "queue_free")
+	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed")
 	laser = LaserScene.instance();
 	add_child(laser);
 	laser.global_position.x = laserSpawnPoint.global_position.x;
 	laser.global_position.y = laserSpawnPoint.global_position.y;
-#	add_weapon("weapon 1 kaplow!")
-#	add_weapon("weapon 2 Bzzzzamt!")
 	
 
 
@@ -45,6 +43,7 @@ func main_propulsion(delta, hasSufficientEnergy):
 	var direction = Vector2(0, -1).rotated(rotation)
 	velocity += direction * thrust
 	fusionReactorCore.deplete_energy(thrust_energy_consumption * delta)
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -93,14 +92,16 @@ func _process(delta: float) -> void:
 		velocity += down_direction * strafe_force * delta;
 		
 	if Input.is_action_pressed("laser") && fusionReactorCore.has_energy(25):
+		print(Hud.energyBar.value)
 		fusionReactorCore.deplete_energy(laser.laser_energy_consumption * delta);
+#		emit_signal("energy_changed", fusionReactorCore.energy)
 		fire_laser();
 	else:
 		stop_laser();
 	
 	
 	fusionReactorCore.set_energy_recharge(energy_recharge_rate * delta)
-	emit_signal("energy_changed", fusionReactorCore.energy)
+#	emit_signal("energy_changed", fusionReactorCore.energy)
 	
 	if Input.is_action_just_pressed("test_button"):
 		emit_signal("change_scene", "res://World2.tscn");
@@ -124,18 +125,19 @@ func clamp_rotation():
 func fire_laser():
 	if not laser.is_casting:
 		laser.set_is_casting(true);
-	# laser.rotation = rotation;
+	
 func stop_laser():
 	if laser.is_casting:
 		laser.set_is_casting(false);
 
-
+#*********** NOT FUNCTIONING CORRECTLY/AT ALL *********
 func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 	hurtBox.start_invincible(0.5);
 	hurtBox.create_hit_effect();
 
 func _on_Energy_changed():
-	emit_signal("energy_changed", fusionReactorCore.energy)
+#	emit_signal("energy_changed", fusionReactorCore.energy)
+	pass
 
 func add_weapon(weapon):
 	weapons.append(weapon);
