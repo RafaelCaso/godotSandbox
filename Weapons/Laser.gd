@@ -3,9 +3,10 @@
 # You can attach it to a weapon or a ship; the laser will rotate with its parent.
 extends RayCast2D
 
+const laserConfig = preload("res://Weapons/LaserDirectory.gd");
 
 # Speed at which the laser extends when first fired, in pixels per seconds.
-var cast_speed := 7000.0
+var cast_speed := 2000.0
 # Maximum length of the laser in pixels.
 var max_length := 400.0
 # Base duration of the tween animation in seconds.
@@ -29,7 +30,6 @@ onready var hitbox_area := $Area2D/CollisionShape2D;
 onready var line_width: float = fill.width
 
 
-
 func _ready() -> void:
 	set_physics_process(false)
 	fill.points[1] = Vector2.ZERO
@@ -40,6 +40,15 @@ func _physics_process(delta: float) -> void:
 	cast_to = (cast_to + Vector2.RIGHT * cast_speed * delta).clamped(max_length)
 	cast_beam()
 
+func configure_laser(laser):
+	if laser in laserConfig:
+		var laser_data = laserConfig.LASER_DATA[laser];
+		cast_speed = laser_data["cast_speed"];
+		max_length = laser_data["max_length"];
+		growth_time = laser_data["growth_time"]
+		set_laser_color(laser_data["laser_color"])
+	else:
+		print("Error: Laser key not found in LASER_DATA")
 
 func set_is_casting(cast: bool) -> void:
 	is_casting = cast

@@ -17,12 +17,14 @@ var energy_recharge_rate = 10;
 var weapons = [];
 var available_ships = [];
 
+
 func _ready() -> void:
+	print(PlayerState.shipID)
 	PlayerStats.connect("no_health", self, "queue_free")
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed")
 	laser = LaserScene.instance();
 	playerShip = baseShip;
-	playerShip.configure_ship("ship_0000");
+	playerShip.configure_ship(PlayerState.shipID);
 	playerSprite.texture = playerShip.sprite.texture;
 	playerSprite.global_position = global_position;
 	add_child(laser);
@@ -145,6 +147,11 @@ func equip_weapon(weapon):
 	laser_to_equip.global_position.x = laserSpawnPoint.global_position.x;
 	laser_to_equip.global_position.y = laserSpawnPoint.global_position.y;
 
+func add_ship(ship : String):
+	available_ships.append(ship);
+
 func change_ship(ship_id : String):
 	playerShip.configure_ship(ship_id);
+	PlayerState.shipID = ship_id;
+	print(PlayerState.shipID)
 	playerSprite.texture = playerShip.sprite.texture;
