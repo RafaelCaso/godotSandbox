@@ -19,5 +19,15 @@ const LASER_DATA = {
 		"laser_energy_consumption" : 25,
 		"dps" : 0,
 		"laser_color" : "#b603fc"
-	}
+	},
+	
+	"laser_0003" : {
+		"name" : "The Yellow Jacket",
+		"cast_speed" : 2000.0,
+		"max_length" : 600.0,
+		"growth_time" : 0.75,
+		"laser_energy_consumption" : 35,
+		"dps" : 0,
+		"laser_color" : "#EFFE00"
+	},
 }

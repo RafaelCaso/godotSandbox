@@ -5,6 +5,7 @@ export var max_energy = 100 setget set_max_energy;
 export var energy_recharge = 10 setget set_energy_recharge;
 var energy = max_energy setget set_energy
 var energy_minimum = 0;
+var energy_recharge_rate = 10;
 
 signal no_energy;
 signal has_energy;

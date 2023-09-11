@@ -25,7 +25,6 @@ onready var fill := $FillLine2D
 onready var tween := $Tween
 onready var casting_particles := $CastingParticles2D
 onready var collision_particles := $CollisionParticles2D
-onready var beam_particles := $BeamParticles2D
 onready var hitbox_area := $Area2D/CollisionShape2D;
 onready var line_width: float = fill.width
 
@@ -41,7 +40,7 @@ func _physics_process(delta: float) -> void:
 	cast_beam()
 
 func configure_laser(laser):
-	if laser in laserConfig:
+	if laser in laserConfig.LASER_DATA:
 		var laser_data = laserConfig.LASER_DATA[laser];
 		cast_speed = laser_data["cast_speed"];
 		max_length = laser_data["max_length"];
@@ -65,7 +64,6 @@ func set_is_casting(cast: bool) -> void:
 		
 
 	set_physics_process(is_casting)
-	beam_particles.emitting = is_casting
 	casting_particles.emitting = is_casting
 
 
@@ -86,8 +84,6 @@ func cast_beam() -> void:
 	collision_particles.position.y = cast_point.y;
 	collision_particles.emitting = true;
 	fill.points[1] = cast_point
-	beam_particles.position = cast_point * 0.5
-	beam_particles.process_material.emission_box_extents.x = cast_point.length() * 0.5
 	
 	
 
