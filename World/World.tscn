@@ -333,7 +333,8 @@ texture = ExtResource( 17 )
 
 [node name="Camera2D" parent="." instance=ExtResource( 11 )]
 position = Vector2( 509.896, 298.38 )
-scale = Vector2( 0.999999, 1 )
+rotation = 0.0
+scale = Vector2( 1.10602, 0.90414 )
 
 [node name="WarpGate" parent="." instance=ExtResource( 16 )]
 margin_left = -304.0

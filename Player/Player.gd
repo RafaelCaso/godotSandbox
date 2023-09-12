@@ -1,6 +1,5 @@
 extends KinematicBody2D
 
-signal energy_changed(new_energy);
 signal change_scene(new_scene_path);
 
 #onready var LaserScene = preload("res://Weapons/TestLaser.tscn");
