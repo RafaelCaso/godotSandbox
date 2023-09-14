@@ -12,6 +12,8 @@ onready var hurtBox = $Hurtbox;
 onready var fusionReactorCore = $FusionReactorCore;
 onready var laserSpawnPoint = $LaserSpawnPoint;
 
+var MissileScene = preload("res://UnguidedMissile.tscn")
+
 var velocity = Vector2();
 
 func _ready() -> void:
@@ -46,6 +48,12 @@ func _process(delta: float) -> void:
 		fire_laser();
 	else:
 		stop_laser();
+	
+	if Input.is_action_just_pressed("missile"):
+		var missile_instance = MissileScene.instance();
+		missile_instance.position = position;
+		missile_instance.set_direction(get_global_mouse_position())
+		get_parent().add_child(missile_instance)
 	
 	if Input.is_action_just_pressed("change_ship_test"):
 		change_ship("ship_0001");
