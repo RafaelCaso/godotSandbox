@@ -120,7 +120,7 @@ missile={
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Laser"
 2d_physics/layer_4="Enemy"
-2d_physics/layer_5="SoftCollisions"
+2d_physics/layer_5="Projectile"
 
 [physics]
 

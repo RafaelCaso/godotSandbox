@@ -2,7 +2,8 @@ extends KinematicBody2D
 
 signal change_scene(new_scene_path);
 
-#onready var LaserScene = preload("res://Weapons/TestLaser.tscn");
+var MissileScene = preload("res://UnguidedMissile.tscn")
+
 onready var baseShip = $Ship;
 onready var baseLaser = $Weapons/Lasers;
 onready var equippedLaser = null;
@@ -12,36 +13,40 @@ onready var hurtBox = $Hurtbox;
 onready var fusionReactorCore = $FusionReactorCore;
 onready var laserSpawnPoint = $LaserSpawnPoint;
 
-var MissileScene = preload("res://UnguidedMissile.tscn")
-
 var velocity = Vector2();
 
 func _ready() -> void:
 	PlayerStats.connect("no_health", self, "queue_free")
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed")
-#	laser = LaserScene.instance();
+
 	playerShip = baseShip;
 	
 	playerShip.configure_ship(PlayerState.shipID);
 	
 	playerSprite.texture = playerShip.sprite.texture;
 	playerSprite.global_position = global_position;
-#	add_child(laser);
+
 	equippedLaser = baseLaser;
 	equippedLaser.configure_laser(PlayerState.equippedLaserID);
 	equippedLaser.global_position = laserSpawnPoint.global_position;
 
 func _process(delta: float) -> void:
 	var mouse_pos = get_global_mouse_position();
-	var direction_to_mouse = (mouse_pos - global_position)
+	var direction_to_mouse = (mouse_pos - global_position);
 	equippedLaser.cast_to = equippedLaser.to_local(global_position + direction_to_mouse * equippedLaser.max_length);
 	equippedLaser.global_position = laserSpawnPoint.global_position;
 	rotation = direction_to_mouse.angle() + PI/2;
 
 	if Input.is_action_just_pressed("weapon1"):
-		equip_weapon("laser_0000");
+		if PlayerState.weapons.size() > 0:
+			equip_weapon(PlayerState.weapons[0])
+		else:
+			print("No laser at index 0")
 	if Input.is_action_just_pressed("weapon2"):
-		equip_weapon("laser_0001");
+		if PlayerState.weapons.size() > 1:
+			equip_weapon(PlayerState.weapons[1])
+		else:
+			print("No laser at index 1")
 		
 	if Input.is_action_pressed("laser") && fusionReactorCore.has_energy(25):
 		fusionReactorCore.deplete_energy(equippedLaser.laser_energy_consumption * delta);
@@ -50,10 +55,15 @@ func _process(delta: float) -> void:
 		stop_laser();
 	
 	if Input.is_action_just_pressed("missile"):
-		var missile_instance = MissileScene.instance();
-		missile_instance.position = position;
-		missile_instance.set_direction(get_global_mouse_position())
-		get_parent().add_child(missile_instance)
+		if PlayerState.missileStock > 0:
+			PlayerState.missileStock -= 1;
+			var missile_instance = MissileScene.instance();
+			get_parent().add_child(missile_instance);
+			missile_instance.position = position;
+			missile_instance.set_direction(mouse_pos);
+		else:
+			print("No missiles in arsenal");
+		
 	
 	if Input.is_action_just_pressed("change_ship_test"):
 		change_ship("ship_0001");
