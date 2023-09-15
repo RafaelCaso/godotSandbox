@@ -14,6 +14,7 @@ onready var fusionReactorCore = $FusionReactorCore;
 onready var laserSpawnPoint = $LaserSpawnPoint;
 
 var velocity = Vector2();
+var weapon_pressed = false;
 
 func _ready() -> void:
 	PlayerStats.connect("no_health", self, "queue_free")
@@ -36,17 +37,19 @@ func _process(delta: float) -> void:
 	equippedLaser.cast_to = equippedLaser.to_local(global_position + direction_to_mouse * equippedLaser.max_length);
 	equippedLaser.global_position = laserSpawnPoint.global_position;
 	rotation = direction_to_mouse.angle() + PI/2;
-
-	if Input.is_action_just_pressed("weapon1"):
-		if PlayerState.weapons.size() > 0:
-			equip_weapon(PlayerState.weapons[0])
-		else:
-			print("No laser at index 0")
-	if Input.is_action_just_pressed("weapon2"):
-		if PlayerState.weapons.size() > 1:
-			equip_weapon(PlayerState.weapons[1])
-		else:
-			print("No laser at index 1")
+	
+	
+	
+#	if Input.is_action_just_pressed("weapon1"):
+#		if PlayerState.weapons.size() > 0:
+#			equip_weapon(PlayerState.weapons[0])
+#		else:
+#			print("No laser at index 0")
+#	if Input.is_action_just_pressed("weapon2"):
+#		if PlayerState.weapons.size() > 1:
+#			equip_weapon(PlayerState.weapons[1])
+#		else:
+#			print("No laser at index 1")
 		
 	if Input.is_action_pressed("laser") && fusionReactorCore.has_energy(25):
 		fusionReactorCore.deplete_energy(equippedLaser.laser_energy_consumption * delta);
@@ -65,8 +68,8 @@ func _process(delta: float) -> void:
 			print("No missiles in arsenal");
 		
 	
-	if Input.is_action_just_pressed("change_ship_test"):
-		change_ship("ship_0001");
+#	if Input.is_action_just_pressed("change_ship_test"):
+#		change_ship("ship_0001");
 	
 	if Input.is_action_just_pressed("test_button"):
 		emit_signal("change_scene", "res://World2.tscn");
@@ -119,7 +122,7 @@ func change_ship(ship_id : String):
 	playerSprite.texture = playerShip.sprite.texture;
 
 # Any movement based input should be placed here. Function then called in _physics_process()
-func handle_input(delta):
+func handle_movement_input(delta):
 	# Forward Propulsion
 	if Input.is_action_pressed("main_propulsion"):
 		if fusionReactorCore.has_energy(10):
@@ -146,6 +149,29 @@ func handle_input(delta):
 	if Input.is_action_pressed("strafe_down"):
 		var down_direction = Vector2(0, 1).rotated(rotation);
 		velocity += down_direction * playerShip.strafe_force * delta;
+
+func handle_item_input(_delta):
+	# Checks if an item is being selected by the player (physical keys 1-9)
+	for i in range(1,10):
+		if Input.is_action_just_pressed("item" + str(i)):
+			weapon_pressed = true;
+			break
+	# equips corresponding weapon if player clicks physical key 1-9
+	if weapon_pressed:
+		for i in range(1, 10):
+			var action_name = "item" + str(i);
+			if Input.is_action_just_pressed(action_name):
+				if i -1 < PlayerState.weapons.size():
+					equip_weapon(PlayerState.weapons[i-1]);
+				else:
+					print("No weapon at index " + str(i));
+				weapon_pressed = false;
+				break;
+
+func handle_input(delta):
+	handle_movement_input(delta);
+	handle_item_input(delta);
+	
 	
 	#	# Rotation using keyboard
 #	if Input.is_action_pressed("ui_left"):
