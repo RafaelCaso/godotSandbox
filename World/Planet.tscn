@@ -1,6 +1,48 @@
-[gd_scene format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://0035EarthRect.png" type="Texture" id=1]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float aspect_ratio = 3.0;
+uniform float rotation_speed = 0.01;
+uniform bool as_shadow = false;
+uniform float PI = 3.14159265359;
+
+void fragment(){
+	float px = 2.0 * (UV.x - 0.5);
+	float py = 2.0 * (UV.y - 0.5);
+	
+	if(px * px + py * py > 1.0) {
+		COLOR.a = 0.0;
+	} else {
+		px = asin(px / sqrt(1.0 - py * py)) * 3.0 / PI;
+		py = asin(py) * 2.0 / PI;
+		
+		COLOR = texture(TEXTURE, vec2(
+			0.5 * (px + 1.0) / aspect_ratio - TIME * rotation_speed,
+			0.5 * (py + 1.0)));
+			
+			if(as_shadow) {
+				COLOR.rgb = vec3(0.0, 0.0, 0.0);
+				COLOR.a *= 0.9;
+			}
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/aspect_ratio = 3.0
+shader_param/rotation_speed = 0.01
+shader_param/as_shadow = false
+shader_param/PI = 3.14159
 
 [node name="Planet" type="Node2D"]
 light_mask = 0
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="PlanetSprite" type="Sprite" parent="."]
+material = SubResource( 2 )
+position = Vector2( -0.500003, 0 )
+scale = Vector2( 0.712891, 1 )
+texture = ExtResource( 1 )

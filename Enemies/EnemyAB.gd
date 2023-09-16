@@ -41,7 +41,7 @@ func _physics_process(delta: float) -> void:
 		CHASE:
 			var player = playerDetectionZone.player
 			if player != null:
-				var stop_distance = 200;
+				var stop_distance = 400;
 				var current_distance = global_position.distance_to(player.global_position);
 				var direction = global_position.direction_to(player.global_position);
 				var desired_velocity = direction * max_speed;

@@ -17,16 +17,19 @@ var velocity = Vector2();
 var weapon_pressed = false;
 
 func _ready() -> void:
+	
 	PlayerStats.connect("no_health", self, "queue_free")
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed")
-
-	playerShip = baseShip;
 	
+	#initialize and configure player ship
+	playerShip = baseShip;
 	playerShip.configure_ship(PlayerState.shipID);
 	
+	# configure ship sprite and position ship
 	playerSprite.texture = playerShip.sprite.texture;
 	playerSprite.global_position = global_position;
-
+	
+	# initialize and configure ship weapon and position weapon
 	equippedLaser = baseLaser;
 	equippedLaser.configure_laser(PlayerState.equippedLaserID);
 	equippedLaser.global_position = laserSpawnPoint.global_position;
@@ -158,7 +161,8 @@ func handle_item_input(_delta):
 			break
 	# equips corresponding weapon if player clicks physical key 1-9
 	if weapon_pressed:
-		for i in range(1, 10):
+		#********* Implemented playerShip.weapon_capacity but still loads intial laser even if weapon_capacity = 0 **********
+		for i in range(1, playerShip.weapon_capacity + 1):
 			var action_name = "item" + str(i);
 			if Input.is_action_just_pressed(action_name):
 				if i -1 < PlayerState.weapons.size():

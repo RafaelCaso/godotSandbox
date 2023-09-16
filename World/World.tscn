@@ -1,14 +1,13 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Enemies/EnemyAB.tscn" type="PackedScene" id=3]
 [ext_resource path="res://World/Planet.tscn" type="PackedScene" id=4]
-[ext_resource path="res://World/0017Earth.png" type="Texture" id=5]
-[ext_resource path="res://World/0018Mars.png" type="Texture" id=6]
-[ext_resource path="res://World/0018Jupiter.png" type="Texture" id=7]
-[ext_resource path="res://World/0020PurpleJupiter.png" type="Texture" id=8]
-[ext_resource path="res://World/0019Neptune.png" type="Texture" id=9]
+[ext_resource path="res://World/0037JupiterRect.png" type="Texture" id=5]
+[ext_resource path="res://World/0038PurpleJupiterRect.png" type="Texture" id=6]
+[ext_resource path="res://World/0039MarsRect.png" type="Texture" id=7]
+[ext_resource path="res://World/0040NeptuneRect.png" type="Texture" id=8]
 [ext_resource path="res://MissilePickup.tscn" type="PackedScene" id=10]
 [ext_resource path="res://PlayerCamera.tscn" type="PackedScene" id=11]
 [ext_resource path="res://SpaceStation.tscn" type="PackedScene" id=12]
@@ -32,49 +31,47 @@ remote_path = NodePath("../../../Camera2D")
 
 [node name="Enemies" type="YSort" parent="Actors"]
 
-[node name="EnemyAB" parent="Actors/Enemies" instance=ExtResource( 3 )]
-position = Vector2( -87.0066, -550.246 )
-
 [node name="Background" parent="." instance=ExtResource( 2 )]
 position = Vector2( 235, 141 )
 
 [node name="Earth" parent="Background" instance=ExtResource( 4 )]
 position = Vector2( -1438.95, 681.022 )
 
-[node name="Sprite" parent="Background/Earth" index="0"]
-light_mask = 0
-scale = Vector2( 6, 6 )
-texture = ExtResource( 5 )
+[node name="PlanetSprite" parent="Background/Earth" index="0"]
+position = Vector2( -825.452, 417.003 )
+scale = Vector2( 1.40316, 2.6494 )
 
 [node name="Mars" parent="Background" instance=ExtResource( 4 )]
 position = Vector2( -10378.3, 6879.31 )
 
-[node name="Sprite" parent="Background/Mars" index="0"]
-scale = Vector2( 5, 5 )
-texture = ExtResource( 6 )
+[node name="PlanetSprite" parent="Background/Mars" index="0"]
+position = Vector2( 180.663, -204.953 )
+scale = Vector2( 1.42056, 2.60119 )
+texture = ExtResource( 7 )
 
 [node name="Jupiter" parent="Background" instance=ExtResource( 4 )]
 position = Vector2( 615.739, 268.954 )
 
-[node name="Sprite" parent="Background/Jupiter" index="0"]
-position = Vector2( 20011.5, -209.735 )
-scale = Vector2( 15, 15 )
-texture = ExtResource( 7 )
+[node name="PlanetSprite" parent="Background/Jupiter" index="0"]
+position = Vector2( 5408.33, -8770.71 )
+scale = Vector2( 5.01749, 10.3223 )
+texture = ExtResource( 5 )
 
 [node name="Neptune" parent="Background" instance=ExtResource( 4 )]
 position = Vector2( 23710.4, 31260.4 )
 
-[node name="Sprite" parent="Background/Neptune" index="0"]
-scale = Vector2( 5, 5 )
-texture = ExtResource( 9 )
+[node name="PlanetSprite" parent="Background/Neptune" index="0"]
+position = Vector2( -15429.2, -22219.6 )
+scale = Vector2( 2.10273, 4.21081 )
+texture = ExtResource( 8 )
 
 [node name="PurpleJupiter" parent="Background" instance=ExtResource( 4 )]
 position = Vector2( 116.009, -24.6747 )
 
-[node name="Sprite" parent="Background/PurpleJupiter" index="0"]
-position = Vector2( -36475.8, -29812 )
-scale = Vector2( 30, 30 )
-texture = ExtResource( 8 )
+[node name="PlanetSprite" parent="Background/PurpleJupiter" index="0"]
+position = Vector2( -31081.4, -23135 )
+scale = Vector2( 21.8258, 43.0061 )
+texture = ExtResource( 6 )
 
 [node name="Asteroid" type="Sprite" parent="Background"]
 position = Vector2( 3495.88, 9026.02 )
@@ -105,10 +102,10 @@ rotation = 0.0
 scale = Vector2( 1.10602, 0.90414 )
 
 [node name="WarpGate" parent="." instance=ExtResource( 16 )]
-margin_left = -304.0
-margin_top = -795.0
-margin_right = -304.0
-margin_bottom = -794.999
+margin_left = -310.0
+margin_top = -806.0
+margin_right = -310.0
+margin_bottom = -805.999
 
 [node name="MissilePickup" parent="." instance=ExtResource( 10 )]
 position = Vector2( 1174, 129 )
@@ -116,6 +113,9 @@ position = Vector2( 1174, 129 )
 [node name="SpaceStation" parent="." instance=ExtResource( 12 )]
 position = Vector2( 452, 2007 )
 z_index = 10
+
+[node name="EnemyAB" parent="." instance=ExtResource( 3 )]
+position = Vector2( 2477, -778 )
 
 [connection signal="change_scene" from="Actors/Player" to="." method="_on_Player_change_scene"]
 

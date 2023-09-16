@@ -13,6 +13,7 @@ var strafe_force : float;
 var velocity = Vector2();
 var max_speed : float;
 var thrust_energy_consumption : float;
+var weapon_capacity : int;
 var shipID : String;
 
 func configure_ship(ship):
@@ -24,6 +25,7 @@ func configure_ship(ship):
 		strafe_force = ship_data["strafe_force"];
 		max_speed = ship_data["max_speed"];
 		thrust_energy_consumption = ship_data["thrust_energy_consumption"];
+		weapon_capacity = ship_data["weapon_capacity"];
 		shipID = ship;
 	else:
 		print("Error: Ship key not found in SHIP_DATA");
