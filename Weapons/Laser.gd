@@ -20,6 +20,7 @@ var path = "res://Weapons/Laser.tscn";
 # It plays appearing and disappearing animations when it's not animating.
 # See `appear()` and `disappear()` for more information.
 var is_casting := false setget set_is_casting
+var velocity : Vector2 = Vector2.ZERO;
 
 onready var fill := $FillLine2D
 onready var tween := $Tween
@@ -103,6 +104,8 @@ func disappear() -> void:
 	hitbox_area.disabled = true;
 	fill.width = 0;
 	
+func shoot_in_direction(direction: Vector2):
+	velocity = direction * cast_speed;
 
 # for use in laser subclasses to set laser color. For now, by default, there will be no gradient between casting and colliding particles
 func set_laser_color(hexcode):

@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 1.5
 
 [connection signal="invincible_ended" from="." to="." method="_on_Hurtbox_invincible_ended"]
 [connection signal="invincible_started" from="." to="." method="_on_Hurtbox_invincible_started"]

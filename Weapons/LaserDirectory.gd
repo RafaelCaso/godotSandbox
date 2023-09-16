@@ -30,4 +30,13 @@ const LASER_DATA = {
 		"dps" : 0,
 		"laser_color" : "#EFFE00"
 	},
+	"laser_0003" : {
+		"name" : "Enemy Red",
+		"cast_speed" : 2000.0,
+		"max_length" : 1000.0,
+		"growth_time" : 0.01,
+		"laser_energy_consumption" : 35,
+		"dps" : 0,
+		"laser_color" : "FE1A00"
+	}
 }

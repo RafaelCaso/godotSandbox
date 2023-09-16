@@ -9,6 +9,9 @@ var invincible = false setget set_invincible;
 signal invincible_started;
 signal invincible_ended;
 
+func _ready() -> void:
+	emit_signal("invincible_started")
+
 func set_invincible(value):
 	invincible = value;
 	if invincible == true:

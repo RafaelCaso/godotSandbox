@@ -18,9 +18,16 @@ var weapon_pressed = false;
 
 func _ready() -> void:
 	
-	PlayerStats.connect("no_health", self, "queue_free")
-	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed")
-	
+	PlayerStats.connect("no_health", self, "queue_free");
+	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed");
+	hurtBox.connect("invincible_started", self, "_on_Player_hit");
+	if hurtBox.is_connected("invincible_started", self, "_on_Player_hit"):
+		hurtBox.disconnect("invincible_started", self, "_on_Player_hit")
+	if hurtBox.connect("invincible_started", self, "_on_Player_hit") == OK:
+		print("Connected successfully")
+	else:
+		print("Failed to connect invincible_started signal")
+
 	#initialize and configure player ship
 	playerShip = baseShip;
 	playerShip.configure_ship(PlayerState.shipID);
@@ -40,20 +47,7 @@ func _process(delta: float) -> void:
 	equippedLaser.cast_to = equippedLaser.to_local(global_position + direction_to_mouse * equippedLaser.max_length);
 	equippedLaser.global_position = laserSpawnPoint.global_position;
 	rotation = direction_to_mouse.angle() + PI/2;
-	
-	
-	
-#	if Input.is_action_just_pressed("weapon1"):
-#		if PlayerState.weapons.size() > 0:
-#			equip_weapon(PlayerState.weapons[0])
-#		else:
-#			print("No laser at index 0")
-#	if Input.is_action_just_pressed("weapon2"):
-#		if PlayerState.weapons.size() > 1:
-#			equip_weapon(PlayerState.weapons[1])
-#		else:
-#			print("No laser at index 1")
-		
+
 	if Input.is_action_pressed("laser") && fusionReactorCore.has_energy(25):
 		fusionReactorCore.deplete_energy(equippedLaser.laser_energy_consumption * delta);
 		fire_laser();
@@ -103,8 +97,9 @@ func stop_laser():
 		equippedLaser.set_is_casting(false);
 
 #*********** NOT FUNCTIONING CORRECTLY/AT ALL *********
-func _on_Hurtbox_area_entered(_area: Area2D) -> void:
-	hurtBox.start_invincible(0.5);
+func _on_Player_hit(_area: Area2D) -> void:
+	print("player hit!")
+#	hurtBox.start_invincible(0.5);
 	hurtBox.create_hit_effect();
 
 func add_weapon(weapon):
