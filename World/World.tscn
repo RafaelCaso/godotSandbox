@@ -25,6 +25,7 @@ scale = Vector2( 0.448242, 0.405273 )
 [node name="Player" parent="Actors" instance=ExtResource( 1 )]
 position = Vector2( 559.733, 405.604 )
 scale = Vector2( 2.46747, 2.23094 )
+collision_mask = 65
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Actors/Player"]
 remote_path = NodePath("../../../Camera2D")

@@ -20,13 +20,6 @@ func _ready() -> void:
 	
 	PlayerStats.connect("no_health", self, "queue_free");
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed");
-	hurtBox.connect("invincible_started", self, "_on_Player_hit");
-	if hurtBox.is_connected("invincible_started", self, "_on_Player_hit"):
-		hurtBox.disconnect("invincible_started", self, "_on_Player_hit")
-	if hurtBox.connect("invincible_started", self, "_on_Player_hit") == OK:
-		print("Connected successfully")
-	else:
-		print("Failed to connect invincible_started signal")
 
 	#initialize and configure player ship
 	playerShip = baseShip;
@@ -96,11 +89,6 @@ func stop_laser():
 	if equippedLaser.is_casting:
 		equippedLaser.set_is_casting(false);
 
-#*********** NOT FUNCTIONING CORRECTLY/AT ALL *********
-func _on_Player_hit(_area: Area2D) -> void:
-	print("player hit!")
-#	hurtBox.start_invincible(0.5);
-	hurtBox.create_hit_effect();
 
 func add_weapon(weapon):
 	PlayerState.weapons.append(weapon);
