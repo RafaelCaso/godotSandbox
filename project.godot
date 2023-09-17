@@ -163,6 +163,7 @@ tab={
 2d_physics/layer_5="Projectile"
 2d_physics/layer_6="EnemyLaser"
 2d_physics/layer_7="Item"
+2d_physics/layer_8="EnergyShield"
 
 [physics]
 

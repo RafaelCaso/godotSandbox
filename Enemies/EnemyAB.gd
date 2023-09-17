@@ -62,7 +62,7 @@ func _physics_process(delta: float) -> void:
 				
 				if collision_info:
 					pass;
-			
+				
 			else:
 				state = IDLE;
 
@@ -103,8 +103,11 @@ func _on_Timer_timeout() -> void:
 		var current_distance = global_position.distance_to(player.global_position)
 		if playerDetectionZone.can_see_player() and current_distance <= stop_distance:
 			shoot_at_player(player);
-
+	else:
+		stop_shooting();
 func shoot_at_player(player):
 	laser_scene.look_at(player.global_position);
 	laser_scene.is_casting = true;
 
+func stop_shooting():
+	laser_scene.is_casting = false;

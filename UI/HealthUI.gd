@@ -19,7 +19,7 @@ func set_max_health(value):
 		healthUI_empty.rect_size.x = max_health * 256;
 
 func _ready() -> void:
-	self.max_health = PlayerStats.max_health
-	self.health = PlayerStats.health
-	PlayerStats.connect("health_changed", self, "set_health");
-	PlayerStats.connect("max_health_changed", self, "set_max_health");
+	self.max_health = PlayerStats.max_health;
+	self.health = PlayerStats.health;
+	var _connectHealthChange = PlayerStats.connect("health_changed", self, "set_health");
+	var _connectMaxHealth = PlayerStats.connect("max_health_changed", self, "set_max_health");

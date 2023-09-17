@@ -7,9 +7,9 @@ signal no_health;
 signal health_changed(value);
 signal max_health_changed(value);
 
-func _process(delta: float) -> void:
-	if self == null:
-		pass
+#func _process(_delta: float) -> void:
+#	if self == null:
+#		pass
 
 func set_health(value):
 	health = value;

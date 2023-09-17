@@ -10,7 +10,7 @@ func set_direction(target_pos):
 	direction = (target_pos - global_position).normalized()
 
 func _physics_process(delta):
-	move_and_slide(direction * speed * delta);
+	var _missileMoveAndSlide = move_and_slide(direction * speed * delta);
 	
 	
 

@@ -12,15 +12,16 @@ onready var playerSprite = $Sprite;
 onready var hurtBox = $Hurtbox;
 onready var fusionReactorCore = $FusionReactorCore;
 onready var laserSpawnPoint = $LaserSpawnPoint;
+onready var energyShield = $EnergyShield;
 
 var velocity = Vector2();
 var weapon_pressed = false;
 
 func _ready() -> void:
 	
-	PlayerStats.connect("no_health", self, "queue_free");
+	var _connectPlayerNoHealth = PlayerStats.connect("no_health", self, "queue_free");
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed");
-
+	energyShield.connect("shield_hit", self, "on_shield_hit")
 	#initialize and configure player ship
 	playerShip = baseShip;
 	playerShip.configure_ship(PlayerState.shipID);
@@ -63,6 +64,15 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("test_button"):
 		emit_signal("change_scene", "res://World2.tscn");
+	
+	if Input.is_action_just_pressed("interact"):
+		if energyShield.shields_active == true:
+			energyShield.shields_down();
+			fusionReactorCore.set_max_energy(100)
+		elif energyShield.shields_active == false:
+			fusionReactorCore.set_max_energy(energyShield.required_frc_energy);
+			energyShield.play_animation();
+			energyShield.shields_up()
 	
 	fusionReactorCore.set_energy_recharge(fusionReactorCore.energy_recharge_rate * delta)
 
@@ -158,7 +168,11 @@ func handle_item_input(_delta):
 func handle_input(delta):
 	handle_movement_input(delta);
 	handle_item_input(delta);
-	
+
+func on_shield_hit():
+	fusionReactorCore.energy -= 50;
+	if fusionReactorCore.energy <= 1:
+		energyShield.shield_offline();
 	
 	#	# Rotation using keyboard
 #	if Input.is_action_pressed("ui_left"):

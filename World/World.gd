@@ -1,10 +1,8 @@
 extends Node2D
 
+# this should probably reference PlayerState singleton
 var player_state = {};
 
-func _physics_process(_delta: float) -> void:
-	if Input.is_action_just_pressed("interact"):
-		print("interacting")
 
 func change_scene(new_scene_path):
 	
