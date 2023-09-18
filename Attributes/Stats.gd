@@ -11,6 +11,13 @@ signal max_health_changed(value);
 #	if self == null:
 #		pass
 
+func heal(heal_value):
+	if heal_value <= 0:
+		return;
+	health = min(health + heal_value, max_health);
+	emit_signal("health_changed", health)
+
+	
 func set_health(value):
 	health = value;
 	emit_signal("health_changed", health)
