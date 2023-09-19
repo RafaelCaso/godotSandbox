@@ -7,8 +7,6 @@ onready var hurtBox = $Hurtbox;
 onready var wanderController = $WanderController
 onready var laser_scene = $EnemyLaser
 
-var player_stats = PlayerStats;
-
 
 
 
@@ -44,7 +42,11 @@ func _physics_process(delta: float) -> void:
 				
 			var direction = global_position.direction_to(wanderController.target_position);
 			velocity = Vector2.move_toward(direction * max_speed, acceleration * delta);
-			velocity = move_and_collide(velocity);
+			var collision_info = move_and_collide(velocity);
+			
+			if collision_info:
+				print("collision detected")
+				state = IDLE;
 				
 		CHASE:
 			var player = playerDetectionZone.player
@@ -54,8 +56,12 @@ func _physics_process(delta: float) -> void:
 				var desired_velocity = direction * max_speed;
 				if current_distance > stop_distance:
 					velocity = Vector2.move_toward(desired_velocity, acceleration * delta);
+				if velocity == null:
+					print("Velocity is null before interpolation. Current state: ", state);
 				else:
+					
 					velocity = velocity.linear_interpolate(Vector2.ZERO, 0.1);
+					
 				
 #				velocity = Vector2.move_toward(direction * max_speed, acceleration * delta);
 				var collision_info = move_and_collide(velocity)
@@ -92,7 +98,7 @@ func apply_knockback_from(position: Vector2, force: float) -> void:
 
 
 func _on_Hitbox_area_entered(_area: Area2D) -> void:
-	player_stats.health -= 1;
+	PlayerStats.health -= 1;
 	hurtBox.create_hit_effect();
 	
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Background.tscn" type="PackedScene" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://MissilePickup.tscn" type="PackedScene" id=10]
 [ext_resource path="res://PlayerCamera.tscn" type="PackedScene" id=11]
 [ext_resource path="res://SpaceStation.tscn" type="PackedScene" id=12]
+[ext_resource path="res://PulsingStar.tscn" type="PackedScene" id=13]
 [ext_resource path="res://WarpPopupTest.tscn" type="PackedScene" id=16]
 [ext_resource path="res://AsteroidCluster.png" type="Texture" id=17]
 [ext_resource path="res://World/World.gd" type="Script" id=19]
@@ -34,8 +35,24 @@ remote_path = NodePath("../../../Camera2D")
 [node name="Enemies" type="YSort" parent="Actors"]
 
 [node name="EnemyAB" parent="Actors/Enemies" instance=ExtResource( 3 )]
-position = Vector2( 5621.96, -1964.11 )
-scale = Vector2( 2.23094, 2.46747 )
+position = Vector2( 3625.27, -1312.7 )
+
+[node name="EnemyAB2" parent="Actors/Enemies" instance=ExtResource( 3 )]
+position = Vector2( -2520.96, -1865.41 )
+
+[node name="EnemyAB3" parent="Actors/Enemies" instance=ExtResource( 3 )]
+position = Vector2( 1840.52, -2820.32 )
+
+[node name="EnemyAB4" parent="Actors/Enemies" instance=ExtResource( 3 )]
+position = Vector2( 2563.35, 1441 )
+
+[node name="EnemyAB5" parent="Actors/Enemies" instance=ExtResource( 3 )]
+
+[node name="EnemyAB6" parent="Actors/Enemies" instance=ExtResource( 3 )]
+position = Vector2( 1809.29, -801.929 )
+
+[node name="EnemyAB7" parent="Actors/Enemies" instance=ExtResource( 3 )]
+position = Vector2( -1423.34, 653.88 )
 
 [node name="Background" parent="." instance=ExtResource( 2 )]
 position = Vector2( 235, 141 )
@@ -108,6 +125,12 @@ texture = ExtResource( 17 )
 position = Vector2( -12143, -9487.59 )
 scale = Vector2( 1.92599, 3.81567 )
 texture = ExtResource( 9 )
+
+[node name="PulsingStar" parent="Background" instance=ExtResource( 13 )]
+margin_left = 19346.7
+margin_top = -6506.73
+margin_right = -51236.3
+margin_bottom = -115926.0
 
 [node name="Camera2D" parent="." instance=ExtResource( 11 )]
 position = Vector2( 509.896, 298.38 )
