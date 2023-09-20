@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://TacticalMenu.gd" type="Script" id=1]
+
+[node name="TacticalMenu" type="Popup"]
+visible = true
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 33.0
+margin_top = -280.0
+margin_right = 513.0
+margin_bottom = 280.0
+rect_min_size = Vector2( 480, 560 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.313726, 0.329412, 0.564706, 0.360784 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TacticalTabs" type="TabContainer" parent="."]
+anchor_bottom = 1.0
+margin_top = 19.0
+margin_right = 115.0
+margin_bottom = -18.0
+tab_align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Inventory" type="Tabs" parent="TacticalTabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -436.0
+margin_bottom = -504.0
+
+[node name="MarginContainer" type="MarginContainer" parent="TacticalTabs/Inventory"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 120.0
+margin_top = -50.0
+margin_right = 470.0
+margin_bottom = 485.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="TacticalTabs/Inventory/MarginContainer"]
+margin_right = 350.0
+margin_bottom = 559.0
+
+[node name="Weapons" type="Label" parent="TacticalTabs/Inventory/MarginContainer/GridContainer"]
+margin_left = 145.0
+margin_top = 10.0
+margin_right = 204.0
+margin_bottom = 14.0
+size_flags_horizontal = 6
+size_flags_vertical = 1
+text = "Weapons"

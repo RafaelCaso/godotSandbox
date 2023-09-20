@@ -1,14 +1,9 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Background.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Enemies/EnemyAB.tscn" type="PackedScene" id=3]
 [ext_resource path="res://World/Planet.tscn" type="PackedScene" id=4]
-[ext_resource path="res://World/0037JupiterRect.png" type="Texture" id=5]
-[ext_resource path="res://World/0038PurpleJupiterRect.png" type="Texture" id=6]
-[ext_resource path="res://World/0039MarsRect.png" type="Texture" id=7]
-[ext_resource path="res://World/0040NeptuneRect.png" type="Texture" id=8]
-[ext_resource path="res://World/0041AlienPlanetRect.png" type="Texture" id=9]
 [ext_resource path="res://MissilePickup.tscn" type="PackedScene" id=10]
 [ext_resource path="res://PlayerCamera.tscn" type="PackedScene" id=11]
 [ext_resource path="res://SpaceStation.tscn" type="PackedScene" id=12]
@@ -31,6 +26,7 @@ collision_mask = 65
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Actors/Player"]
 remote_path = NodePath("../../../Camera2D")
+update_rotation = false
 
 [node name="Enemies" type="YSort" parent="Actors"]
 
@@ -57,45 +53,6 @@ position = Vector2( -1423.34, 653.88 )
 [node name="Background" parent="." instance=ExtResource( 2 )]
 position = Vector2( 235, 141 )
 
-[node name="Earth" parent="Background" instance=ExtResource( 4 )]
-position = Vector2( -1438.95, 681.022 )
-
-[node name="PlanetSprite" parent="Background/Earth" index="0"]
-position = Vector2( -825.452, 417.003 )
-scale = Vector2( 1.40316, 2.6494 )
-
-[node name="Mars" parent="Background" instance=ExtResource( 4 )]
-position = Vector2( -10378.3, 6879.31 )
-
-[node name="PlanetSprite" parent="Background/Mars" index="0"]
-position = Vector2( 180.663, -204.953 )
-scale = Vector2( 1.42056, 2.60119 )
-texture = ExtResource( 7 )
-
-[node name="Jupiter" parent="Background" instance=ExtResource( 4 )]
-position = Vector2( 615.739, 268.954 )
-
-[node name="PlanetSprite" parent="Background/Jupiter" index="0"]
-position = Vector2( 5408.33, -8770.71 )
-scale = Vector2( 5.01749, 10.3223 )
-texture = ExtResource( 5 )
-
-[node name="Neptune" parent="Background" instance=ExtResource( 4 )]
-position = Vector2( 23710.4, 31260.4 )
-
-[node name="PlanetSprite" parent="Background/Neptune" index="0"]
-position = Vector2( -15429.2, -22219.6 )
-scale = Vector2( 2.10273, 4.21081 )
-texture = ExtResource( 8 )
-
-[node name="PurpleJupiter" parent="Background" instance=ExtResource( 4 )]
-position = Vector2( 116.009, -24.6747 )
-
-[node name="PlanetSprite" parent="Background/PurpleJupiter" index="0"]
-position = Vector2( -31081.4, -23135 )
-scale = Vector2( 21.8258, 43.0061 )
-texture = ExtResource( 6 )
-
 [node name="Asteroid" type="Sprite" parent="Background"]
 position = Vector2( 3495.88, 9026.02 )
 scale = Vector2( 2, 2 )
@@ -119,18 +76,14 @@ rotation = -1.53938
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 17 )
 
-[node name="Planet" parent="Background" instance=ExtResource( 4 )]
-
-[node name="PlanetSprite" parent="Background/Planet" index="0"]
-position = Vector2( -12143, -9487.59 )
-scale = Vector2( 1.92599, 3.81567 )
-texture = ExtResource( 9 )
-
 [node name="PulsingStar" parent="Background" instance=ExtResource( 13 )]
 margin_left = 19346.7
 margin_top = -6506.73
 margin_right = -51236.3
 margin_bottom = -115926.0
+
+[node name="Planet" parent="Background" instance=ExtResource( 4 )]
+position = Vector2( -1427.8, 2065.27 )
 
 [node name="Camera2D" parent="." instance=ExtResource( 11 )]
 position = Vector2( 509.896, 298.38 )
@@ -149,12 +102,3 @@ position = Vector2( 1174, 129 )
 [node name="SpaceStation" parent="." instance=ExtResource( 12 )]
 position = Vector2( 452, 2007 )
 z_index = 10
-
-[connection signal="change_scene" from="Actors/Player" to="." method="_on_Player_change_scene"]
-
-[editable path="Background/Earth"]
-[editable path="Background/Mars"]
-[editable path="Background/Jupiter"]
-[editable path="Background/Neptune"]
-[editable path="Background/PurpleJupiter"]
-[editable path="Background/Planet"]

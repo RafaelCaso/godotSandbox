@@ -1,7 +1,5 @@
 extends KinematicBody2D
 
-signal change_scene(new_scene_path);
-
 var MissileScene = preload("res://UnguidedMissile.tscn")
 
 onready var baseShip = $Ship;
@@ -59,11 +57,11 @@ func _process(delta: float) -> void:
 			print("No missiles in arsenal");
 		
 	
-#	if Input.is_action_just_pressed("change_ship_test"):
-#		change_ship("ship_0001");
+	if Input.is_action_just_pressed("change_ship_test"):
+		change_ship("ship_0001");
 	
 	if Input.is_action_just_pressed("test_button"):
-		emit_signal("change_scene", "res://World2.tscn");
+		GameManager.goto_scene("res://World2.tscn");
 	
 	if Input.is_action_just_pressed("interact"):
 		if energyShield.shields_active == true:
@@ -146,6 +144,25 @@ func handle_movement_input(delta):
 		var down_direction = Vector2(0, 1).rotated(rotation);
 		velocity += down_direction * playerShip.strafe_force * delta;
 
+
+
+
+	
+#	#	# Rotation using keyboard
+#	if Input.is_action_pressed("alternate_rotate_left"):
+#		rotate_left(delta);
+#	elif Input.is_action_pressed("alternate_rotate_right"):
+#		rotate_right(delta);
+#
+#	# ********ONLY NEEDED FOR ALTERNATE CONTROL STYLE ***********
+## ********NEED TESTING RE: WHICH IS BETTER? KEYBOARD ROTATE VS FOLLOW MOUSE *********
+#func rotate_left(delta):
+#	rotation_degrees -= playerShip.rotation_speed * delta;
+#
+#func rotate_right(delta):
+#	rotation_degrees += playerShip.rotation_speed * delta;
+
+
 func handle_item_input(_delta):
 	# Checks if an item is being selected by the player (physical keys 1-9)
 	for i in range(1,10):
@@ -173,22 +190,3 @@ func on_shield_hit():
 	fusionReactorCore.energy -= 50;
 	if fusionReactorCore.energy <= 1:
 		energyShield.shield_offline();
-	
-	#	# Rotation using keyboard
-#	if Input.is_action_pressed("ui_left"):
-#		rotate_left(delta);
-#	elif Input.is_action_pressed("ui_right"):
-#		rotate_right(delta);
-	
-	# ********ONLY NEEDED FOR ALTERNATE CONTROL STYLE ***********
-# ********NEED TESTING RE: WHICH IS BETTER? KEYBOARD ROTATE VS FOLLOW MOUSE *********
-#func rotate_left(delta):
-#	rotation_degrees -= playerShip.rotation_speed * delta;
-#	clamp_rotation();
-#
-#func rotate_right(delta):
-#	rotation_degrees += playerShip.rotation_speed * delta;
-#	clamp_rotation();
-
-#func clamp_rotation():
-#	rotation_degrees = fmod(rotation_degrees, 360)

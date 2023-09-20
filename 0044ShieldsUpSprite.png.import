@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/0020PurpleJupiter.png-269298e95154536e68ad1619ad5678bf.stex"
+path="res://.import/0044ShieldsUpSprite.png-768691af67b02bbe0325a0d472a21bfb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://World/0020PurpleJupiter.png"
-dest_files=[ "res://.import/0020PurpleJupiter.png-269298e95154536e68ad1619ad5678bf.stex" ]
+source_file="res://0044ShieldsUpSprite.png"
+dest_files=[ "res://.import/0044ShieldsUpSprite.png-768691af67b02bbe0325a0d472a21bfb.stex" ]
 
 [params]
 
@@ -19,8 +19,8 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=1
-flags/filter=false
+flags/repeat=0
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

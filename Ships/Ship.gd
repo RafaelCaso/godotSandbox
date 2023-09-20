@@ -20,6 +20,7 @@ func configure_ship(ship):
 	if ship in shipConfig.SHIP_DATA:
 		var ship_data = shipConfig.SHIP_DATA[ship];
 		sprite.texture = load(ship_data["texture_path"]);
+		rotation_speed = ship_data["rotation_speed"];
 		thrust = ship_data["thrust"];
 		deceleration_speed = ship_data["deceleration_speed"];
 		strafe_force = ship_data["strafe_force"];

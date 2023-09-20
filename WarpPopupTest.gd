@@ -12,7 +12,7 @@ func _ready() -> void:
 
 
 func _on_ConfirmationDialog_confirmed() -> void:
-	var _changeScene = get_tree().change_scene("res://World2.tscn")
+	GameManager.goto_scene("res://World2.tscn")
 
 
 func _on_Area2D_area_entered(_area: Area2D) -> void:

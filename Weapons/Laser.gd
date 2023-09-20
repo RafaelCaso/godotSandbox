@@ -33,7 +33,7 @@ onready var line_width: float = fill.width
 func _ready() -> void:
 	set_physics_process(false)
 	fill.points[1] = Vector2.ZERO
-	hitbox_area.disabled = true;
+	hitbox_area.call_deferred("set", "disabled", true)
 
 
 func _physics_process(delta: float) -> void:
@@ -93,7 +93,7 @@ func appear() -> void:
 		tween.stop_all()
 	tween.interpolate_property(fill, "width", 0, line_width, growth_time * 2)
 	tween.start()
-	hitbox_area.disabled = false;
+	hitbox_area.call_deferred("set", "disabled", false)
 	
 	
 
@@ -101,7 +101,7 @@ func disappear() -> void:
 	if tween.is_active():
 		tween.stop_all()
 
-	hitbox_area.disabled = true;
+	hitbox_area.call_deferred("set", "disabled", true)
 	fill.width = 0;
 	
 func shoot_in_direction(direction: Vector2):

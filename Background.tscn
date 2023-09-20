@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://World/0022SpaceBG2.png" type="Texture" id=2]
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( -160052, -156744, 159490, -156744, 160061, 159586, -160052, 159902 )
 
 [node name="Background" type="Sprite"]
 position = Vector2( 259, 134 )
@@ -10,3 +13,6 @@ texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 320000, 320000 )
 region_filter_clip = true
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 1 )

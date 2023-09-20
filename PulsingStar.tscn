@@ -11,7 +11,7 @@ uniform float ray_density = 3.5;
 uniform float curvature = 15.0;
 uniform vec3 rgb = vec3(4.0, 1.0, 0.1);
 uniform float sin_freq = 13.0;
-uniform float scale_factor = 1.2;
+uniform float scale_factor = 1.5;
 //uniform sampler2D noiseTexture;  // use if you want a custom noise texture
 
 float hash( float n )
@@ -100,8 +100,10 @@ shader_param/scale_factor = 1.2
 material = SubResource( 2 )
 anchor_right = 0.282
 anchor_bottom = 0.404
-margin_right = -65.768
-margin_bottom = -31.4
+margin_left = -111.0
+margin_top = -104.0
+margin_right = -176.768
+margin_bottom = -135.4
 __meta__ = {
 "_edit_use_anchors_": false
 }
