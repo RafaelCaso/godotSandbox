@@ -21,6 +21,7 @@ Hud="*res://HUD.tscn"
 PlayerState="*res://Player/PlayerState.gd"
 CursorManager="*res://CursorManager.tscn"
 GameManager="*res://GameManager.tscn"
+Events="*res://Events.gd"
 
 [input]
 

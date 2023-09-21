@@ -9,7 +9,7 @@
 [ext_resource path="res://SpaceStation.tscn" type="PackedScene" id=12]
 [ext_resource path="res://PulsingStar.tscn" type="PackedScene" id=13]
 [ext_resource path="res://WarpPopupTest.tscn" type="PackedScene" id=16]
-[ext_resource path="res://AsteroidCluster.png" type="Texture" id=17]
+[ext_resource path="res://Assets/Sprites/StellarBodies/AsteroidCluster.png" type="Texture" id=17]
 [ext_resource path="res://World/World.gd" type="Script" id=19]
 
 [node name="World" type="Node2D"]
@@ -85,8 +85,31 @@ margin_bottom = -115926.0
 [node name="Planet" parent="Background" instance=ExtResource( 4 )]
 position = Vector2( -1427.8, 2065.27 )
 
+[node name="ViewportContainer" type="ViewportContainer" parent="Background"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -318695.0
+margin_top = -319366.0
+margin_right = -318495.0
+margin_bottom = -319166.0
+rect_min_size = Vector2( 200, 200 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="Background/ViewportContainer"]
+size = Vector2( 200, 200 )
+transparent_bg = true
+handle_input_locally = false
+disable_3d = true
+usage = 0
+render_target_update_mode = 3
+
+[node name="Camera2D" type="Camera2D" parent="Background/ViewportContainer/Viewport"]
+
 [node name="Camera2D" parent="." instance=ExtResource( 11 )]
-position = Vector2( 509.896, 298.38 )
 rotation = 0.0
 scale = Vector2( 1.10602, 0.90414 )
 
@@ -94,7 +117,7 @@ scale = Vector2( 1.10602, 0.90414 )
 margin_left = -310.0
 margin_top = -806.0
 margin_right = -310.0
-margin_bottom = -805.999
+margin_bottom = -805.991
 
 [node name="MissilePickup" parent="." instance=ExtResource( 10 )]
 position = Vector2( 1174, 129 )

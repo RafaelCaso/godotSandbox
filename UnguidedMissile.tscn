@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://0031MissileA.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Sprites/Weapons/0031MissileA.png" type="Texture" id=1]
 [ext_resource path="res://Missile.gd" type="Script" id=2]
 [ext_resource path="res://Attributes/Hitbox.tscn" type="PackedScene" id=3]
 

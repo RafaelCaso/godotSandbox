@@ -10,7 +10,7 @@ func _ready() -> void:
 	laser_scene.global_position = self.global_position;
 
 func _process(delta) -> void:
-	sprite.rotation += rotation_speed * delta
+	sprite.rotation += rotation_speed * delta;
 
 func repair_ship():
 	PlayerStats.heal(1);
@@ -31,7 +31,6 @@ func _on_Area2D_body_exited(body: Node) -> void:
 
 func _on_LaserCoverage_body_entered(body: Node) -> void:
 	if body.is_in_group("enemies"):
-		print("Enemy entered station defense area");
 		var enemy = body;
 		shoot_at_enemy(enemy);
 		$LaserBeam2D/LaserTimer.start();

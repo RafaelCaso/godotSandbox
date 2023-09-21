@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Weapons/Laser.gd" type="Script" id=1]
-[ext_resource path="res://Weapons/glowing_circle.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/Weapons/glowing_circle.png" type="Texture" id=2]
 
 [sub_resource type="Gradient" id=11]
 colors = PoolColorArray( 0.214844, 0.632782, 0.859375, 1, 0.196078, 0.670588, 0.0784314, 1 )
