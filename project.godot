@@ -11,17 +11,22 @@ config_version=4
 [application]
 
 config/name="02MovingSandbox"
-run/main_scene="res://World/World.tscn"
+run/main_scene="res://src/World/World.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-PlayerStats="*res://Attributes/PlayerStats.tscn"
-Hud="*res://HUD.tscn"
-PlayerState="*res://Player/PlayerState.gd"
-CursorManager="*res://CursorManager.tscn"
-GameManager="*res://GameManager.tscn"
-Events="*res://Events.gd"
+PlayerStats="*res://src/Attributes/PlayerStats.tscn"
+Hud="*res://src/GUI/HUD.tscn"
+PlayerState="*res://src/Player/PlayerState.gd"
+CursorManager="*res://src/Utility/CursorManager.tscn"
+GameManager="*res://src/Utility/GameManager.tscn"
+Events="*res://src/Utility/Events.gd"
+
+[display]
+
+window/size/resizable=false
+window/size/fullscreen=true
 
 [input]
 
@@ -49,16 +54,6 @@ main_deceleration={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777237,"unicode":0,"echo":false,"script":null)
  ]
 }
-strafe_left={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":81,"unicode":0,"echo":false,"script":null)
- ]
-}
-strafe_right={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":69,"unicode":0,"echo":false,"script":null)
- ]
-}
 strafe_down={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":83,"unicode":0,"echo":false,"script":null)
@@ -84,7 +79,7 @@ test_button={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777221,"unicode":0,"echo":false,"script":null)
  ]
 }
-interact={
+shields={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":70,"unicode":0,"echo":false,"script":null)
  ]
@@ -154,16 +149,6 @@ tab={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777218,"unicode":0,"echo":false,"script":null)
  ]
 }
-alternate_rotate_left={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":81,"unicode":0,"echo":false,"script":null)
- ]
-}
-alternate_rotate_right={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":69,"unicode":0,"echo":false,"script":null)
- ]
-}
 
 [layer_names]
 
@@ -175,6 +160,7 @@ alternate_rotate_right={
 2d_physics/layer_6="EnemyLaser"
 2d_physics/layer_7="Item"
 2d_physics/layer_8="EnergyShield"
+2d_physics/layer_9="Radar"
 
 [physics]
 

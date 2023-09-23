@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Sprites/SpaceConstructions/0033SpaceStation.png" type="Texture" id=1]
+[ext_resource path="res://src/SpaceConstructions/SpaceStation.gd" type="Script" id=2]
+[ext_resource path="res://src/Weapons/Laser.tscn" type="PackedScene" id=4]
+
+[sub_resource type="ParticlesMaterial" id=1]
+flag_disable_z = true
+direction = Vector3( 1, 1, 0 )
+spread = 180.0
+flatness = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 103.82
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color = Color( 0.956863, 0.996078, 0.0509804, 0.454902 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 203.662
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 866.752
+
+[node name="SpaceStation" type="Node2D" groups=["station"]]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+amount = 81
+lifetime = 2.5
+process_material = SubResource( 1 )
+
+[node name="DockingArea" type="Area2D" parent="."]
+collision_layer = 257
+collision_mask = 257
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DockingArea"]
+shape = SubResource( 2 )
+
+[node name="Timer" type="Timer" parent="DockingArea"]
+wait_time = 3.0
+
+[node name="LaserCoverage" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LaserCoverage"]
+shape = SubResource( 3 )
+
+[node name="LaserBeam2D" parent="." instance=ExtResource( 4 )]
+
+[node name="LaserTimer" type="Timer" parent="LaserBeam2D"]
+
+[connection signal="body_entered" from="DockingArea" to="." method="_on_Area2D_body_entered"]
+[connection signal="body_exited" from="DockingArea" to="." method="_on_Area2D_body_exited"]
+[connection signal="timeout" from="DockingArea/Timer" to="." method="_on_Timer_timeout"]
+[connection signal="body_entered" from="LaserCoverage" to="." method="_on_LaserCoverage_body_entered"]
+[connection signal="body_exited" from="LaserCoverage" to="." method="_on_LaserCoverage_body_exited"]
+[connection signal="timeout" from="LaserBeam2D/LaserTimer" to="." method="_on_LaserTimer_timeout"]

@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://src/Radar/RadarUI.gd" type="Script" id=1]
+[ext_resource path="res://src/Radar/Radar.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Sprites/Radar/radar_player.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Sprites/Radar/radar_outline.png" type="Texture" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 10000.0
+
+[node name="Radar" type="Area2D"]
+collision_layer = 257
+collision_mask = 257
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="RadarUI" type="MarginContainer" parent="CanvasLayer"]
+margin_left = 1500.0
+margin_top = 650.0
+margin_right = 1540.0
+margin_bottom = 690.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RadarSprite" type="Sprite" parent="CanvasLayer/RadarUI"]
+position = Vector2( 251, 250 )
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 4 )
+
+[node name="Radar" type="TextureRect" parent="CanvasLayer/RadarUI"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Player" type="Sprite" parent="CanvasLayer/RadarUI/Radar"]
+position = Vector2( 0.473289, -0.0278406 )
+texture = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/RadarUI/Radar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 99.0
+margin_top = 98.0
+margin_right = 361.0
+margin_bottom = 360.0
+color = Color( 0.458824, 0.113725, 0.717647, 0.168627 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="CanvasLayer/RadarUI"]
+
+[connection signal="body_entered" from="." to="." method="_on_Radar_body_entered"]
+[connection signal="body_exited" from="." to="CanvasLayer/RadarUI" method="_on_Radar_body_exited"]
