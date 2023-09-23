@@ -36,6 +36,7 @@ margin_left = 230.0
 margin_top = 35.0
 margin_right = 420.0
 margin_bottom = 35.0
+focus_mode = 0
 custom_constants/vseparation = 10
 custom_constants/line_separation = 5
 __meta__ = {
@@ -70,6 +71,7 @@ margin_top = 39.0
 margin_right = 120.0
 margin_bottom = 59.0
 rect_min_size = Vector2( 80, 0 )
+focus_mode = 0
 text = "Weapons"
 
 [node name="ShipsBtn" type="Button" parent="PrimaryVBoxContainer"]
@@ -77,12 +79,14 @@ margin_top = 69.0
 margin_right = 120.0
 margin_bottom = 89.0
 rect_min_size = Vector2( 80, 20 )
+focus_mode = 0
 text = "Ships"
 
 [node name="ItemsBtn" type="Button" parent="PrimaryVBoxContainer"]
 margin_top = 99.0
 margin_right = 120.0
 margin_bottom = 119.0
+focus_mode = 0
 text = "Items"
 
 [connection signal="button_up" from="PrimaryVBoxContainer/WeaponsBtn" to="." method="_on_WeaponsBtn_button_up"]

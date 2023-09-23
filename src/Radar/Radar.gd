@@ -10,7 +10,6 @@ onready var radarUI = $CanvasLayer/RadarUI;
 
 #***** MAKE SURE AREA2D IS SET TO COLLIDE WITH THESE OBJECTS (MASK SETTING) ****
 func _on_Radar_body_entered(body: Node) -> void:
-	print("Body entered: ", body)
 	if body.is_in_group("asteroid"):
 		radarUI.add_object(body, asteroid_icon);
 	elif body.is_in_group("enemies"):
@@ -21,4 +20,3 @@ func _on_Radar_body_entered(body: Node) -> void:
 	elif body.is_in_group("warpgate"):
 		print("Warpgate entered radar")
 		radarUI.add_object(body, warp_gate_icon); 
-

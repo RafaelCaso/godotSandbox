@@ -16,3 +16,4 @@ func _toggle_shield_sprite():
 
 func _toggle_tactical_menu():
 	tacticalMenu.visible =! tacticalMenu.visible;
+	tacticalMenu.close_secondary_menu();
