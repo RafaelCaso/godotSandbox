@@ -56,6 +56,7 @@ func _physics_process(delta: float) -> void:
 				var desired_velocity = direction * max_speed;
 				if current_distance > stop_distance:
 					velocity = Vector2.move_toward(desired_velocity, acceleration * delta);
+				# Type error that necessitated below if-check likely resolved. Consider removing 
 				if velocity == null:
 					print("Velocity is null before interpolation. Current state: ", state);
 				else:

@@ -58,12 +58,14 @@ func _process(delta: float) -> void:
 			missile_instance.position = position;
 			missile_instance.set_direction(mouse_pos);
 		else:
-			print("No missiles in arsenal");
+			Events.emit_signal("prompt_player", "No Missiles in arsenal");
 		
 	
 	if Input.is_action_just_pressed("change_ship_test"):
-		print($Radar.position)
-#		change_ship("ship_0001");
+		print("Radar Position:")
+		print($Radar.global_position)
+		print("Player Position")
+		print(self.global_position)
 	
 	if Input.is_action_just_pressed("test_button"):
 		GameManager.goto_scene("res://World2.tscn");
@@ -80,7 +82,8 @@ func _process(delta: float) -> void:
 	fusionReactorCore.set_energy_recharge(fusionReactorCore.energy_recharge_rate * delta)
 
 func _physics_process(delta: float) -> void:
-	$Radar.global_position = global_position;
+	# It looks like the below problem fixed itself which is just fascinatingly frustrating
+#	$Radar.global_position = global_position;
 	handle_input(delta);
 	velocity = move_and_slide(velocity).clamped(playerShip.max_speed);
 
@@ -184,7 +187,7 @@ func handle_item_input(_delta):
 				if i -1 < PlayerState.weapons.size():
 					equip_weapon(PlayerState.weapons[i-1]);
 				else:
-					print("No weapon at index " + str(i));
+					Events.emit_signal("prompt_player", "No item equipped in slot " + str(i));
 				weapon_pressed = false;
 				break;
 

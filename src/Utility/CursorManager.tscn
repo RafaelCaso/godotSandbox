@@ -5,6 +5,7 @@
 [ext_resource path="res://src/Utility/CursorManager.gd" type="Script" id=3]
 
 [node name="CursorManager" type="CanvasLayer"]
+pause_mode = 2
 script = ExtResource( 3 )
 empty_cursor = ExtResource( 1 )
 

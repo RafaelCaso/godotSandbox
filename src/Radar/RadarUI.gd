@@ -25,7 +25,7 @@ func remove_object(object):
 
 func _physics_process(delta: float) -> void:
 	# MAY NOT NEED +90 TO ROTATION_DEGREES!!!!
-	player_sprite.rotation_degrees = player.get_node("Sprite").rotation_degrees;
+#	player_sprite.rotation_degrees = player.get_node("Sprite").rotation_degrees;
 	player_sprite.position = size;
 	player_position = player.position;
 	
