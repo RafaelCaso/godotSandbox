@@ -22,6 +22,7 @@ PlayerState="*res://src/Player/PlayerState.gd"
 CursorManager="*res://src/Utility/CursorManager.tscn"
 GameManager="*res://src/Utility/GameManager.tscn"
 Events="*res://src/Utility/Events.gd"
+PersistanceManager="*res://src/Utility/PersistanceManager.gd"
 
 [display]
 

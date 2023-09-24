@@ -90,5 +90,53 @@ margin_bottom = 119.0
 focus_mode = 0
 text = "Items"
 
+[node name="GameBtn" type="Button" parent="PrimaryVBoxContainer"]
+margin_top = 129.0
+margin_right = 120.0
+margin_bottom = 149.0
+focus_mode = 0
+text = "Game"
+
+[node name="GameSettings" type="VBoxContainer" parent="."]
+visible = false
+margin_left = 265.0
+margin_top = 35.0
+margin_right = 385.0
+margin_bottom = 580.0
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GameSettingsLabel" type="Label" parent="GameSettings"]
+margin_right = 120.0
+margin_bottom = 14.0
+text = "Game Settings"
+align = 1
+uppercase = true
+
+[node name="Control" type="Control" parent="GameSettings"]
+margin_top = 24.0
+margin_right = 120.0
+margin_bottom = 29.0
+rect_min_size = Vector2( 0, 5 )
+
+[node name="SaveGameBtn" type="Button" parent="GameSettings"]
+margin_top = 39.0
+margin_right = 120.0
+margin_bottom = 59.0
+focus_mode = 0
+text = "Save"
+
+[node name="LoadGameBtn" type="Button" parent="GameSettings"]
+margin_top = 69.0
+margin_right = 120.0
+margin_bottom = 89.0
+focus_mode = 0
+text = "Load"
+
 [connection signal="button_up" from="PrimaryVBoxContainer/WeaponsBtn" to="." method="_on_WeaponsBtn_button_up"]
 [connection signal="button_up" from="PrimaryVBoxContainer/ShipsBtn" to="." method="_on_ShipsBtn_button_up"]
+[connection signal="button_up" from="PrimaryVBoxContainer/GameBtn" to="." method="_on_GameBtn_button_up"]
+[connection signal="button_up" from="GameSettings/SaveGameBtn" to="." method="_on_SaveGameBtn_button_up"]
+[connection signal="button_up" from="GameSettings/LoadGameBtn" to="." method="_on_LoadGameBtn_button_up"]

@@ -18,14 +18,12 @@ var weapon_pressed = false;
 
 func _ready() -> void:
 	$Radar/CanvasLayer/RadarUI.player = self;
-	
-	print(get_viewport().size)
 	var _connectPlayerNoHealth = PlayerStats.connect("no_health", self, "queue_free");
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed");
 	energyShield.connect("shield_hit", self, "on_shield_hit")
 	#initialize and configure player ship
 	playerShip = baseShip;
-	playerShip.configure_ship(PlayerState.shipID);
+	playerShip.configure_ship(PlayerState.currentShipID);
 	
 	# configure ship sprite and position ship
 	playerSprite.texture = playerShip.sprite.texture;
@@ -62,10 +60,9 @@ func _process(delta: float) -> void:
 		
 	
 	if Input.is_action_just_pressed("change_ship_test"):
-		print("Radar Position:")
-		print($Radar.global_position)
-		print("Player Position")
-		print(self.global_position)
+		playerShip.configure_ship("ship_0001");
+		playerSprite.texture = playerShip.sprite.texture;
+		print(PlayerState.currentShipID);
 	
 	if Input.is_action_just_pressed("test_button"):
 		GameManager.goto_scene("res://World2.tscn");

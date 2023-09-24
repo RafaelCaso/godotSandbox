@@ -6,7 +6,7 @@
 [ext_resource path="res://src/SpaceConstructions/SpaceStation.tscn" type="PackedScene" id=4]
 [ext_resource path="res://src/Items/MissilePickup.tscn" type="PackedScene" id=5]
 [ext_resource path="res://src/Cameras/PlayerCamera.tscn" type="PackedScene" id=6]
-[ext_resource path="res://src/World/PulsingStar.tscn" type="PackedScene" id=7]
+[ext_resource path="res://LocalStar.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/World/Background.tscn" type="PackedScene" id=8]
 [ext_resource path="res://src/Enemies/EnemyAB.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Assets/Sprites/StellarBodies/AsteroidCluster.png" type="Texture" id=11]
@@ -20,9 +20,11 @@ scale = Vector2( 0.448242, 0.405273 )
 [node name="Player" parent="Actors" instance=ExtResource( 1 )]
 position = Vector2( 559.733, 405.604 )
 scale = Vector2( 2.46747, 2.23094 )
+z_index = 1
 collision_mask = 65
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Actors/Player"]
+position = Vector2( 0.998322, -0.420654 )
 remote_path = NodePath("../../../Camera2D")
 update_rotation = false
 
@@ -74,12 +76,6 @@ rotation = -1.53938
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 11 )
 
-[node name="PulsingStar" parent="Background" instance=ExtResource( 7 )]
-margin_left = 19346.7
-margin_top = -6506.73
-margin_right = -51236.3
-margin_bottom = -115926.0
-
 [node name="Planet" parent="Background" instance=ExtResource( 2 )]
 position = Vector2( -1427.8, 2065.27 )
 
@@ -88,6 +84,7 @@ margin_left = -310.0
 margin_top = -806.0
 margin_right = -310.0
 margin_bottom = -805.991
+path = "res://TestWorld.tscn"
 
 [node name="MissilePickup" parent="." instance=ExtResource( 5 )]
 position = Vector2( 1174, 129 )
@@ -97,6 +94,10 @@ position = Vector2( 452, 2007 )
 z_index = 10
 
 [node name="Camera2D" parent="." instance=ExtResource( 6 )]
-position = Vector2( 509.896, 298.38 )
+position = Vector2( 511, 298 )
 rotation = 0.0
 scale = Vector2( 1.10602, 0.90414 )
+
+[node name="LocalStar" parent="." instance=ExtResource( 7 )]
+position = Vector2( 9332, 426 )
+scale = Vector2( 10, 10 )

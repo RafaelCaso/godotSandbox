@@ -10,6 +10,7 @@ func _ready() -> void:
 	Events.connect("shields_toggled", self, "_toggle_shield_sprite");
 	Events.connect("tactical_menu_toggled", self, "_toggle_tactical_menu");
 	Events.connect("prompt_player", self, "_on_player_prompt");
+	Events.connect("warn_player", self, "_on_player_warn");
 	Events.connect("player_effect", self, "_on_player_effect");
 func _on_Player_energy_changed(new_energy) -> void:
 	Hud.energyBar._on_Player_energy_changed(new_energy);
@@ -24,6 +25,11 @@ func _toggle_tactical_menu():
 func _on_player_prompt(message):
 	$TextTimer.start()
 	playerPrompt.bbcode_text = "[center]" + message + "[/center]";
+	playerPrompt.rect_min_size = playerPrompt.get_size();
+
+func _on_player_warn(message):
+	$TextTimer.start()
+	playerPrompt.bbcode_text = "[color=#ff0000][center]" + message + "[/center][/color]";
 	playerPrompt.rect_min_size = playerPrompt.get_size();
 
 func _on_TextTimer_timeout() -> void:

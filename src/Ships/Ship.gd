@@ -28,5 +28,6 @@ func configure_ship(ship):
 		thrust_energy_consumption = ship_data["thrust_energy_consumption"];
 		weapon_capacity = ship_data["weapon_capacity"];
 		shipID = ship;
+		PlayerState.currentShipID = ship;
 	else:
 		print("Error: Ship key not found in SHIP_DATA");
