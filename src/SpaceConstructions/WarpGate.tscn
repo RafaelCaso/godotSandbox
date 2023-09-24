@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://src/SpaceConstructions/WarpPopupTest.gd" type="Script" id=1]
+[ext_resource path="res://src/SpaceConstructions/WarpGate.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/SpaceConstructions/warpgate.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 366.35
+radius = 80.0999
 
 [sub_resource type="Shader" id=2]
 code = "shader_type canvas_item;
@@ -48,19 +48,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
-visible = true
-margin_left = 396.0
-margin_top = 238.0
-margin_right = 596.0
-margin_bottom = 308.0
-window_title = "Warp to Sector 2?"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Area2D" type="Area2D" parent="."]
-collision_layer = 257
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 493, 121 )
@@ -82,6 +71,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
-[connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]

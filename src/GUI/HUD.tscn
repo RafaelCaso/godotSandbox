@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://src/GUI/EnergyUI.gd" type="Script" id=1]
 [ext_resource path="res://src/GUI/EnergyBar.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Assets/Sprites/GUI/0044ShieldsUpSprite.png" type="Texture" id=7]
 [ext_resource path="res://src/Menus/TacticalMenu.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Fonts/pixel-bit-advanced.ttf" type="DynamicFontData" id=9]
+[ext_resource path="res://src/Effects/BinaryString.tscn" type="PackedScene" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 9 )
@@ -56,6 +57,7 @@ texture = ExtResource( 7 )
 visible = false
 margin_top = 145.0
 margin_bottom = 145.0
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_left = 0.5
@@ -80,5 +82,11 @@ fit_content_height = true
 [node name="TextTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
+
+[node name="Effects" type="Node2D" parent="."]
+
+[node name="BinaryString" parent="Effects" instance=ExtResource( 10 )]
+visible = false
+position = Vector2( 960, 480 )
 
 [connection signal="timeout" from="TextTimer" to="." method="_on_TextTimer_timeout"]

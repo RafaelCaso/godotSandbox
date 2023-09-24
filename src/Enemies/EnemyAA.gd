@@ -56,12 +56,7 @@ func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 
 
 func _on_Stats_no_health() -> void:
-	var Explosion = load("res://Effects/Explosion.tscn");
-	var explosion = Explosion.instance();
-	var world = get_tree().current_scene;
-	world.add_child(explosion);
-	explosion.global_position = global_position;
-	
+	hurtBox.create_hit_effect();
 	queue_free();
 
 func seek_player():

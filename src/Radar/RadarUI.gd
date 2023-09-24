@@ -20,10 +20,15 @@ func add_object(object, texture):
 	objects[object] = sprite;
 
 func remove_object(object):
-	objects[object].queue_free();
-	objects.erase(object);
+	# This seems like a very flimsy fix for radar crashing when trying to remove player from dictionary
+	# but without this the game will crash when freeing the player
+	if object.is_in_group("player"):
+		pass
+	else:
+		objects[object].queue_free();
+		objects.erase(object);
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	# MAY NOT NEED +90 TO ROTATION_DEGREES!!!!
 #	player_sprite.rotation_degrees = player.get_node("Sprite").rotation_degrees;
 	player_sprite.position = size;

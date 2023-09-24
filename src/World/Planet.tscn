@@ -128,6 +128,7 @@ margin_left = -338.0
 margin_top = -258.0
 margin_right = 339.0
 margin_bottom = 325.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -144,4 +145,4 @@ wait_time = 2.0
 one_shot = true
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
-[connection signal="timeout" from="ColorRectTimer" to="." method="_on_ColorRectTimer_timeout"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]

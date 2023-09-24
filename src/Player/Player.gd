@@ -19,7 +19,7 @@ var weapon_pressed = false;
 func _ready() -> void:
 	$Radar/CanvasLayer/RadarUI.player = self;
 	
-	
+	print(get_viewport().size)
 	var _connectPlayerNoHealth = PlayerStats.connect("no_health", self, "queue_free");
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed");
 	energyShield.connect("shield_hit", self, "on_shield_hit")

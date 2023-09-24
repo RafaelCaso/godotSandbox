@@ -66,7 +66,7 @@ script = ExtResource( 1 )
 scale = Vector2( 2, 2 )
 frames = SubResource( 13 )
 animation = "explosion"
-frame = 2
+frame = 4
 playing = true
 
 [connection signal="animation_finished" from="Explosion" to="." method="_on_Explosion_animation_finished"]
