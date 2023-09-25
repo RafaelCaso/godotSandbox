@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var MissileScene = preload("res://src/Weapons/UnguidedMissile.tscn")
+var MissileScene = preload("res://src/Weapons/GuidedMissile.tscn")
 
 onready var baseShip = $Ship;
 onready var baseLaser = $Weapons/Lasers;
@@ -53,7 +53,7 @@ func _process(delta: float) -> void:
 			PlayerState.missileStock -= 1;
 			var missile_instance = MissileScene.instance();
 			get_parent().add_child(missile_instance);
-			missile_instance.position = position;
+			missile_instance.global_position = laserSpawnPoint.global_position;
 			missile_instance.set_direction(mouse_pos);
 		else:
 			Events.emit_signal("prompt_player", "No Missiles in arsenal");
@@ -196,3 +196,35 @@ func on_shield_hit():
 	fusionReactorCore.energy -= 50;
 	if fusionReactorCore.energy <= 1:
 		energyShield.shield_offline();
+
+
+
+
+# for detonable missiles I'll have to do something different. Here's some pseudo code
+# In BaseMissile.gd or in each specific missile script
+#var _is_detonatable = false
+# In ClusterMissile.gd
+#var _is_detonatable = true
+# In your player script
+#var active_missile = null  # to keep track of the active cluster missile
+#
+#func fire_missile():
+#    if PlayerState.missileStock > 0:
+#        PlayerState.missileStock -= 1
+#        var missile_instance = MissileScene.instance()
+#        missile_instance.player = self
+#        get_parent().add_child(missile_instance)
+#        missile_instance.global_position = laserSpawnPoint.global_position
+#        missile_instance.set_direction(get_global_mouse_position())
+#        missile_instance.fire()
+#        if missile_instance._is_detonatable:
+#            active_missile = missile_instance
+#    else:
+#        Events.emit_signal("prompt_player", "No Missiles in arsenal")
+#
+#func handle_missile_action():
+#    if active_missile:
+#        active_missile.detonate()
+#        active_missile = null  # Reset active missile after detonation
+#    else:
+#        fire_missile()

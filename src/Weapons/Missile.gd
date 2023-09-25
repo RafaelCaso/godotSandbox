@@ -3,7 +3,7 @@ extends KinematicBody2D
 onready var lifeSpan = $LifeSpan;
 
 var speed = 20000  
-var direction = Vector2()
+var direction = Vector2.ZERO
 
 # This function sets the direction of the missile based on the target.
 func set_direction(target_pos):

@@ -98,7 +98,6 @@ focus_mode = 0
 text = "Game"
 
 [node name="GameSettings" type="VBoxContainer" parent="."]
-visible = false
 margin_left = 265.0
 margin_top = 35.0
 margin_right = 385.0
@@ -135,8 +134,16 @@ margin_bottom = 89.0
 focus_mode = 0
 text = "Load"
 
+[node name="QuitGameBtn" type="Button" parent="GameSettings"]
+margin_top = 99.0
+margin_right = 120.0
+margin_bottom = 119.0
+focus_mode = 0
+text = "Quit"
+
 [connection signal="button_up" from="PrimaryVBoxContainer/WeaponsBtn" to="." method="_on_WeaponsBtn_button_up"]
 [connection signal="button_up" from="PrimaryVBoxContainer/ShipsBtn" to="." method="_on_ShipsBtn_button_up"]
 [connection signal="button_up" from="PrimaryVBoxContainer/GameBtn" to="." method="_on_GameBtn_button_up"]
 [connection signal="button_up" from="GameSettings/SaveGameBtn" to="." method="_on_SaveGameBtn_button_up"]
 [connection signal="button_up" from="GameSettings/LoadGameBtn" to="." method="_on_LoadGameBtn_button_up"]
+[connection signal="button_up" from="GameSettings/QuitGameBtn" to="." method="_on_QuitGameBtn_button_up"]

@@ -85,3 +85,7 @@ func _on_SaveGameBtn_button_up() -> void:
 
 func _on_LoadGameBtn_button_up() -> void:
 	PersistanceManager.load_game();
+
+
+func _on_QuitGameBtn_button_up() -> void:
+	get_tree().quit();
