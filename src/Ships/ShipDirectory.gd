@@ -36,7 +36,7 @@ const SHIP_DATA = {
 		"deceleration_speed" : 100,
 		"strafe_force" : 75,
 		"max_speed" : 100,
-		"thrust_energy_consumption" : 15,
+		"thrust_energy_consumption" : 11,
 		"rotation_speed": 100,
 	}
 }

@@ -14,7 +14,7 @@ onready var energyShield = $EnergyShield;
 
 var velocity = Vector2();
 var weapon_pressed = false;
-
+var can_move = true;
 
 func _ready() -> void:
 	$Radar/CanvasLayer/RadarUI.player = self;
@@ -40,15 +40,16 @@ func _process(delta: float) -> void:
 	var direction_to_mouse = (mouse_pos - global_position);
 	equippedLaser.cast_to = equippedLaser.to_local(global_position + direction_to_mouse * equippedLaser.max_length);
 	equippedLaser.global_position = laserSpawnPoint.global_position;
-	rotation = direction_to_mouse.angle() + PI/2;
+	if can_move:
+		rotation = direction_to_mouse.angle() + PI/2;
 
-	if Input.is_action_pressed("laser") && fusionReactorCore.has_energy(25):
+	if Input.is_action_pressed("laser") && fusionReactorCore.has_energy(25) && can_move:
 		fusionReactorCore.deplete_energy(equippedLaser.laser_energy_consumption * delta);
 		fire_laser();
 	else:
 		stop_laser();
 	
-	if Input.is_action_just_pressed("missile"):
+	if Input.is_action_just_pressed("missile") && can_move:
 		if PlayerState.missileStock > 0:
 			PlayerState.missileStock -= 1;
 			var missile_instance = MissileScene.instance();
@@ -59,10 +60,10 @@ func _process(delta: float) -> void:
 			Events.emit_signal("prompt_player", "No Missiles in arsenal");
 		
 	
-	if Input.is_action_just_pressed("change_ship_test"):
-		playerShip.configure_ship("ship_0001");
-		playerSprite.texture = playerShip.sprite.texture;
-		print(PlayerState.currentShipID);
+#	if Input.is_action_just_pressed("change_ship_test"):
+#		playerShip.configure_ship("ship_0001");
+#		playerSprite.texture = playerShip.sprite.texture;
+#		print(PlayerState.currentShipID);
 	
 	if Input.is_action_just_pressed("test_button"):
 		GameManager.goto_scene("res://World2.tscn");
@@ -81,8 +82,11 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	# It looks like the below problem fixed itself which is just fascinatingly frustrating
 #	$Radar.global_position = global_position;
-	handle_input(delta);
-	velocity = move_and_slide(velocity).clamped(playerShip.max_speed);
+	
+	if can_move:
+		handle_input(delta);
+		velocity = move_and_slide(velocity).clamped(playerShip.max_speed);
+		
 
 func main_propulsion(delta, hasSufficientEnergy):
 	# Convert the current rotation to a vector2 direction and apply forward thrust

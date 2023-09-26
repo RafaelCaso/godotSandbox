@@ -3,6 +3,7 @@ extends Node
 const shipConfig = preload("res://src/Ships/ShipDirectory.gd")
 
 onready var sprite = $Sprite;
+onready var area2D = $Area2D;
 
 # ONLY NEEDED FOR ALTERNATE CONTROL SETTING
 var rotation_speed : float;
