@@ -27,6 +27,7 @@ func _ready() -> void:
 	laser_scene.configure_laser("laser_0003")
 	laser_scene.global_position = self.global_position;
 
+
 func _physics_process(delta: float) -> void:
 	match state:
 		IDLE:

@@ -5,8 +5,8 @@ onready var secondaryBG = $SecondaryBG
 onready var itemList = $ItemList
 onready var game_settings_menu = $GameSettings
 
-const laserData = preload("res://src/Weapons/LaserDirectory.gd");
-const shipData = preload("res://src/Ships/ShipDirectory.gd");
+const SHIP_DIRECTORY = preload("res://src/Ships/ShipDirectory.gd");
+const LASER_DIRECTORY = preload("res://src/Weapons/LaserDirectory.gd");
 const ITEM_HEIGHT = 40;
 
 var current_open_menu : String = "none";
@@ -26,8 +26,8 @@ func _on_WeaponsBtn_button_up() -> void:
 		open_secondary_menu();
 		var item_count = 0;
 		for laser_key in PlayerState.weapons:
-			if laser_key in laserData.LASER_DATA:
-				var laser = laserData.LASER_DATA[laser_key];
+			if laser_key in LASER_DIRECTORY.LASER_DATA:
+				var laser = LASER_DIRECTORY.LASER_DATA[laser_key];
 				var laserName = laser["name"];
 				itemList.add_item(laserName);
 				item_count += 1;
@@ -42,8 +42,8 @@ func _on_ShipsBtn_button_up() -> void:
 		open_secondary_menu();
 		var item_count = 0;
 		for ship_key in PlayerState.available_ships:
-			if ship_key in  shipData.SHIP_DATA:
-				var ship = shipData.SHIP_DATA[ship_key];
+			if ship_key in  SHIP_DIRECTORY.SHIP_DATA:
+				var ship = SHIP_DIRECTORY.SHIP_DATA[ship_key];
 				var shipName = ship["name"];
 				itemList.add_item(shipName);
 				item_count += 1;

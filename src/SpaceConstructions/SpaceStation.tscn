@@ -70,3 +70,4 @@ margin_bottom = -148.0
 [connection signal="body_entered" from="LaserCoverage" to="." method="_on_LaserCoverage_body_entered"]
 [connection signal="body_exited" from="LaserCoverage" to="." method="_on_LaserCoverage_body_exited"]
 [connection signal="timeout" from="LaserBeam2D/LaserTimer" to="." method="_on_LaserTimer_timeout"]
+[connection signal="tween_all_completed" from="DockingTween" to="." method="_on_DockingTween_tween_all_completed"]

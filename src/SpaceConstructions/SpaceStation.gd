@@ -49,7 +49,7 @@ func _on_Area2D_body_exited(body: Node) -> void:
 	if body.is_in_group("player"):
 		$DockingArea/Timer.stop();
 		player_in_station = false;
-		station_menu.visible = false;
+
 
 
 func _on_LaserCoverage_body_entered(body: Node) -> void:
@@ -113,11 +113,11 @@ func _input(event: InputEvent) -> void:
 		)
 		
 		docking_tween.start();
-		docking_tween.connect("tween_all_completed", self, "_on_tween_all_completed")
 	elif is_docked == true and event.is_action_pressed("interact"):
 		player.can_move = true;
 		is_docked = false;
+		station_menu.visible = false;
 
-func _on_tween_all_completed():
+func _on_DockingTween_tween_all_completed() -> void:
 	is_docking_tween_active = false;
 	station_menu.visible = true;

@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var MissileScene = preload("res://src/Weapons/GuidedMissile.tscn")
+var MissileScene = preload("res://src/Weapons/ClusterMissile.tscn")
 
 onready var baseShip = $Ship;
 onready var baseLaser = $Weapons/Lasers;
@@ -12,8 +12,11 @@ onready var fusionReactorCore = $FusionReactorCore;
 onready var laserSpawnPoint = $LaserSpawnPoint;
 onready var energyShield = $EnergyShield;
 
-var velocity = Vector2();
 var weapon_pressed = false;
+
+var active_cluster_missile = null;
+
+var velocity = Vector2();
 var can_move = true;
 
 func _ready() -> void:
@@ -50,14 +53,25 @@ func _process(delta: float) -> void:
 		stop_laser();
 	
 	if Input.is_action_just_pressed("missile") && can_move:
-		if PlayerState.missileStock > 0:
-			PlayerState.missileStock -= 1;
+		if active_cluster_missile and is_instance_valid(active_cluster_missile):
+			var missile_to_detonate = active_cluster_missile
+			active_cluster_missile = null  # Set to null before calling detonate
+			missile_to_detonate.detonate()
+		elif PlayerState.missileStock > 0:
+			PlayerState.missileStock -= 1
 			var missile_instance = MissileScene.instance();
-			get_parent().add_child(missile_instance);
-			missile_instance.global_position = laserSpawnPoint.global_position;
-			missile_instance.set_direction(mouse_pos);
+			if not missile_instance.has_method("detonate"):
+				get_parent().add_child(missile_instance);
+				missile_instance.global_position = laserSpawnPoint.global_position;
+				missile_instance.set_direction(mouse_pos)
+			else:
+				active_cluster_missile = missile_instance;
+				get_parent().add_child(active_cluster_missile);
+				active_cluster_missile.global_position = laserSpawnPoint.global_position;
+				active_cluster_missile.set_direction(mouse_pos)
 		else:
 			Events.emit_signal("prompt_player", "No Missiles in arsenal");
+
 		
 	
 #	if Input.is_action_just_pressed("change_ship_test"):

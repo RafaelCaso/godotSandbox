@@ -23,14 +23,15 @@ func _physics_process(delta):
 	var _missile_move_and_slide = move_and_slide(direction * speed * delta);
 	
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("missile"):
-		detonate();
+#func _input(event: InputEvent) -> void:
+#	if event.is_action_pressed("missile"):
+#		detonate();
+#		queue_free()
 
 func detonate():
 	is_detonated = true;
 	
-	var angles = [0, 45, 90, 135, 180, 225, 270, 315];
+	var angles = [0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240, 255, 270, 285, 300, 315, 330, 345];
 	
 	for angle in angles:
 		var new_direction = Vector2.RIGHT.rotated(deg2rad(angle));
@@ -38,7 +39,7 @@ func detonate():
 		get_parent().add_child(new_missile);
 		new_missile.global_position = global_position;
 		new_missile.set_direction(global_position + new_direction)
-
+	
 
 func _on_HitBox_body_entered(body: Node) -> void:
 	if body.is_in_group("enemies"):
