@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/low_end_laser.wav-f54d2540029b9f645f2e93d634d17e98.sample"
+
+[deps]
+
+source_file="res://Assets/SoundEffects/low_end_laser.wav"
+dest_files=[ "res://.import/low_end_laser.wav-f54d2540029b9f645f2e93d634d17e98.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

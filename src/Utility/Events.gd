@@ -12,3 +12,5 @@ signal prompt_player(message);
 signal warn_player(message);
 # warning-ignore:unused_signal
 signal player_effect(effect_name);
+# warning-ignore:unused_signal
+signal player_hit();

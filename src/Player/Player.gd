@@ -51,7 +51,6 @@ func _process(delta: float) -> void:
 		fire_laser();
 	else:
 		stop_laser();
-	
 	if Input.is_action_just_pressed("missile") && can_move:
 		if active_cluster_missile and is_instance_valid(active_cluster_missile):
 			var missile_to_detonate = active_cluster_missile

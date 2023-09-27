@@ -76,10 +76,6 @@ func _physics_process(delta: float) -> void:
 
 func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 	stats.health -= 1;
-	
-	
-
-
 
 func _on_Stats_no_health() -> void:
 	emit_signal("enemy_died");
@@ -103,6 +99,7 @@ func apply_knockback_from(position: Vector2, force: float) -> void:
 func _on_Hitbox_area_entered(_area: Area2D) -> void:
 	PlayerStats.health -= 1;
 	hurtBox.create_hit_effect();
+	Events.emit_signal("player_hit");
 	
 
 

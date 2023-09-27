@@ -59,6 +59,7 @@ func set_is_casting(cast: bool) -> void:
 		cast_to = Vector2.ZERO
 		fill.points[1] = cast_to
 		appear()
+		SoundManager.play_clip("low_end_laser");
 		
 		
 	else:
