@@ -7,7 +7,7 @@ onready var hurtBox = $Hurtbox;
 onready var wanderController = $WanderController
 onready var laser_scene = $EnemyLaser
 
-
+signal enemy_died();
 
 
 enum {
@@ -82,6 +82,7 @@ func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 
 
 func _on_Stats_no_health() -> void:
+	emit_signal("enemy_died");
 	hurtBox.create_hit_effect();
 	queue_free();
 

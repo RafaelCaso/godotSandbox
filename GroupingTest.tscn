@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://src/Enemies/EnemyAB.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/World/Background.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/Cameras/PlayerCamera.tscn" type="PackedScene" id=3]
+[ext_resource path="res://UnitTest.gd" type="Script" id=4]
+[ext_resource path="res://src/Player/Player.tscn" type="PackedScene" id=5]
+
+[node name="GroupingTest" type="Node2D"]
+
+[node name="Unit" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="FormationTween" type="Tween" parent="Unit"]
+
+[node name="EnemyAB" parent="Unit" instance=ExtResource( 1 )]
+position = Vector2( 1795, 566 )
+
+[node name="EnemyAB2" parent="Unit" instance=ExtResource( 1 )]
+position = Vector2( 1415, 1026 )
+
+[node name="EnemyAB3" parent="Unit" instance=ExtResource( 1 )]
+position = Vector2( 1738, 178 )
+
+[node name="EnemyAB4" parent="Unit" instance=ExtResource( 1 )]
+position = Vector2( 1784, -203 )
+
+[node name="EnemyAB5" parent="Unit" instance=ExtResource( 1 )]
+position = Vector2( 852, 1225 )
+
+[node name="Background" parent="." instance=ExtResource( 2 )]
+
+[node name="Camera2D" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="Player" parent="." instance=ExtResource( 5 )]
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
+remote_path = NodePath("../../Camera2D")

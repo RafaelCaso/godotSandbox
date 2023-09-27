@@ -51,33 +51,39 @@ __meta__ = {
 }
 
 [node name="Control" type="Control" parent="ColorRect/MainMenu"]
-margin_right = 80.0
+margin_right = 83.0
 margin_bottom = 98.0
 rect_min_size = Vector2( 0, 98 )
 
 [node name="ShipsBtn" type="Button" parent="ColorRect/MainMenu"]
 margin_top = 108.0
-margin_right = 80.0
+margin_right = 83.0
 margin_bottom = 128.0
 text = "Ships"
 
 [node name="WeaponsBtn" type="Button" parent="ColorRect/MainMenu"]
 margin_top = 138.0
-margin_right = 80.0
+margin_right = 83.0
 margin_bottom = 158.0
 text = "Weapons"
 
 [node name="CrewBtn" type="Button" parent="ColorRect/MainMenu"]
 margin_top = 168.0
-margin_right = 80.0
+margin_right = 83.0
 margin_bottom = 188.0
 text = "Crew"
 
 [node name="ResourcesBtn" type="Button" parent="ColorRect/MainMenu"]
 margin_top = 198.0
-margin_right = 80.0
+margin_right = 83.0
 margin_bottom = 218.0
 text = "Resources"
+
+[node name="RepairShipBtn" type="Button" parent="ColorRect/MainMenu"]
+margin_top = 228.0
+margin_right = 83.0
+margin_bottom = 248.0
+text = "Repair Ship"
 
 [node name="SecondaryMenu" type="VBoxContainer" parent="ColorRect"]
 anchor_left = 0.5
@@ -96,4 +102,5 @@ __meta__ = {
 margin_right = 80.0
 
 [connection signal="button_up" from="ColorRect/MainMenu/ShipsBtn" to="." method="_on_ShipsBtn_button_up"]
+[connection signal="button_up" from="ColorRect/MainMenu/RepairShipBtn" to="." method="_on_RepairShipBtn_button_up"]
 [connection signal="item_selected" from="ColorRect/SecondaryMenu/ItemList" to="." method="_on_ItemList_item_selected"]

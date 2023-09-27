@@ -58,3 +58,7 @@ func _on_ItemList_item_selected(index: int) -> void:
 	var selected_ship_id = ship_ids[index];
 	PlayerState.available_ships.append(selected_ship_id);
 	print(PlayerState.available_ships);
+
+
+func _on_RepairShipBtn_button_up() -> void:
+	PlayerState.missileStock += 10;
