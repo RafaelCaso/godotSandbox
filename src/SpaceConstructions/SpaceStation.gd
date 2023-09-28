@@ -29,7 +29,8 @@ func _process(delta) -> void:
 		)
 		
 		player.rotation = angle_to_center + PI/2;
-
+		
+		
 func repair_ship():
 	PlayerStats.heal(1);
 
@@ -39,7 +40,6 @@ func _on_Timer_timeout() -> void:
 
 func _on_Area2D_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
-		$DockingArea/Timer.start();
 		player_in_station = true;
 		Events.emit_signal("prompt_player", "Press 'E' to Commence Docking")
 		player = body;
@@ -47,7 +47,6 @@ func _on_Area2D_body_entered(body: Node) -> void:
 
 func _on_Area2D_body_exited(body: Node) -> void:
 	if body.is_in_group("player"):
-		$DockingArea/Timer.stop();
 		player_in_station = false;
 
 
@@ -117,7 +116,9 @@ func _input(event: InputEvent) -> void:
 		player.can_move = true;
 		is_docked = false;
 		station_menu.visible = false;
+		$DockingArea/Timer.stop();
 
 func _on_DockingTween_tween_all_completed() -> void:
 	is_docking_tween_active = false;
 	station_menu.visible = true;
+	$DockingArea/Timer.start()

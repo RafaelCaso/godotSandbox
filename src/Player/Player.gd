@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var MissileScene = preload("res://src/Weapons/GuidedMissile.tscn")
+var MissileScene = preload("res://src/Weapons/ClusterMissile.tscn")
 
 onready var baseShip = $Ship;
 onready var baseLaser = $Weapons/Lasers;
@@ -25,8 +25,9 @@ func _ready() -> void:
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed");
 	energyShield.connect("shield_hit", self, "on_shield_hit")
 	#initialize and configure player ship
-	playerShip = baseShip;
+	playerShip = baseShip
 	playerShip.configure_ship(PlayerState.currentShipID);
+	
 	
 	# configure ship sprite and position ship
 	playerSprite.texture = playerShip.sprite.texture;
@@ -73,10 +74,10 @@ func _process(delta: float) -> void:
 
 		
 	
-	if Input.is_action_just_pressed("change_ship_test"):
-		playerShip.configure_ship("ship_0001");
-		playerSprite.texture = playerShip.sprite.texture;
-		print(PlayerState.currentShipID);
+#	if Input.is_action_just_pressed("change_ship_test"):
+#		playerShip.configure_ship("ship_0001");
+#		playerSprite.texture = playerShip.sprite.texture;
+#		print(PlayerState.currentShipID);
 	
 	if Input.is_action_just_pressed("test_button"):
 		GameManager.goto_scene("res://World2.tscn");

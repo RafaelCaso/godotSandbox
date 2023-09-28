@@ -6,6 +6,8 @@ onready var playerDetectionZone = $PlayerDetectionZone;
 onready var hurtBox = $Hurtbox;
 onready var wanderController = $WanderController
 
+signal enemy_died();
+
 var player_stats = PlayerStats;
 
 enum {
@@ -18,8 +20,6 @@ var state = CHASE;
 var velocity = Vector2.ZERO;
 export var acceleration = 300;
 export var max_speed = 50;
-
-
 
 func _physics_process(delta: float) -> void:
 	match state:
@@ -56,6 +56,7 @@ func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 
 
 func _on_Stats_no_health() -> void:
+	emit_signal("enemy_died");
 	hurtBox.create_hit_effect();
 	queue_free();
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://src/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/World/Planet.tscn" type="PackedScene" id=2]
@@ -8,7 +8,10 @@
 [ext_resource path="res://src/Cameras/PlayerCamera.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/World/LocalStar.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/World/Background.tscn" type="PackedScene" id=8]
+[ext_resource path="res://UnitNode.tscn" type="PackedScene" id=9]
+[ext_resource path="res://src/Enemies/EnemyAB.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/Sprites/StellarBodies/AsteroidCluster.png" type="Texture" id=11]
+[ext_resource path="res://src/Enemies/EnemyAA.tscn" type="PackedScene" id=12]
 
 [node name="World" type="Node2D"]
 
@@ -28,6 +31,20 @@ remote_path = NodePath("../../../Camera2D")
 update_rotation = false
 
 [node name="Enemies" type="YSort" parent="Actors"]
+
+[node name="Unit" parent="Actors/Enemies" instance=ExtResource( 9 )]
+
+[node name="EnemyAA" parent="Actors/Enemies/Unit" instance=ExtResource( 12 )]
+position = Vector2( 3460, -1040 )
+
+[node name="EnemyAB" parent="Actors/Enemies/Unit" instance=ExtResource( 10 )]
+position = Vector2( 2868, 680 )
+
+[node name="EnemyAA2" parent="Actors/Enemies/Unit" instance=ExtResource( 12 )]
+position = Vector2( 1616, -1092 )
+
+[node name="EnemyAB2" parent="Actors/Enemies/Unit" instance=ExtResource( 10 )]
+position = Vector2( 2336, -404 )
 
 [node name="Background" parent="." instance=ExtResource( 8 )]
 position = Vector2( 235, 141 )

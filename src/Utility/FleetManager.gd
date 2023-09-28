@@ -9,8 +9,8 @@ func add_ship(ship):
 func get_ship(ship_uuid):
 	return PlayerState.fleet.get(ship_uuid, null);
 
-func remove_ship(ship_uuid):
-	PlayerState.fleet.erase(ship_uuid);
+func _remove_ship(ship_uuid):
+	var _remove_ship = PlayerState.fleet.erase(ship_uuid);
 
 func generate_uuid() -> String:
 	var chars = "0123456789ABCDEF"
