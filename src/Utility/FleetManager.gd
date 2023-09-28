@@ -3,7 +3,7 @@ extends Node
 
 var ships = {};
 
-func add_ship(ship):
+func add_ship(ship : Ship):
 	PlayerState.fleet[ship.uuid] = ship;
 	
 func get_ship(ship_uuid):

@@ -2,7 +2,6 @@ extends KinematicBody2D
 
 var MissileScene = preload("res://src/Weapons/ClusterMissile.tscn")
 
-onready var baseShip = $Ship;
 onready var baseLaser = $Weapons/Lasers;
 onready var equippedLaser = null;
 onready var playerShip = null;
@@ -25,12 +24,11 @@ func _ready() -> void:
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed");
 	energyShield.connect("shield_hit", self, "on_shield_hit")
 	#initialize and configure player ship
-	playerShip = baseShip
-	playerShip.configure_ship(PlayerState.currentShipID);
+	playerShip = Ship.new("ship_0000");
 	
 	
 	# configure ship sprite and position ship
-	playerSprite.texture = playerShip.sprite.texture;
+	playerSprite.texture = playerShip.sprite;
 	playerSprite.global_position = global_position;
 	
 	# initialize and configure ship weapon and position weapon

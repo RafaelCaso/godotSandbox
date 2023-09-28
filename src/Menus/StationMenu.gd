@@ -62,3 +62,9 @@ func _on_ItemList_item_selected(index: int) -> void:
 
 func _on_RepairShipBtn_button_up() -> void:
 	PlayerState.missileStock += 10;
+
+
+func _on_CrewBtn_button_up() -> void:
+	for key in PlayerState.fleet:
+		var ship : Ship = PlayerState.fleet[key];
+		print(ship.max_speed);
