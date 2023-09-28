@@ -34,6 +34,7 @@ GameManager="*res://src/Utility/GameManager.tscn"
 Events="*res://src/Utility/Events.gd"
 PersistanceManager="*res://src/Utility/PersistanceManager.gd"
 SoundManager="*res://src/Utility/SoundManager.tscn"
+FleetManager="*res://src/Utility/FleetManager.gd"
 
 [display]
 
