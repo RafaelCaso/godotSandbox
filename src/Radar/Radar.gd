@@ -15,8 +15,7 @@ func _on_Radar_body_entered(body: Node) -> void:
 	elif body.is_in_group("enemies"):
 		radarUI.add_object(body, enemy_icon);
 	elif body.is_in_group("station"):
-		print("Station entered radar")
+		print("station detected by radar")
 		radarUI.add_object(body, station_icon);
 	elif body.is_in_group("warpgate"):
-		print("Warpgate entered radar")
 		radarUI.add_object(body, warp_gate_icon); 

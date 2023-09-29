@@ -141,6 +141,7 @@ margin_bottom = 119.0
 focus_mode = 0
 text = "Quit"
 
+[connection signal="item_selected" from="ItemList" to="." method="_on_ItemList_item_selected"]
 [connection signal="button_up" from="PrimaryVBoxContainer/WeaponsBtn" to="." method="_on_WeaponsBtn_button_up"]
 [connection signal="button_up" from="PrimaryVBoxContainer/ShipsBtn" to="." method="_on_ShipsBtn_button_up"]
 [connection signal="button_up" from="PrimaryVBoxContainer/GameBtn" to="." method="_on_GameBtn_button_up"]

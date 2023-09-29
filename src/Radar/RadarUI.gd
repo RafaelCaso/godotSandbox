@@ -15,8 +15,6 @@ func add_object(object, texture):
 	var sprite = Sprite.new();
 	radar.add_child(sprite)
 	sprite.texture = texture;
-#	uncomment the below to make sprites bigger
-#	sprite.scale = Vector2(2,2)
 	objects[object] = sprite;
 
 func remove_object(object):
@@ -29,8 +27,6 @@ func remove_object(object):
 		objects.erase(object);
 
 func _physics_process(_delta: float) -> void:
-	# MAY NOT NEED +90 TO ROTATION_DEGREES!!!!
-#	player_sprite.rotation_degrees = player.get_node("Sprite").rotation_degrees;
 	player_sprite.position = size;
 	player_position = player.position;
 	
@@ -42,16 +38,8 @@ func _physics_process(_delta: float) -> void:
 			# Otherwise it should be visible
 			else:
 				objects[object].visible = true;
-			# if the object is an enemy sprite then we'll access its sprite and set the rotation degrees accordingly
-#			if object.is_in_group("enemies"):
-#				objects[object].rotation_degrees = object.get_node("Sprite").rotation_degrees + 90;
-				
 			# set the object's icon relative to the player icon
 			objects[object].position = (object.position - player_position) * scale + size;
-			# if the object is outside the maximum radius of our radar (radius of collision shape) then we'll also delete it
-#			if (object.position - player_position).length() > 16800:
-#				remove_object(object);
-				
 		else:
 			remove_object(object);
 

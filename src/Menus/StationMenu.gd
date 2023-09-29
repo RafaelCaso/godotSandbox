@@ -36,7 +36,7 @@ func _on_ShipsBtn_button_up() -> void:
 		var item_count = 0;
 		for ship_key in SHIP_DIRECTORY.SHIP_DATA:
 			var ship = SHIP_DIRECTORY.SHIP_DATA[ship_key];
-			var ship_name = ship["name"];
+			var ship_name = ship["ship_name"];
 			ship_ids.append(ship_key);
 			item_list.add_item(ship_name);
 			item_count += 1;
@@ -56,15 +56,12 @@ func resize_itemList_rect(item_count):
 
 func _on_ItemList_item_selected(index: int) -> void:
 	var selected_ship_id = ship_ids[index];
-	PlayerState.available_ships.append(selected_ship_id);
-	print(PlayerState.available_ships);
-
+	var _new_ship = Ship.new(selected_ship_id);
+	
 
 func _on_RepairShipBtn_button_up() -> void:
 	PlayerState.missileStock += 10;
 
 
 func _on_CrewBtn_button_up() -> void:
-	for key in PlayerState.fleet:
-		var ship : Ship = PlayerState.fleet[key];
-		print(ship.max_speed);
+	pass

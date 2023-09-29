@@ -6,6 +6,8 @@ onready var station_menu = $StationMenu;
 onready var docking_tween = $DockingTween;
 onready var docking_port = $Sprite/DockingPort
 
+var location_name = "Earth";
+
 var rotation_speed : float = 0.1;
 var docked_rotation_offset = 0.0;
 var is_docking_tween_active = false;
@@ -122,3 +124,5 @@ func _on_DockingTween_tween_all_completed() -> void:
 	is_docking_tween_active = false;
 	station_menu.visible = true;
 	$DockingArea/Timer.start()
+	if player.playerShip.ship_type == "freighter":
+		player.playerShip.locations_visited.append(location_name);

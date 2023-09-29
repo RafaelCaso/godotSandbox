@@ -8,10 +8,11 @@
 [ext_resource path="res://src/Cameras/PlayerCamera.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/World/LocalStar.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/World/Background.tscn" type="PackedScene" id=8]
-[ext_resource path="res://UnitNode.tscn" type="PackedScene" id=9]
 [ext_resource path="res://src/Enemies/EnemyAB.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/Sprites/StellarBodies/AsteroidCluster.png" type="Texture" id=11]
 [ext_resource path="res://src/Enemies/EnemyAA.tscn" type="PackedScene" id=12]
+
+[sub_resource type="CapsuleShape2D" id=1]
 
 [node name="World" type="Node2D"]
 
@@ -32,19 +33,35 @@ update_rotation = false
 
 [node name="Enemies" type="YSort" parent="Actors"]
 
-[node name="Unit" parent="Actors/Enemies" instance=ExtResource( 9 )]
+[node name="EnemyAA" parent="Actors/Enemies" instance=ExtResource( 12 )]
+position = Vector2( -3444.57, 3237.32 )
 
-[node name="EnemyAA" parent="Actors/Enemies/Unit" instance=ExtResource( 12 )]
-position = Vector2( 3460, -1040 )
+[node name="EnemyAB" parent="Actors/Enemies" instance=ExtResource( 10 )]
+position = Vector2( 6683.89, 2864.74 )
 
-[node name="EnemyAB" parent="Actors/Enemies/Unit" instance=ExtResource( 10 )]
-position = Vector2( 2868, 680 )
+[node name="EnemyAA2" parent="Actors/Enemies" instance=ExtResource( 12 )]
+position = Vector2( 6719.58, 621.803 )
 
-[node name="EnemyAA2" parent="Actors/Enemies/Unit" instance=ExtResource( 12 )]
-position = Vector2( 1616, -1092 )
+[node name="EnemyAB2" parent="Actors/Enemies" instance=ExtResource( 10 )]
+position = Vector2( -3739.05, 1157.24 )
 
-[node name="EnemyAB2" parent="Actors/Enemies/Unit" instance=ExtResource( 10 )]
-position = Vector2( 2336, -404 )
+[node name="EnemyAA3" parent="Actors/Enemies" instance=ExtResource( 12 )]
+position = Vector2( -4727.36, -8238.89 )
+
+[node name="EnemyAB3" parent="Actors/Enemies" instance=ExtResource( 10 )]
+position = Vector2( -2003.38, -8026.69 )
+
+[node name="EnemyAA4" parent="Actors/Enemies" instance=ExtResource( 12 )]
+position = Vector2( 10248.9, -7170.48 )
+
+[node name="EnemyAB4" parent="Actors/Enemies" instance=ExtResource( 10 )]
+position = Vector2( 12386.2, -5369.22 )
+
+[node name="EnemyAA5" parent="Actors/Enemies" instance=ExtResource( 12 )]
+position = Vector2( -5128.93, 14827 )
+
+[node name="EnemyAB5" parent="Actors/Enemies" instance=ExtResource( 10 )]
+position = Vector2( -1927.53, 15081.2 )
 
 [node name="Background" parent="." instance=ExtResource( 8 )]
 position = Vector2( 235, 141 )
@@ -97,3 +114,11 @@ scale = Vector2( 1.10602, 0.90414 )
 [node name="LocalStar" parent="." instance=ExtResource( 7 )]
 position = Vector2( 9332, 426 )
 scale = Vector2( 10, 10 )
+
+[node name="Area2D" type="Area2D" parent="." groups=["station"]]
+position = Vector2( 451, 2013 )
+collision_layer = 1023
+collision_mask = 1023
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )

@@ -10,7 +10,7 @@ const LASER_DIRECTORY = preload("res://src/Weapons/LaserDirectory.gd");
 const ITEM_HEIGHT = 40;
 
 var current_open_menu : String = "none";
-
+var ships = [];
 func _ready() -> void:
 	close_secondary_menu()
 	
@@ -41,11 +41,11 @@ func _on_ShipsBtn_button_up() -> void:
 		game_settings_menu.visible = false;
 		open_secondary_menu();
 		var item_count = 0;
-		for ship_key in PlayerState.available_ships:
-			if ship_key in  SHIP_DIRECTORY.SHIP_DATA:
-				var ship = SHIP_DIRECTORY.SHIP_DATA[ship_key];
-				var shipName = ship["name"];
-				itemList.add_item(shipName);
+		for ship_key in PlayerState.fleet:
+			var ship = FleetManager.get_ship(ship_key)
+			if ship.classID in SHIP_DIRECTORY.SHIP_DATA:
+				itemList.add_item(ship.ship_name);
+				ships.append(ship)
 				item_count += 1;
 		resize_itemList_rect(item_count);
 		current_open_menu = "ships";
@@ -89,3 +89,13 @@ func _on_LoadGameBtn_button_up() -> void:
 
 func _on_QuitGameBtn_button_up() -> void:
 	get_tree().quit();
+
+
+func _on_ItemList_item_selected(index: int) -> void:
+	var selected_ship = ships[index];
+	var player = get_tree().current_scene.get_node("Actors/Player");
+#	var change_to_ship = FleetManager.get_ship(selected_ship.uuid);
+	player.playerShip = selected_ship;
+	player.playerSprite.texture = player.playerShip.sprite;
+	
+	
