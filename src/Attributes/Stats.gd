@@ -15,7 +15,7 @@ func heal(heal_value):
 		Events.emit_signal("prompt_player", "Repairing Ship...")
 		emit_signal("health_changed", health)
 
-	
+
 func set_health(value):
 	health = value;
 	emit_signal("health_changed", health)

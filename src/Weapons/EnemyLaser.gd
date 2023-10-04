@@ -11,5 +11,6 @@ func _physics_process(_delta):
 		if collider and collider.is_in_group("player"):
 			if not collider.hurtBox.invincible:
 				collider.hurtBox.set_invincible(true);
-				PlayerStats.health -= damage_amount
 				collider.hurtBox.create_hit_effect();
+				collider.playerShip.change_current_health(10);
+				print(collider.playerShip.current_health);

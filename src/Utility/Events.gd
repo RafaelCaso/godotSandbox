@@ -14,3 +14,6 @@ signal warn_player(message);
 signal player_effect(effect_name);
 # warning-ignore:unused_signal
 signal player_hit();
+
+# warning-ignore:unused_signal
+signal no_health;

@@ -27,8 +27,8 @@ config/icon="res://icon.png"
 [autoload]
 
 PlayerStats="*res://src/Attributes/PlayerStats.tscn"
-Hud="*res://src/GUI/HUD.tscn"
 PlayerState="*res://src/Player/PlayerState.gd"
+Hud="*res://src/GUI/HUD.tscn"
 CursorManager="*res://src/Utility/CursorManager.tscn"
 GameManager="*res://src/Utility/GameManager.tscn"
 Events="*res://src/Utility/Events.gd"

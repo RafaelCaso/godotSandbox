@@ -4,6 +4,7 @@ const SHIP_DATA = {
 	"ship_0000" : {
 		"ship_name" : "The Prototype",
 		"ship_type" : "fighter",
+		"ship_max_health" : 50.0,
 		"weapon_capacity" : 4,
 		"carrying_capacity" : 50,
 		"texture_path": "res://Assets/Sprites/Spaceships/0014SpaceShip.png",
@@ -18,6 +19,7 @@ const SHIP_DATA = {
 	"ship_0001" : {
 		"ship_name" : "The Enterprise",
 		"ship_type" : "destroyer",
+		"ship_max_health" : 200.0,
 		"weapon_capacity": 9,
 		"carrying_capacity" : 1000,
 		"texture_path": "res://Assets/Sprites/Spaceships/0024USSEnterprise.png",
@@ -32,6 +34,7 @@ const SHIP_DATA = {
 	"ship_0002" : {
 		"ship_name" : "Freighter 1",
 		"ship_type" : "freighter",
+		"ship_max_health" : 150.0,
 		"weapon_capacity" : 0,
 		"carrying_capacity" : 10000,
 		"texture_path" : "res://Assets/Sprites/Spaceships/0034FreightShip.png",
@@ -46,6 +49,7 @@ const SHIP_DATA = {
 	"ship_0003" : {
 		"ship_name" : "Carrier 1",
 		"ship_type" : "Carrier",
+		"ship_max_health" : 500.0,
 		"weapon_capacity" : 10,
 		"carrying_capacity" : 2000,
 		"texture_path" : "res://Assets/Sprites/Spaceships/0052Carrier.png",

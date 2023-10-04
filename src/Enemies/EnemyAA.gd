@@ -78,3 +78,9 @@ func _on_Hitbox_area_entered(_area: Area2D) -> void:
 	player_stats.health -= 1;
 	hurtBox.create_hit_effect();
 	
+
+
+func _on_Hitbox_body_entered(body: Node) -> void:
+	if body.is_in_group("player"):
+		body.playerShip.change_current_health(10)
+		print(body.playerShip.current_health);

@@ -117,3 +117,9 @@ func shoot_at_player(player):
 
 func stop_shooting():
 	laser_scene.is_casting = false;
+
+
+func _on_Hitbox_body_entered(body: Node) -> void:
+	if body.is_in_group("player"):
+		body.playerShip.change_current_health(10);
+		print(body.playerShip.current_health);

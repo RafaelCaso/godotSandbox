@@ -21,11 +21,13 @@ var can_move = true;
 func _ready() -> void:
 	$Radar/CanvasLayer/RadarUI.player = self;
 	var _connectPlayerNoHealth = PlayerStats.connect("no_health", self, "queue_free");
+	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "queue_free")
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed");
 	energyShield.connect("shield_hit", self, "on_shield_hit")
 	#initialize and configure player ship
 	playerShip = Ship.new("ship_0000");
-	
+	PlayerState.active_ship = playerShip;
+	playerShip.connect("current_health_changed", Hud, "handle_health_changed");
 	
 	# configure ship sprite and position ship
 	playerSprite.texture = playerShip.sprite;

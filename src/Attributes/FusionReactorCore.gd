@@ -21,7 +21,7 @@ func set_energy(value):
 	energy = clamp(value, 0, max_energy);
 	emit_signal("energy_changed", energy)
 	Hud.energyBar.value = value;
-	Hud.energyUI.text = str(int(value)) + "%";
+	Hud.energyText.text = str(int(value)) + "%";
 	if energy <= 0:
 		emit_signal("no_energy")
 

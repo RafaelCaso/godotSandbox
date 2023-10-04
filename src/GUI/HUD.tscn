@@ -3,13 +3,13 @@
 [ext_resource path="res://src/GUI/EnergyUI.gd" type="Script" id=1]
 [ext_resource path="res://src/GUI/EnergyBar.gd" type="Script" id=2]
 [ext_resource path="res://src/GUI/HUD.gd" type="Script" id=3]
-[ext_resource path="res://src/GUI/HealthUI.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Sprites/GUI/0025EmptyEnergyCore.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Sprites/GUI/0026FullEnergyCore.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Sprites/GUI/0044ShieldsUpSprite.png" type="Texture" id=7]
 [ext_resource path="res://src/Menus/TacticalMenu.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Fonts/pixel-bit-advanced.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://src/Effects/BinaryString.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Assets/Sprites/GUI/0053FullHealthCore.png" type="Texture" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 9 )
@@ -18,11 +18,31 @@ font_data = ExtResource( 9 )
 layer = 0
 script = ExtResource( 3 )
 
-[node name="HealthUI" parent="." instance=ExtResource( 4 )]
-margin_left = 2.0
-margin_right = 42.0
+[node name="HealthText" type="Label" parent="."]
+margin_left = 89.0
+margin_top = 4.0
+margin_right = 212.0
+margin_bottom = 34.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="EnergyUI" type="Label" parent="."]
+[node name="HealthProgress" type="TextureProgress" parent="."]
+margin_left = -9.0
+margin_top = -13.0
+margin_right = 503.0
+margin_bottom = 243.0
+rect_scale = Vector2( 0.28, 0.25 )
+value = 100.0
+texture_under = ExtResource( 5 )
+texture_progress = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnergyText" type="Label" parent="."]
 margin_left = 89.0
 margin_top = 40.0
 margin_right = 212.0

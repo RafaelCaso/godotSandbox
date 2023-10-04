@@ -1,10 +1,11 @@
 extends CanvasLayer
 
-onready var energyUI = $EnergyUI;
+onready var energyText = $EnergyText;
 onready var energyBar = $EnergyBar;
 onready var shieldsUpSprite = $ShieldsUpSprite;
 onready var tacticalMenu = $TacticalMenu;
 onready var playerPrompt = $MarginContainer/PlayerPrompt;
+onready var healthProgress = $HealthProgress;
 
 func _ready() -> void:
 	Events.connect("shields_toggled", self, "_toggle_shield_sprite");
@@ -44,3 +45,9 @@ func _on_player_effect(effect_name: String) -> void:
 		animatedSprite.play_animation()
 	else:
 		print("Effect not found:", effect_name, path)
+
+func handle_health_changed(current_health):
+	healthProgress.max_value = PlayerState.active_ship.ship_max_health;
+	healthProgress.value = current_health;
+	$HealthText.text = str(current_health) + "/" + str(healthProgress.max_value);
+	print("signal detected. Health has changed")
