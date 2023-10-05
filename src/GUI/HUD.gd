@@ -13,6 +13,7 @@ func _ready() -> void:
 	Events.connect("prompt_player", self, "_on_player_prompt");
 	Events.connect("warn_player", self, "_on_player_warn");
 	Events.connect("player_effect", self, "_on_player_effect");
+	var _health_change_connection = PlayerState.connect("ship_health_changed", self, "handle_health_changed");
 func _on_Player_energy_changed(new_energy) -> void:
 	Hud.energyBar._on_Player_energy_changed(new_energy);
 
@@ -48,6 +49,14 @@ func _on_player_effect(effect_name: String) -> void:
 
 func handle_health_changed(current_health):
 	healthProgress.max_value = PlayerState.active_ship.ship_max_health;
-	healthProgress.value = current_health;
-	$HealthText.text = str(current_health) + "/" + str(healthProgress.max_value);
+	adjust_health_tween(current_health);
 	print("signal detected. Health has changed")
+
+func adjust_health_tween(target_value):
+	$HealthProgress/Tween.stop_all();
+	$HealthProgress/Tween.interpolate_property(healthProgress, "value", healthProgress.value, target_value, 0.3, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	$HealthProgress/Tween.start();
+
+func _process(_delta: float) -> void:
+	if PlayerState.active_ship:
+		$HealthText.text = str(PlayerState.active_ship.current_health) + "/" + str(PlayerState.active_ship.ship_max_health);

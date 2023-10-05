@@ -1,12 +1,9 @@
 class_name Ship extends Node
 
-signal current_health_changed(health);
-
 const ship_class_directory = preload("res://src/Ships/ShipDirectory.gd")
 
 onready var sprite = $Sprite;
 onready var area2D = $Area2D;
-
 
 var uuid : String;
 
@@ -79,17 +76,13 @@ func set_max_health(max_limit_value):
 func set_current_health(current_health_value):
 	current_health = current_health_value;
 
-func change_current_health(change_value):
-	# this is confusing because I'm using the same function to take damage and heal ship
-	# so change_value is a negative number for healing
-	# so I check if change_value is less than zero but then, still need to subtract change_value from curent_health
-	# ***** PROBABLY SHOULD MAKE SEPERATE FUNCTION TO REPAIR SHIP ******
-	if change_value < 0 and current_health != ship_max_health:
-		Events.emit_signal("prompt_player", "Repairing Ship...")
-		current_health = min(current_health - change_value, ship_max_health);
-	else:
-		current_health = clamp(current_health - change_value, 0 , ship_max_health);
-	emit_signal("current_health_changed", current_health)
+func decrease_current_health(change_value):
+	current_health = clamp(current_health - change_value, 0 , ship_max_health);
 	
 	if current_health == 0:
 		Events.emit_signal("no_health");
+
+func increase_current_health(change_value):
+	if current_health != ship_max_health:
+		Events.emit_signal("prompt_player", "Repairing Ship...");
+		current_health = min(current_health + change_value, ship_max_health);

@@ -97,5 +97,6 @@ func _on_ItemList_item_selected(index: int) -> void:
 #	var change_to_ship = FleetManager.get_ship(selected_ship.uuid);
 	player.playerShip = selected_ship;
 	player.playerSprite.texture = player.playerShip.sprite;
+	PlayerState.active_ship = selected_ship;
 	
 	

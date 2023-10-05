@@ -33,12 +33,12 @@ func _process(delta) -> void:
 		player.rotation = angle_to_center + PI/2;
 		
 		
-func repair_ship(body):
-	body.playerShip.change_current_health(-10);
+func repair_ship():
+	PlayerState.repair_ship(10)
 	
 
 func _on_Timer_timeout() -> void:
-	repair_ship(player);
+	repair_ship();
 
 
 func _on_Area2D_body_entered(body: Node) -> void:

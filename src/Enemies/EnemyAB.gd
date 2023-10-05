@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+var loot_box_scene = preload("res://src/Items/LootBox.tscn");
+
 onready var sprite = $Sprite;
 onready var stats = $Stats;
 onready var playerDetectionZone = $PlayerDetectionZone;
@@ -78,6 +80,11 @@ func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 	stats.health -= 1;
 
 func _on_Stats_no_health() -> void:
+	var loot_box_instance = loot_box_scene.instance();
+	get_parent().add_child(loot_box_instance);
+	# not sure why global_position needs to be adjusted, but it does
+	# need to find the source for this
+	loot_box_instance.global_position = global_position - Vector2(100, 50);
 	emit_signal("enemy_died");
 	hurtBox.create_hit_effect();
 	queue_free();
@@ -121,5 +128,5 @@ func stop_shooting():
 
 func _on_Hitbox_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
-		body.playerShip.change_current_health(10);
+		PlayerState.damage_ship(10);
 		print(body.playerShip.current_health);

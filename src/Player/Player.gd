@@ -1,6 +1,5 @@
 extends KinematicBody2D
 
-var MissileScene = preload("res://src/Weapons/ClusterMissile.tscn")
 
 onready var baseLaser = $Weapons/Lasers;
 onready var equippedLaser = null;
@@ -10,6 +9,9 @@ onready var hurtBox = $Hurtbox;
 onready var fusionReactorCore = $FusionReactorCore;
 onready var laserSpawnPoint = $LaserSpawnPoint;
 onready var energyShield = $EnergyShield;
+
+const missilePath = "res://src/Weapons/ClusterMissile.tscn"
+var MissileScene = preload(missilePath)
 
 var weapon_pressed = false;
 
@@ -27,7 +29,6 @@ func _ready() -> void:
 	#initialize and configure player ship
 	playerShip = Ship.new("ship_0000");
 	PlayerState.active_ship = playerShip;
-	playerShip.connect("current_health_changed", Hud, "handle_health_changed");
 	
 	# configure ship sprite and position ship
 	playerSprite.texture = playerShip.sprite;
@@ -131,13 +132,19 @@ func equip_weapon(weapon):
 	equippedLaser.global_position.x = laserSpawnPoint.global_position.x;
 	equippedLaser.global_position.y = laserSpawnPoint.global_position.y;
 
-func add_ship(ship : String):
-	PlayerState.available_ships.append(ship);
+# THIS NEEDS TO CHANGE TO ADD OBJECT REFERENCE TO PlayerState.fleet
+# eg. FleetManager.add_ship(uuid)
+func add_ship(ship : Ship):
+	FleetManager.add_ship(ship);
 
-func change_ship(ship_id : String):
-	playerShip.configure_ship(ship_id);
-	PlayerState.shipID = ship_id;
-	playerSprite.texture = playerShip.sprite.texture;
+# THIS NEEDS TO CHANGE TO ACCESS OBJECT REFERENCE DIRECTLY FROM PlayerState.fleet
+# eg. playerShip = FleetManager.get_ship(uuid)
+# NO MORE configure_ship()
+func change_ship(ship_uuid : String):
+	var new_ship = FleetManager.get_ship(ship_uuid);
+	PlayerState.active_ship = new_ship
+	playerShip = new_ship;
+	playerSprite.texture = new_ship.sprite.texture;
 
 # Any movement based input should be placed here. Function then called in _physics_process()
 func handle_movement_input(delta):
@@ -180,6 +187,7 @@ func handle_movement_input(delta):
 #
 #	# ********ONLY NEEDED FOR ALTERNATE CONTROL STYLE ***********
 ## ********NEED TESTING RE: WHICH IS BETTER? KEYBOARD ROTATE VS FOLLOW MOUSE *********
+## ******* CERTAIN SHIPS USE THIS EG. CARRIERS, DESTROYERS ********
 #func rotate_left(delta):
 #	rotation_degrees -= playerShip.rotation_speed * delta;
 #
@@ -214,35 +222,3 @@ func on_shield_hit():
 	fusionReactorCore.energy -= 50;
 	if fusionReactorCore.energy <= 1:
 		energyShield.shield_offline();
-
-
-
-
-# for detonable missiles I'll have to do something different. Here's some pseudo code
-# In BaseMissile.gd or in each specific missile script
-#var _is_detonatable = false
-# In ClusterMissile.gd
-#var _is_detonatable = true
-# In your player script
-#var active_missile = null  # to keep track of the active cluster missile
-#
-#func fire_missile():
-#    if PlayerState.missileStock > 0:
-#        PlayerState.missileStock -= 1
-#        var missile_instance = MissileScene.instance()
-#        missile_instance.player = self
-#        get_parent().add_child(missile_instance)
-#        missile_instance.global_position = laserSpawnPoint.global_position
-#        missile_instance.set_direction(get_global_mouse_position())
-#        missile_instance.fire()
-#        if missile_instance._is_detonatable:
-#            active_missile = missile_instance
-#    else:
-#        Events.emit_signal("prompt_player", "No Missiles in arsenal")
-#
-#func handle_missile_action():
-#    if active_missile:
-#        active_missile.detonate()
-#        active_missile = null  # Reset active missile after detonation
-#    else:
-#        fire_missile()

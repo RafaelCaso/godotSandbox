@@ -1,6 +1,6 @@
 extends Node
 
-var player_state_path : Array;
+var player_state_path;
 var itemID : String;
 var item_name : String;
 

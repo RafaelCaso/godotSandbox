@@ -12,5 +12,5 @@ func _physics_process(_delta):
 			if not collider.hurtBox.invincible:
 				collider.hurtBox.set_invincible(true);
 				collider.hurtBox.create_hit_effect();
-				collider.playerShip.change_current_health(10);
+				PlayerState.damage_ship(10)
 				print(collider.playerShip.current_health);
