@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Assets/Sprites/Items/0054SpaceOre.png" type="Texture" id=2]
 [ext_resource path="res://src/Items/SpaceOrePickup.gd" type="Script" id=3]
@@ -6,6 +6,9 @@
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 11.0
 height = 2.0
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 100.0
 
 [node name="SpaceOrePickup" type="KinematicBody2D"]
 z_index = 4
@@ -20,4 +23,10 @@ texture = ExtResource( 2 )
 position = Vector2( 0, -2 )
 shape = SubResource( 1 )
 
+[node name="magnet" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="magnet"]
+shape = SubResource( 2 )
+
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="body_entered" from="magnet" to="." method="_on_magnet_body_entered"]

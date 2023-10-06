@@ -21,7 +21,7 @@ position = Vector2( 259, 134 )
 scale = Vector2( 0.448242, 0.405273 )
 
 [node name="Player" parent="Actors" instance=ExtResource( 1 )]
-position = Vector2( 559.733, 405.604 )
+position = Vector2( 1554.96, 1009.2 )
 scale = Vector2( 2.46747, 2.23094 )
 z_index = 1
 collision_mask = 65
@@ -107,7 +107,7 @@ position = Vector2( 452, 2007 )
 z_index = 10
 
 [node name="Camera2D" parent="." instance=ExtResource( 6 )]
-position = Vector2( 511, 298 )
+position = Vector2( 957.103, 542.621 )
 rotation = 0.0
 scale = Vector2( 1.10602, 0.90414 )
 

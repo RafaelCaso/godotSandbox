@@ -93,10 +93,9 @@ func _on_QuitGameBtn_button_up() -> void:
 
 func _on_ItemList_item_selected(index: int) -> void:
 	var selected_ship = ships[index];
-	var player = get_tree().current_scene.get_node("Actors/Player");
-#	var change_to_ship = FleetManager.get_ship(selected_ship.uuid);
-	player.playerShip = selected_ship;
-	player.playerSprite.texture = player.playerShip.sprite;
 	PlayerState.active_ship = selected_ship;
+	Events.emit_signal("active_ship_changed");
+#	var change_to_ship = FleetManager.get_ship(selected_ship.uuid);
+
 	
 	

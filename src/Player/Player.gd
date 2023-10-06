@@ -13,6 +13,8 @@ onready var energyShield = $EnergyShield;
 const missilePath = "res://src/Weapons/ClusterMissile.tscn"
 var MissileScene = preload(missilePath)
 
+var bolt = preload("res://src/Weapons/PlasmaBolt.tscn");
+
 var weapon_pressed = false;
 
 var active_cluster_missile = null;
@@ -22,14 +24,18 @@ var can_move = true;
 
 func _ready() -> void:
 	$Radar/CanvasLayer/RadarUI.player = self;
-	var _connectPlayerNoHealth = PlayerStats.connect("no_health", self, "queue_free");
+#	var _connectPlayerNoHealth = PlayerStats.connect("no_health", self, "queue_free");
 	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "queue_free")
+	var _connectShipChanged = Events.connect("active_ship_changed", self, "handle_ship_change");
 	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed");
 	energyShield.connect("shield_hit", self, "on_shield_hit")
-	#initialize and configure player ship
-	playerShip = Ship.new("ship_0000");
-	PlayerState.active_ship = playerShip;
 	
+	if PlayerState.active_ship == null:
+		#initialize and configure player ship
+		playerShip = Ship.new("ship_0000");
+		PlayerState.active_ship = playerShip;
+	else:
+		playerShip = PlayerState.active_ship;
 	# configure ship sprite and position ship
 	playerSprite.texture = playerShip.sprite;
 	playerSprite.global_position = global_position;
@@ -49,6 +55,8 @@ func _process(delta: float) -> void:
 		rotation = direction_to_mouse.angle() + PI/2;
 
 	if Input.is_action_pressed("laser") && fusionReactorCore.has_energy(25) && can_move:
+#		*****NEED TO FIGURE OUT BOLT LOGIC
+#		fire_bolt()
 		fusionReactorCore.deplete_energy(equippedLaser.laser_energy_consumption * delta);
 		fire_laser();
 	else:
@@ -222,3 +230,13 @@ func on_shield_hit():
 	fusionReactorCore.energy -= 50;
 	if fusionReactorCore.energy <= 1:
 		energyShield.shield_offline();
+
+func handle_ship_change():
+	playerShip = PlayerState.active_ship;
+	playerSprite.texture = playerShip.sprite;
+
+func fire_bolt():
+	var bolt_instance = bolt.instance();
+	add_child(bolt_instance);
+	bolt_instance.global_position = laserSpawnPoint.global_position;
+	bolt_instance.calculate_direction();

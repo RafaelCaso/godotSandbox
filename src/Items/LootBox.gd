@@ -12,7 +12,6 @@ func _ready() -> void:
 		scatter_ore(ore_instance);
 		call_deferred("add_child", ore_instance);
 		ore_instance.global_position = global_position;
-		print(ore_instance)
 		
 	
 func generate_loot():

@@ -17,3 +17,5 @@ signal player_hit();
 
 # warning-ignore:unused_signal
 signal no_health;
+# warning-ignore:unused_signal
+signal active_ship_changed;

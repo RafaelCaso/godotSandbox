@@ -2,7 +2,6 @@ extends Node
 
 signal ship_health_changed(current_health);
 
-var currentShipID : String = "ship_0000";
 var equippedLaserID: String = "laser_0000";
 var weapons : Array = ["laser_0000"];
 var missileStock : int = 10;

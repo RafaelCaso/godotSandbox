@@ -3,6 +3,7 @@ extends KinematicBody2D
 const DRAG := 0.98;
 
 var velocity = Vector2();
+var magnet_speed = 3;
 
 func _physics_process(_delta: float) -> void:
 	velocity *= DRAG;
@@ -11,5 +12,10 @@ func _physics_process(_delta: float) -> void:
 func _on_Area2D_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
 		PlayerState.ore_stock += 1;
-		print(PlayerState.ore_stock);
 		queue_free();
+
+
+func _on_magnet_body_entered(body: KinematicBody2D) -> void:
+	if body.is_in_group("player"):
+		var direction = body.global_position - global_position;
+		velocity = direction * magnet_speed;
