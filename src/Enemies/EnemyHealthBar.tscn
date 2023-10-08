@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Sprites/GUI/0057EnemyHealthFull.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Sprites/GUI/0056EnemyHealthEmpty.png" type="Texture" id=2]
+
+[node name="EnemyHealthBar" type="TextureProgress"]
+margin_right = 40.0
+margin_bottom = 40.0
+value = 100.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -52,7 +52,8 @@ func set_direction(target_pos):
 
 func _on_HitBox_body_entered(body: Node) -> void:
 	if body.is_in_group("enemies"):
-		body.queue_free();
+		body.stats.health -= 50;
+		body.is_being_hit = true;
 		queue_free();
 	elif body.is_in_group("player"):
 		pass;

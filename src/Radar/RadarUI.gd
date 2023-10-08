@@ -9,7 +9,7 @@ var objects = {};
 
 export var size = Vector2(250, 250);
 # scale: first number should equal size (above) and second number is maximum range of radar at default zoom
-export var scale = (250.0 / 40000.0);
+export var scale = (250.0 / 25000.0);
 
 func add_object(object, texture):
 	var sprite = Sprite.new();
@@ -28,7 +28,7 @@ func remove_object(object):
 
 func _physics_process(_delta: float) -> void:
 	player_sprite.position = size;
-	player_position = player.position;
+	player_position = player.global_position;
 	
 	for object in objects.keys():
 		if is_instance_valid(object):
@@ -39,7 +39,8 @@ func _physics_process(_delta: float) -> void:
 			else:
 				objects[object].visible = true;
 			# set the object's icon relative to the player icon
-			objects[object].position = (object.position - player_position) * scale + size;
+			objects[object].position = (object.global_position - player_position) * scale + size;
+			
 		else:
 			remove_object(object);
 

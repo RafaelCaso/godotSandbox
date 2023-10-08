@@ -10,7 +10,7 @@ onready var fusionReactorCore = $FusionReactorCore;
 onready var laserSpawnPoint = $LaserSpawnPoint;
 onready var energyShield = $EnergyShield;
 
-const missilePath = "res://src/Weapons/ClusterMissile.tscn"
+const missilePath = "res://src/Weapons/GuidedMissile.tscn"
 var MissileScene = preload(missilePath)
 
 var bolt = preload("res://src/Weapons/PlasmaBolt.tscn");
@@ -21,6 +21,7 @@ var active_cluster_missile = null;
 
 var velocity = Vector2();
 var can_move = true;
+var taking_damage = false;
 
 func _ready() -> void:
 	$Radar/CanvasLayer/RadarUI.player = self;
@@ -51,6 +52,7 @@ func _process(delta: float) -> void:
 	var direction_to_mouse = (mouse_pos - global_position);
 	equippedLaser.cast_to = equippedLaser.to_local(global_position + direction_to_mouse * equippedLaser.max_length);
 	equippedLaser.global_position = laserSpawnPoint.global_position;
+	
 	if can_move:
 		rotation = direction_to_mouse.angle() + PI/2;
 
@@ -105,6 +107,7 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	# It looks like the below problem fixed itself which is just fascinatingly frustrating
 #	$Radar.global_position = global_position;
+	
 	
 	if can_move:
 		handle_input(delta);
@@ -231,6 +234,7 @@ func on_shield_hit():
 	if fusionReactorCore.energy <= 1:
 		energyShield.shield_offline();
 
+# called when Events.emit_signal("active_ship_changed") emitted
 func handle_ship_change():
 	playerShip = PlayerState.active_ship;
 	playerSprite.texture = playerShip.sprite;
@@ -240,3 +244,9 @@ func fire_bolt():
 	add_child(bolt_instance);
 	bolt_instance.global_position = laserSpawnPoint.global_position;
 	bolt_instance.calculate_direction();
+
+# Not being used right now, but I want to move damage functionality
+# to _process so damage is continuous instead of bulk
+# this will require damage values to be lowered
+func take_damage(damage_value):
+	PlayerState.damage_ship(damage_value);

@@ -8,9 +8,13 @@ onready var playerDetectionZone = $PlayerDetectionZone;
 onready var hurtBox = $Hurtbox;
 onready var wanderController = $WanderController
 onready var laser_scene = $EnemyLaser
+onready var healthBar = $EnemyHealthBar;
 
 signal enemy_died();
 
+# when true: healthBar UI becomes visible
+# not used for handling damage
+var is_being_hit = false;
 
 enum {
 	IDLE,
@@ -31,6 +35,10 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_being_hit:
+		healthBar.visible = true;
+	healthBar.max_value = stats.max_health;
+	healthBar.value = stats.health;
 	match state:
 		IDLE:
 			seek_player();
@@ -77,7 +85,7 @@ func _physics_process(delta: float) -> void:
 				state = IDLE;
 
 func _on_Hurtbox_area_entered(_area: Area2D) -> void:
-	stats.health -= 1;
+	is_being_hit = true;
 
 func _on_Stats_no_health() -> void:
 	var loot_box_instance = loot_box_scene.instance();

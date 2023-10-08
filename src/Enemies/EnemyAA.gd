@@ -7,10 +7,17 @@ onready var stats = $Stats;
 onready var playerDetectionZone = $PlayerDetectionZone;
 onready var hurtBox = $Hurtbox;
 onready var wanderController = $WanderController
+onready var healthBar = $EnemyHealthBar;
 
 signal enemy_died();
 
+#DON'T THINK I NEED THIS ANYMORE
+#DAMAGE BEING HANDLED THROUGH PlayerState.damage_ship(hurt_value)
 var player_stats = PlayerStats;
+
+# when true: healthBar UI becomes visible
+# not used for handling damage
+var is_being_hit = false;
 
 enum {
 	IDLE,
@@ -24,6 +31,10 @@ export var acceleration = 300;
 export var max_speed = 50;
 
 func _physics_process(delta: float) -> void:
+	if is_being_hit:
+		healthBar.visible = true;
+	healthBar.max_value = stats.max_health;
+	healthBar.value = stats.health;
 	match state:
 		IDLE:
 			seek_player();
@@ -51,7 +62,8 @@ func _physics_process(delta: float) -> void:
 				state = IDLE;
 
 func _on_Hurtbox_area_entered(_area: Area2D) -> void:
-	stats.health -= 1;
+	is_being_hit = true;
+	
 	
 	
 

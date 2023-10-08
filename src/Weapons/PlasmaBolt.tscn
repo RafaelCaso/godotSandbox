@@ -24,7 +24,7 @@ hue_variation = -0.33
 hue_variation_random = 0.49
 
 [node name="PlasmaBolt" type="KinematicBody2D"]
-scale = Vector2( 0.5, 0.5 )
+scale = Vector2( 0.25, 0.25 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

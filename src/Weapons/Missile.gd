@@ -17,7 +17,7 @@ func _physics_process(delta):
 
 func _on_HitBox_body_entered(body: Node) -> void:
 	queue_free();
-	body.queue_free();
+	body.stats.health -= 50;
 
 
 func _on_LifeSpan_timeout() -> void:

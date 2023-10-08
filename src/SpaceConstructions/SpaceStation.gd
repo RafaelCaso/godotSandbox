@@ -5,6 +5,7 @@ onready var laser_scene = $LaserBeam2D;
 onready var station_menu = $StationMenu;
 onready var docking_tween = $DockingTween;
 onready var docking_port = $Sprite/DockingPort
+onready var radarDetector = $RadarDetector
 
 var location_name = "Earth";
 

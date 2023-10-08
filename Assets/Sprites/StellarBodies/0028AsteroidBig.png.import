@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/radar_planet.png-81e26bf4968b0135a9b940193d828a2a.stex"
+path="res://.import/0028AsteroidBig.png-2e98e58e0b2546e7d3ae76aa7314e41e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Radar/radar_planet.png"
-dest_files=[ "res://.import/radar_planet.png-81e26bf4968b0135a9b940193d828a2a.stex" ]
+source_file="res://Assets/Sprites/StellarBodies/0028AsteroidBig.png"
+dest_files=[ "res://.import/0028AsteroidBig.png-2e98e58e0b2546e7d3ae76aa7314e41e.stex" ]
 
 [params]
 

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/radar_planet.png-81e26bf4968b0135a9b940193d828a2a.stex"
+path="res://.import/radar_star.png-1c0f6b860974316de4d1007fc1752214.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Radar/radar_planet.png"
-dest_files=[ "res://.import/radar_planet.png-81e26bf4968b0135a9b940193d828a2a.stex" ]
+source_file="res://Assets/Sprites/Radar/radar_star.png"
+dest_files=[ "res://.import/radar_star.png-1c0f6b860974316de4d1007fc1752214.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

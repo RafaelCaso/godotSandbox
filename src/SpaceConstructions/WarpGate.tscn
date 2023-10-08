@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/SpaceConstructions/WarpGate.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/SpaceConstructions/warpgate.png" type="Texture" id=2]
@@ -40,9 +40,13 @@ shader_param/wave_count = 20.0
 shader_param/speed = 3.0
 shader_param/height = 0.003
 
+[sub_resource type="CircleShape2D" id=4]
+
 [node name="WarpGate" type="Control" groups=["warpgate"]]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_right = -1920.0
+margin_bottom = -1080.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -52,24 +56,30 @@ __meta__ = {
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 493, 121 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 517, 122 )
+position = Vector2( 25, -1 )
 z_index = -1
 texture = ExtResource( 2 )
 
 [node name="WarpEffect" type="ColorRect" parent="."]
 material = SubResource( 3 )
-margin_left = 424.0
-margin_top = 46.0
-margin_right = 560.0
-margin_bottom = 197.0
+margin_left = -66.0
+margin_top = -74.0
+margin_right = 70.0
+margin_bottom = 77.0
 rect_rotation = 0.251774
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="." groups=["warpgate"]]
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+shape = SubResource( 4 )
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]

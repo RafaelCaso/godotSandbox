@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Sprites/Spaceships/0015Alien.png" type="Texture" id=1]
 [ext_resource path="res://src/Attributes/Hurtbox.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://src/Attributes/PlayerDetectionZone.tscn" type="PackedScene" id=5]
 [ext_resource path="res://src/Attributes/Hitbox.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/Enemies/WanderController.tscn" type="PackedScene" id=7]
+[ext_resource path="res://src/Enemies/EnemyHealthBar.tscn" type="PackedScene" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 29.4279
@@ -46,6 +47,7 @@ rotation = 1.5708
 shape = SubResource( 3 )
 
 [node name="Stats" parent="." instance=ExtResource( 4 )]
+max_health = 100
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 5 )]
 
@@ -63,6 +65,12 @@ rotation = 1.5708
 shape = SubResource( 5 )
 
 [node name="WanderController" parent="." instance=ExtResource( 7 )]
+
+[node name="EnemyHealthBar" parent="." instance=ExtResource( 8 )]
+visible = false
+margin_left = -40.0
+margin_right = 41.0
+margin_bottom = 81.0
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
 [connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]

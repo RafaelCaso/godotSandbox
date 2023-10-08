@@ -15,6 +15,7 @@ var max_length := 400.0
 var growth_time := 0.1
 
 var laser_energy_consumption := 25;
+var laser_damage = 1;
 
 var path = "res://Weapons/Laser.tscn";
 
@@ -47,6 +48,7 @@ func configure_laser(laser):
 		cast_speed = laser_data["cast_speed"];
 		max_length = laser_data["max_length"];
 		growth_time = laser_data["growth_time"]
+		laser_damage = laser_data["laser_damage"];
 		set_laser_color(laser_data["laser_color"])
 	else:
 		print("Error: Laser key not found in LASER_DATA")
@@ -59,6 +61,7 @@ func set_is_casting(cast: bool) -> void:
 		cast_to = Vector2.ZERO
 		fill.points[1] = cast_to
 		appear()
+		
 		
 		
 		
@@ -83,6 +86,9 @@ func cast_beam() -> void:
 		cast_point = to_local(get_collision_point())
 		collision_particles.global_rotation = get_collision_normal().angle()
 		hitbox_area.position = cast_point;
+		var body = get_collider();
+		if body.is_in_group("enemies"):
+			body.stats.health -= laser_damage;
 
 	collision_particles.position.x = cast_point.x;
 	collision_particles.position.y = cast_point.y;

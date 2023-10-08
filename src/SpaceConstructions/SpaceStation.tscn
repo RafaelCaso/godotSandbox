@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Sprites/SpaceConstructions/0033SpaceStation.png" type="Texture" id=1]
 [ext_resource path="res://src/SpaceConstructions/SpaceStation.gd" type="Script" id=2]
@@ -22,6 +22,8 @@ radius = 203.662
 [sub_resource type="CircleShape2D" id=3]
 radius = 866.752
 
+[sub_resource type="CircleShape2D" id=4]
+
 [node name="SpaceStation" type="Node2D" groups=["station"]]
 script = ExtResource( 2 )
 
@@ -36,17 +38,17 @@ amount = 81
 lifetime = 2.5
 process_material = SubResource( 1 )
 
-[node name="DockingArea" type="Area2D" parent="." groups=["station"]]
+[node name="DockingArea" type="Area2D" parent="."]
 collision_layer = 768
 collision_mask = 770
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DockingArea" groups=["station"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DockingArea"]
 shape = SubResource( 2 )
 
 [node name="Timer" type="Timer" parent="DockingArea"]
 wait_time = 3.0
 
-[node name="LaserCoverage" type="Area2D" parent="." groups=["station"]]
+[node name="LaserCoverage" type="Area2D" parent="."]
 collision_mask = 257
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LaserCoverage"]
@@ -64,6 +66,13 @@ margin_right = 256.0
 margin_bottom = -148.0
 
 [node name="DockingTween" type="Tween" parent="."]
+
+[node name="RadarDetector" type="KinematicBody2D" parent="." groups=["station"]]
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RadarDetector"]
+shape = SubResource( 4 )
 
 [connection signal="body_entered" from="DockingArea" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="DockingArea" to="." method="_on_Area2D_body_exited"]

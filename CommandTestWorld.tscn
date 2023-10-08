@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://src/World/Background.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/World/Planet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/Cameras/PlayerCamera.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Sprites/Spaceships/0014SpaceShip.png" type="Texture" id=4]
+[ext_resource path="res://CommandShipTest.gd" type="Script" id=5]
+
+[node name="CommandTestWorld" type="Node2D"]
+
+[node name="Background" parent="." instance=ExtResource( 1 )]
+position = Vector2( 235, 141 )
+
+[node name="Planet" parent="Background" instance=ExtResource( 2 )]
+position = Vector2( -1427.8, 2065.27 )
+
+[node name="Camera2D" parent="." instance=ExtResource( 3 )]
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+script = ExtResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="KinematicBody2D"]
+texture = ExtResource( 4 )

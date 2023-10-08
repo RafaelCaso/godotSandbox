@@ -92,6 +92,8 @@ func _on_QuitGameBtn_button_up() -> void:
 
 
 func _on_ItemList_item_selected(index: int) -> void:
+	#*******THIS IS TRIGGERING FOR BOTH WEAPONS AND SHIPS WHICH CAUSES CRASH*********
+	#******LOOK INTO MENUBTN********
 	var selected_ship = ships[index];
 	PlayerState.active_ship = selected_ship;
 	Events.emit_signal("active_ship_changed");

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Assets/Sprites/StellarBodies/0035EarthRect.png" type="Texture" id=1]
 [ext_resource path="res://src/World/Planet.gd" type="Script" id=2]
@@ -110,6 +110,8 @@ shader_param/speed = 1.0
 radius = 161.0
 height = 44.0004
 
+[sub_resource type="CircleShape2D" id=6]
+
 [node name="Planet" type="Node2D"]
 light_mask = 0
 script = ExtResource( 2 )
@@ -143,6 +145,13 @@ shape = SubResource( 5 )
 [node name="ColorRectTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="." groups=["planet"]]
+collision_layer = 256
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+shape = SubResource( 6 )
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_Area2D_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_Area2D_mouse_exited"]

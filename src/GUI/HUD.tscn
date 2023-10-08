@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://src/GUI/EnergyUI.gd" type="Script" id=1]
 [ext_resource path="res://src/GUI/EnergyBar.gd" type="Script" id=2]
 [ext_resource path="res://src/GUI/HUD.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Sprites/GUI/0044ShieldsDownSprite.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Sprites/GUI/0025EmptyEnergyCore.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Sprites/GUI/0026FullEnergyCore.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Sprites/GUI/0044ShieldsUpSprite.png" type="Texture" id=7]
@@ -71,9 +72,15 @@ __meta__ = {
 }
 
 [node name="ShieldsUpSprite" type="Sprite" parent="."]
-position = Vector2( 29, 106 )
+position = Vector2( 35, 106 )
 scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 7 )
+
+[node name="ShieldsDownSprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 35, 106 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 4 )
 
 [node name="TacticalMenu" parent="." instance=ExtResource( 8 )]
 visible = false
