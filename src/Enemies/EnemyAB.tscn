@@ -14,9 +14,6 @@ script = ExtResource( 2 )
 [node name="Sprite" parent="." index="1"]
 texture = ExtResource( 3 )
 
-[node name="Stats" parent="." index="3"]
-max_health = 100
-
 [node name="Timer" type="Timer" parent="." index="7"]
 
 [node name="EnemyLaser" parent="." index="8" instance=ExtResource( 4 )]

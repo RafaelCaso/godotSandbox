@@ -1,13 +1,18 @@
 extends KinematicBody2D
 
+onready var laser = $LaserBeam2D;
+
 var target_position : Vector2 = Vector2();
 var orbit_center : Vector2 = Vector2();
-var orbit_distance := 200.0;
+var orbit_distance := 400.0;
 var orbit_speed = 1;
 var speed : float = 400.0;
 var orbiting : bool = false;
 var traveling : bool = false;
+var firing : bool = false;
 var action_after_traveling = "";
+
+var target : Node = null;
 
 # SHOULD CHANGE THIS TO STATE MACHINE LOGIC
 
@@ -22,6 +27,8 @@ func _physics_process(delta: float) -> void:
 		global_position = new_pos;
 		look_at(orbit_center);
 		rotation += PI/2;
+		
+
 	
 	
 
@@ -61,3 +68,21 @@ func set_target_position():
 		traveling = true;
 		orbiting = false;
 		action_after_traveling = "orbit";
+	
+	if Input.is_action_just_pressed("interact"):
+		if firing:
+			laser.is_casting = false;
+			firing = false;
+		elif not firing:
+			firing = true
+			var laser_target = get_global_mouse_position()
+			if target and is_instance_valid(target):
+				laser.look_at(target.global_position);
+			else:
+				laser.look_at(laser_target)
+			laser.is_casting = true;
+
+
+func _on_Area2D_body_entered(body: Node) -> void:
+	if body.is_in_group("enemies"):
+		target = body;

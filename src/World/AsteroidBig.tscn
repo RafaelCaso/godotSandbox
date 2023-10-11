@@ -3,13 +3,12 @@
 [ext_resource path="res://Assets/Sprites/StellarBodies/0028AsteroidBig.png" type="Texture" id=1]
 
 [sub_resource type="PhysicsMaterial" id=1]
-rough = true
-absorbent = true
+friction = 0.31
 
 [node name="AsteroidBig" type="RigidBody2D" groups=["asteroid"]]
 collision_layer = 257
 physics_material_override = SubResource( 1 )
-gravity_scale = -20.0
+gravity_scale = 0.0
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )

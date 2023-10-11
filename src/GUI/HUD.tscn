@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://src/GUI/EnergyUI.gd" type="Script" id=1]
 [ext_resource path="res://src/GUI/EnergyBar.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Assets/Fonts/pixel-bit-advanced.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://src/Effects/BinaryString.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/Sprites/GUI/0053FullHealthCore.png" type="Texture" id=11]
+[ext_resource path="res://src/Menus/CommandMenu.tscn" type="PackedScene" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 9 )
@@ -117,5 +118,8 @@ one_shot = true
 [node name="BinaryString" parent="Effects" instance=ExtResource( 10 )]
 visible = false
 position = Vector2( 960, 480 )
+
+[node name="CommandMenu" parent="." instance=ExtResource( 12 )]
+visible = false
 
 [connection signal="timeout" from="TextTimer" to="." method="_on_TextTimer_timeout"]

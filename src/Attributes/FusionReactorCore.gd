@@ -1,5 +1,5 @@
 extends Node
-
+class_name FusionReactorCore
 
 export var max_energy = 100 setget set_max_energy;
 export var energy_recharge = 10 setget set_energy_recharge;

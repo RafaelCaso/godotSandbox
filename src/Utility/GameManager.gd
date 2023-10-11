@@ -36,6 +36,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("tab"):
 		Events.emit_signal("tactical_menu_toggled");
+	
+	if event.is_action_pressed("command_menu"):
+		Events.emit_signal("command_menu_toggled");
 		
 
 

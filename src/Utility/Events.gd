@@ -5,6 +5,8 @@ extends Node
 signal shields_toggled(shield_is_active);
 # warning-ignore:unused_signal
 signal tactical_menu_toggled();
+# warning-ignore:unused_signal
+signal command_menu_toggled;
 
 # warning-ignore:unused_signal
 signal prompt_player(message);

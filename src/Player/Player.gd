@@ -40,7 +40,12 @@ func _ready() -> void:
 	# configure ship sprite and position ship
 	playerSprite.texture = playerShip.sprite;
 	playerSprite.global_position = global_position;
-	
+	var test_ship_1 = Ship.new("ship_0001");
+	var test_ship_2 = Ship.new("ship_0002");
+	var test_ship_3 = Ship.new("ship_0003");
+	FleetManager.add_ship(test_ship_1)
+	FleetManager.add_ship(test_ship_2)
+	FleetManager.add_ship(test_ship_3)
 	# initialize and configure ship weapon and position weapon
 	equippedLaser = baseLaser;
 	equippedLaser.configure_laser(PlayerState.equippedLaserID);
@@ -82,13 +87,6 @@ func _process(delta: float) -> void:
 				active_cluster_missile.set_direction(mouse_pos)
 		else:
 			Events.emit_signal("prompt_player", "No Missiles in arsenal");
-
-		
-	
-#	if Input.is_action_just_pressed("change_ship_test"):
-#		playerShip.configure_ship("ship_0001");
-#		playerSprite.texture = playerShip.sprite.texture;
-#		print(PlayerState.currentShipID);
 	
 	if Input.is_action_just_pressed("test_button"):
 		GameManager.goto_scene("res://World2.tscn");

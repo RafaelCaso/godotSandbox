@@ -19,12 +19,14 @@ var weapon_capacity : int;
 var carrying_capacity : int;
 # ONLY NEEDED FOR ALTERNATE CONTROL SETTING
 var rotation_speed : float;
-
+var fusion_reactor_core : FusionReactorCore;
 var velocity = Vector2();
 var locations_visited : Array;
 
 var ship_max_health : float setget set_max_health
 var current_health : float setget set_current_health
+
+var can_move : bool = true;
 
 # When player acquires a new ship it will be instantiated using Ship.new() and automatically assigned
 # a universally unique identifier and stored in PlayerState.fleet 
@@ -70,6 +72,12 @@ func configure_ship(body : Ship):
 	else:
 		print("Error: Ship key not found in SHIP_DATA");
 
+#func _process():
+#	var mouse_pos = get_global_mouse_position();
+#	var dir_to_mouse = mouse_pos - self.global_position;
+#	if can_move:
+		
+
 func set_max_health(max_limit_value):
 	ship_max_health = max_limit_value;
 
@@ -86,3 +94,18 @@ func increase_current_health(change_value):
 	if current_health != ship_max_health:
 		Events.emit_signal("prompt_player", "Repairing Ship...");
 		current_health = min(current_health + change_value, ship_max_health);
+
+#func handle_movement_input(delta):
+#	if Input.is_action_pressed("main_propulsion"):
+#		if fusion_reactor_core.has_energy(10):
+#			main_propulsion(delta, true);
+#		else:
+#			main_propulsion(delta, false);
+#
+#func main_propulsion(delta, has_energy):
+#	var current_thrust;
+#	if has_energy:
+#		current_thrust = self.thrust;
+#	else:
+#		current_thrust = self.thrust / 5;
+#	var direction = Vector2(0, -1).rotated(rotation);

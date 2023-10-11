@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/World/Background.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/World/Planet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/Cameras/PlayerCamera.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Sprites/Spaceships/0014SpaceShip.png" type="Texture" id=4]
-[ext_resource path="res://CommandShipTest.gd" type="Script" id=5]
+[ext_resource path="res://src/Ships/RemoteControlledShip.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/Player/Player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://src/Enemies/EnemyAB.tscn" type="PackedScene" id=6]
 
 [node name="CommandTestWorld" type="Node2D"]
 
@@ -15,9 +16,16 @@ position = Vector2( 235, 141 )
 position = Vector2( -1427.8, 2065.27 )
 
 [node name="Camera2D" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
 
-[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
-script = ExtResource( 5 )
+[node name="Player" parent="." instance=ExtResource( 5 )]
 
-[node name="Sprite" type="Sprite" parent="KinematicBody2D"]
-texture = ExtResource( 4 )
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
+remote_path = NodePath("../../Camera2D")
+
+[node name="EnemyAB" parent="." instance=ExtResource( 6 )]
+position = Vector2( 4282, -1226 )
+
+[node name="RemoteControlledShip" parent="." instance=ExtResource( 4 )]

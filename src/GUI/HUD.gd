@@ -6,6 +6,8 @@ onready var shieldsUpSprite = $ShieldsUpSprite;
 onready var tacticalMenu = $TacticalMenu;
 onready var playerPrompt = $MarginContainer/PlayerPrompt;
 onready var healthProgress = $HealthProgress;
+onready var commandMenu = $CommandMenu;
+onready var commandList = $CommandMenu/ColorRect/VBoxContainer
 
 func _ready() -> void:
 	Events.connect("shields_toggled", self, "_toggle_shield_sprite");
@@ -15,7 +17,7 @@ func _ready() -> void:
 	Events.connect("player_effect", self, "_on_player_effect");
 	var _health_change_connection = PlayerState.connect("ship_health_changed", self, "handle_health_changed");
 	Events.connect("active_ship_changed", self, "handle_ship_changed");
-	
+	Events.connect("command_menu_toggled", self, "handle_command_menu")
 # what on Earth is going on here?
 func _on_Player_energy_changed(new_energy) -> void:
 	Hud.energyBar._on_Player_energy_changed(new_energy);
@@ -72,3 +74,22 @@ func handle_ship_changed():
 func _process(_delta: float) -> void:
 	if PlayerState.active_ship:
 		$HealthText.text = str(PlayerState.active_ship.current_health) + "/" + str(PlayerState.active_ship.ship_max_health);
+
+func handle_command_menu():
+	if commandMenu.visible:
+		commandMenu.visible = false;
+		clear_command_list();
+		
+	else:
+		commandMenu.visible = true;
+		for ship_key in PlayerState.fleet:
+			var ship : Ship = FleetManager.get_ship(ship_key);
+			if ship != PlayerState.active_ship and not ship in commandList:
+				var button = Button.new();
+				button.text = ship.ship_name;
+				button.rect_size = Vector2(100, 20)
+				commandList.add_child(button)
+
+func clear_command_list():
+	for child in commandList.get_children():
+		child.queue_free();
