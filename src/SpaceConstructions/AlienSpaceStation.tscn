@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://src/SpaceConstructions/SpaceStation.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Sprites/SpaceConstructions/0058AlienSpaceStation.png" type="Texture" id=2]
+
+[node name="AlienSpaceStation" instance=ExtResource( 1 )]
+z_index = 1
+
+[node name="Sprite" parent="." index="0"]
+texture = ExtResource( 2 )
+
+[node name="DockingPort" parent="Sprite" index="0"]
+position = Vector2( 83, 0 )

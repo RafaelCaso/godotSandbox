@@ -26,6 +26,7 @@ enum {
 }
 
 var state = CHASE;
+var can_move : bool = true;
 var velocity = Vector2.ZERO;
 export var acceleration = 300;
 export var max_speed = 50;
@@ -35,31 +36,32 @@ func _physics_process(delta: float) -> void:
 		healthBar.visible = true;
 	healthBar.max_value = stats.max_health;
 	healthBar.value = stats.health;
-	match state:
-		IDLE:
-			seek_player();
-			if wanderController.get_time_left() == 0:
-				state = pick_random_state([IDLE, WANDER]);
-				wanderController.start_wander_timer(rand_range(1, 3))
-		WANDER:
-			seek_player();
-			if wanderController.get_time_left() == 0:
-				state = pick_random_state([IDLE, WANDER]);
-				wanderController.start_wander_timer(rand_range(1, 10))
-				
-			var direction = global_position.direction_to(wanderController.target_position);
-			velocity = Vector2.move_toward(direction * max_speed, acceleration * delta);
-			velocity = move_and_collide(velocity);
-				
-		CHASE:
-			var player = playerDetectionZone.player
-			if player != null:
-				var direction = global_position.direction_to(player.global_position);
+	if can_move:
+		match state:
+			IDLE:
+				seek_player();
+				if wanderController.get_time_left() == 0:
+					state = pick_random_state([IDLE, WANDER]);
+					wanderController.start_wander_timer(rand_range(1, 3))
+			WANDER:
+				seek_player();
+				if wanderController.get_time_left() == 0:
+					state = pick_random_state([IDLE, WANDER]);
+					wanderController.start_wander_timer(rand_range(1, 10))
+					
+				var direction = global_position.direction_to(wanderController.target_position);
 				velocity = Vector2.move_toward(direction * max_speed, acceleration * delta);
-				velocity = move_and_collide(velocity)
-			
-			else:
-				state = IDLE;
+				velocity = move_and_collide(velocity);
+					
+			CHASE:
+				var player = playerDetectionZone.player
+				if player != null:
+					var direction = global_position.direction_to(player.global_position);
+					velocity = Vector2.move_toward(direction * max_speed, acceleration * delta);
+					velocity = move_and_collide(velocity)
+				
+				else:
+					state = IDLE;
 
 func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 	is_being_hit = true;

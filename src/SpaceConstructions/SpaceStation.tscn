@@ -14,7 +14,7 @@ gravity = Vector3( 0, 0, 0 )
 initial_velocity = 103.82
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-color = Color( 0.956863, 0.996078, 0.0509804, 0.454902 )
+color = Color( 0.878431, 0.109804, 0.109804, 0.454902 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 203.662

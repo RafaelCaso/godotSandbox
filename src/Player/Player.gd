@@ -10,7 +10,8 @@ onready var fusionReactorCore = $FusionReactorCore;
 onready var laserSpawnPoint = $LaserSpawnPoint;
 onready var energyShield = $EnergyShield;
 
-const missilePath = "res://src/Weapons/GuidedMissile.tscn"
+#const missilePath = "res://src/Weapons/GuidedMissile.tscn"
+const missilePath = "res://Bubble.tscn"
 var MissileScene = preload(missilePath)
 
 var bolt = preload("res://src/Weapons/PlasmaBolt.tscn");
