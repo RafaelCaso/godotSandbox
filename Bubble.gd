@@ -52,6 +52,7 @@ func charge(delta):
 			$Area2D.scale += Vector2(1, 1) * delta;
 			$Area2D/CollisionShape2D.scale += Vector2(1, 1) * delta;
 	if Input.is_action_just_released("missile") and charging:
+		$Timer.start();
 		animation_speed = speed * 0.007;
 		mouse_pos = get_global_mouse_position();
 		direction = (mouse_pos - global_position).normalized();
@@ -64,7 +65,8 @@ func play_animation():
 
 
 func _on_Timer_timeout() -> void:
-	trapped_body.can_move = true;
+	if is_instance_valid(trapped_body):
+		trapped_body.can_move = true;
 	queue_free()
 
 func set_direction(target_pos):

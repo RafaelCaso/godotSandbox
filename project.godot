@@ -9,18 +9,36 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://src/Enemies/Enemy.gd"
+}, {
 "base": "Node",
 "class": "FusionReactorCore",
 "language": "GDScript",
 "path": "res://src/Attributes/FusionReactorCore.gd"
 }, {
-"base": "Node",
+"base": "RayCast2D",
+"class": "Laser",
+"language": "GDScript",
+"path": "res://src/Weapons/Laser.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://src/Player/Player.gd"
+}, {
+"base": "KinematicBody2D",
 "class": "Ship",
 "language": "GDScript",
 "path": "res://src/Ships/Ship.gd"
 } ]
 _global_script_class_icons={
+"Enemy": "",
 "FusionReactorCore": "",
+"Laser": "",
+"Player": "",
 "Ship": ""
 }
 

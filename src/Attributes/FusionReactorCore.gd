@@ -1,17 +1,33 @@
 extends Node
 class_name FusionReactorCore
 
-export var max_energy = 100 setget set_max_energy;
-export var energy_recharge = 10 setget set_energy_recharge;
+const frc_class_data = preload("res://src/Attributes/FRCDirectory.gd")
+
+export (float) var max_energy setget set_max_energy;
+export (float) var energy_recharge setget set_energy_recharge;
 var energy = max_energy setget set_energy
+
+var frc_name : String;
+var uuid : String;
+var classID : String;
 var energy_minimum = 0;
-var energy_recharge_rate = 10;
+var energy_recharge_rate;
 
 signal no_energy;
 signal has_energy;
 signal energy_changed(value)
 signal max_energy_changed(value)
 
+func _init(object_classID) -> void:
+	uuid = FleetManager.assign_uuid()
+	classID = object_classID;
+	if object_classID in frc_class_data.FRC_DATA:
+		var frc_data = frc_class_data.FRC_DATA[object_classID];
+		frc_name = frc_data["frc_name"]
+		max_energy = frc_data["max_energy"];
+		energy_recharge_rate = frc_data["energy_recharge_rate"]
+	set_energy(max_energy)
+	
 func set_max_energy(value):
 	max_energy = value;
 	self.energy = min(energy, max_energy);

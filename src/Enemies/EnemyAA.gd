@@ -17,6 +17,7 @@ var player_stats = PlayerStats;
 
 # when true: healthBar UI becomes visible
 # not used for handling damage
+# currently no logic for flipping BACK TO FALSE
 var is_being_hit = false;
 
 enum {

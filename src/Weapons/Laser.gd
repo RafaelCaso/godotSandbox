@@ -4,6 +4,7 @@
 # Use `is_casting` to make the laser fire and stop.
 # You can attach it to a weapon or a ship; the laser will rotate with its parent.
 extends RayCast2D
+class_name Laser
 
 const laserConfig = preload("res://src/Weapons/LaserDirectory.gd");
 

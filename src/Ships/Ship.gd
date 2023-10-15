@@ -1,4 +1,4 @@
-class_name Ship extends Node
+class_name Ship extends KinematicBody2D
 
 const ship_class_directory = preload("res://src/Ships/ShipDirectory.gd")
 
@@ -49,34 +49,51 @@ func _init(object_classID) -> void:
 		self.thrust_energy_consumption = ship_data["thrust_energy_consumption"];
 		self.weapon_capacity = ship_data["weapon_capacity"];
 		self.carrying_capacity = ship_data["carrying_capacity"];
+		self.fusion_reactor_core = FusionReactorCore.new(ship_data["frc"])
 	FleetManager.add_ship(self);
 
-# This might be redundant. Functionality moved to init
-# Can't think of a reason to use this function
-func configure_ship(body : Ship):
-	if body.classID in ship_class_directory.SHIP_DATA:
-		var ship_data = ship_class_directory.SHIP_DATA[body.classID];
-		body.ship_name = ship_data["ship_name"];
-		body.ship_type = ship_data["ship_type"];
-		body.ship_max_health = ship_data["ship_max_health"];
-		# **This will likely need to change or else every time the ship is loaded it will reset to max health
-		body.current_health = body.ship_max_health;
-		body.sprite = load(ship_data["texture_path"]);
-		body.thrust = ship_data["thrust"];
-		body.deceleration_speed = ship_data["deceleration_speed"];
-		body.strafe_force = ship_data["strafe_force"];
-		body.max_speed = ship_data["max_speed"];
-		body.thrust_energy_consumption = ship_data["thrust_energy_consumption"];
-		body.weapon_capacity = ship_data["weapon_capacity"];
-		body.carrying_capacity = ship_data["carrying_capacity"];
-	else:
-		print("Error: Ship key not found in SHIP_DATA");
 
-#func _process():
-#	var mouse_pos = get_global_mouse_position();
-#	var dir_to_mouse = mouse_pos - self.global_position;
-#	if can_move:
+func _physics_process(_delta: float) -> void:
+	velocity = move_and_slide(velocity).clamped(max_speed);
+
+func handle_input(delta, rotation):
+	# Forward Propulsion
+	if Input.is_action_pressed("main_propulsion"):
+		if fusion_reactor_core.has_energy(20):
+			main_propulsion(delta, true, rotation);
+		else:
+			main_propulsion(delta, false, rotation);
+	
+	# Deceleration
+	if Input.is_action_pressed("main_deceleration"):
+		velocity = velocity.normalized() * max(0, velocity.length() - deceleration_speed * delta)
 		
+	
+	# Strafe left
+	if Input.is_action_pressed("ui_left"):
+		var left_direction = Vector2(-1, 0).rotated(rotation)
+		velocity += left_direction * strafe_force * delta;
+	
+	# Strafe right
+	if Input.is_action_pressed("ui_right"):
+		var right_direction = Vector2(1, 0).rotated(rotation)
+		velocity += right_direction * strafe_force * delta;
+	
+	# Strafe down
+	if Input.is_action_pressed("strafe_down"):
+		var down_direction = Vector2(0, 1).rotated(rotation);
+		velocity += down_direction * strafe_force * delta;
+
+func main_propulsion(delta, hasSufficientEnergy, rotation):
+	# Convert the current rotation to a vector2 direction and apply forward thrust
+	var main_thrust;
+	if hasSufficientEnergy:
+		main_thrust = thrust;
+	else:
+		main_thrust = thrust / 5;
+	var direction = Vector2(0, -1).rotated(rotation)
+	velocity += direction * main_thrust
+	fusion_reactor_core.deplete_energy(thrust_energy_consumption * delta)
 
 func set_max_health(max_limit_value):
 	ship_max_health = max_limit_value;
@@ -95,17 +112,25 @@ func increase_current_health(change_value):
 		Events.emit_signal("prompt_player", "Repairing Ship...");
 		current_health = min(current_health + change_value, ship_max_health);
 
-#func handle_movement_input(delta):
-#	if Input.is_action_pressed("main_propulsion"):
-#		if fusion_reactor_core.has_energy(10):
-#			main_propulsion(delta, true);
-#		else:
-#			main_propulsion(delta, false);
-#
-#func main_propulsion(delta, has_energy):
-#	var current_thrust;
-#	if has_energy:
-#		current_thrust = self.thrust;
+
+
+# This might be redundant. Functionality moved to init
+# Can't think of a reason to use this function
+#func configure_ship(body : Ship):
+#	if body.classID in ship_class_directory.SHIP_DATA:
+#		var ship_data = ship_class_directory.SHIP_DATA[body.classID];
+#		body.ship_name = ship_data["ship_name"];
+#		body.ship_type = ship_data["ship_type"];
+#		body.ship_max_health = ship_data["ship_max_health"];
+#		# **This will likely need to change or else every time the ship is loaded it will reset to max health
+#		body.current_health = body.ship_max_health;
+#		body.sprite = load(ship_data["texture_path"]);
+#		body.thrust = ship_data["thrust"];
+#		body.deceleration_speed = ship_data["deceleration_speed"];
+#		body.strafe_force = ship_data["strafe_force"];
+#		body.max_speed = ship_data["max_speed"];
+#		body.thrust_energy_consumption = ship_data["thrust_energy_consumption"];
+#		body.weapon_capacity = ship_data["weapon_capacity"];
+#		body.carrying_capacity = ship_data["carrying_capacity"];
 #	else:
-#		current_thrust = self.thrust / 5;
-#	var direction = Vector2(0, -1).rotated(rotation);
+#		print("Error: Ship key not found in SHIP_DATA");

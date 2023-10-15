@@ -5,9 +5,8 @@ onready var laser_scene = $LaserBeam2D;
 onready var station_menu = $StationMenu;
 onready var docking_tween = $DockingTween;
 onready var docking_port = $Sprite/DockingPort
-onready var radarDetector = $RadarDetector
 
-var location_name = "Earth";
+var location_name = "Deep Space Earth";
 
 var rotation_speed : float = 0.1;
 var docked_rotation_offset = 0.0;
@@ -86,7 +85,7 @@ func _input(event: InputEvent) -> void:
 		is_docked = true;
 		player.can_move = false;
 		
-		player.velocity = Vector2.ZERO
+		player.playerShip.velocity = Vector2.ZERO
 		
 		var angle_to_center = atan2(
 			docking_port.global_position.y - sprite.global_position.y,

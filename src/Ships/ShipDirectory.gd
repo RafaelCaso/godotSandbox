@@ -14,6 +14,7 @@ const SHIP_DATA = {
 		"max_speed" : 1000,
 		"thrust_energy_consumption" : 11,
 		"rotation_speed": 400,
+		"frc" : "frc_0000",
 	},
 	
 	"ship_0001" : {
@@ -29,6 +30,7 @@ const SHIP_DATA = {
 		"max_speed" : 10000,
 		"thrust_energy_consumption" : 150,
 		"rotation_speed": 200,
+		"frc" : "frc_0002",
 	},
 	
 	"ship_0002" : {
@@ -44,6 +46,7 @@ const SHIP_DATA = {
 		"max_speed" : 100,
 		"thrust_energy_consumption" : 11,
 		"rotation_speed": 100,
+		"frc" : "frc_0000",
 	},
 	
 	"ship_0003" : {
@@ -59,5 +62,6 @@ const SHIP_DATA = {
 		"max_speed" : 500,
 		"thrust_energy_consumption" : 11,
 		"rotation_speed": 100,
+		"frc" : "frc_0001",
 	}
 }

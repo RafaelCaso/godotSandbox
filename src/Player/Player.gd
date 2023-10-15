@@ -1,3 +1,4 @@
+class_name Player
 extends KinematicBody2D
 
 
@@ -6,7 +7,6 @@ onready var equippedLaser = null;
 onready var playerShip = null;
 onready var playerSprite = $Sprite;
 onready var hurtBox = $Hurtbox;
-onready var fusionReactorCore = $FusionReactorCore;
 onready var laserSpawnPoint = $LaserSpawnPoint;
 onready var energyShield = $EnergyShield;
 
@@ -29,7 +29,6 @@ func _ready() -> void:
 #	var _connectPlayerNoHealth = PlayerStats.connect("no_health", self, "queue_free");
 	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "queue_free")
 	var _connectShipChanged = Events.connect("active_ship_changed", self, "handle_ship_change");
-	fusionReactorCore.connect("energy_changed", Hud, "_on_Player_energy_changed");
 	energyShield.connect("shield_hit", self, "on_shield_hit")
 	
 	if PlayerState.active_ship == null:
@@ -38,6 +37,7 @@ func _ready() -> void:
 		PlayerState.active_ship = playerShip;
 	else:
 		playerShip = PlayerState.active_ship;
+	playerShip.fusion_reactor_core.connect("energy_changed", Hud, "_on_Player_energy_changed");
 	# configure ship sprite and position ship
 	playerSprite.texture = playerShip.sprite;
 	playerSprite.global_position = global_position;
@@ -62,10 +62,10 @@ func _process(delta: float) -> void:
 	if can_move:
 		rotation = direction_to_mouse.angle() + PI/2;
 
-	if Input.is_action_pressed("laser") && fusionReactorCore.has_energy(25) && can_move:
+	if Input.is_action_pressed("laser") && playerShip.fusion_reactor_core.has_energy(25) && can_move:
 #		*****NEED TO FIGURE OUT BOLT LOGIC
 #		fire_bolt()
-		fusionReactorCore.deplete_energy(equippedLaser.laser_energy_consumption * delta);
+		playerShip.fusion_reactor_core.deplete_energy(equippedLaser.laser_energy_consumption * delta);
 		fire_laser();
 	else:
 		stop_laser();
@@ -95,13 +95,13 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("shields"):
 		if energyShield.shields_active == true:
 			energyShield.shields_down();
-			fusionReactorCore.set_max_energy(100)
+			playerShip.fusion_reactor_core.set_max_energy(100)
 		elif energyShield.shields_active == false:
-			fusionReactorCore.set_max_energy(energyShield.required_frc_energy);
+			playerShip.fusion_reactor_core.set_max_energy(energyShield.required_frc_energy);
 			energyShield.play_animation();
 			energyShield.shields_up()
 	
-	fusionReactorCore.set_energy_recharge(fusionReactorCore.energy_recharge_rate * delta)
+	playerShip.fusion_reactor_core.set_energy_recharge(playerShip.fusion_reactor_core.energy_recharge_rate * delta)
 
 func _physics_process(delta: float) -> void:
 	# It looks like the below problem fixed itself which is just fascinatingly frustrating
@@ -109,20 +109,23 @@ func _physics_process(delta: float) -> void:
 	
 	
 	if can_move:
-		handle_input(delta);
-		velocity = move_and_slide(velocity).clamped(playerShip.max_speed);
+		playerShip.handle_input(delta, rotation)
+		velocity = move_and_slide(playerShip.velocity)
+#		velocity = playerShip.physics_process_update(delta, rotation)
+#		handle_input(delta);
+#		velocity = move_and_slide(velocity).clamped(playerShip.max_speed);
 		
 
-func main_propulsion(delta, hasSufficientEnergy):
-	# Convert the current rotation to a vector2 direction and apply forward thrust
-	var thrust;
-	if hasSufficientEnergy:
-		thrust = playerShip.thrust;
-	else:
-		thrust = playerShip.thrust / 5;
-	var direction = Vector2(0, -1).rotated(rotation)
-	velocity += direction * thrust
-	fusionReactorCore.deplete_energy(playerShip.thrust_energy_consumption * delta)
+#func main_propulsion(delta, hasSufficientEnergy):
+#	# Convert the current rotation to a vector2 direction and apply forward thrust
+#	var thrust;
+#	if hasSufficientEnergy:
+#		thrust = playerShip.thrust;
+#	else:
+#		thrust = playerShip.thrust / 5;
+#	var direction = Vector2(0, -1).rotated(rotation)
+#	velocity += direction * thrust
+#	playerShip.fusion_reactor_core.deplete_energy(playerShip.thrust_energy_consumption * delta)
 
 func fire_laser():
 	if not equippedLaser.is_casting:
@@ -157,33 +160,33 @@ func change_ship(ship_uuid : String):
 	playerSprite.texture = new_ship.sprite.texture;
 
 # Any movement based input should be placed here. Function then called in _physics_process()
-func handle_movement_input(delta):
-	# Forward Propulsion
-	if Input.is_action_pressed("main_propulsion"):
-		if fusionReactorCore.has_energy(10):
-			main_propulsion(delta, true);
-		else:
-			main_propulsion(delta, false);
-	
-	# Deceleration
-	if Input.is_action_pressed("main_deceleration"):
-		velocity = velocity.normalized() * max(0, velocity.length() - playerShip.deceleration_speed * delta)
-		
-	
-	# Strafe left
-	if Input.is_action_pressed("ui_left"):
-		var left_direction = Vector2(-1, 0).rotated(rotation)
-		velocity += left_direction * playerShip.strafe_force * delta;
-	
-	# Strafe right
-	if Input.is_action_pressed("ui_right"):
-		var right_direction = Vector2(1, 0).rotated(rotation)
-		velocity += right_direction * playerShip.strafe_force * delta;
-	
-	# Strafe down
-	if Input.is_action_pressed("strafe_down"):
-		var down_direction = Vector2(0, 1).rotated(rotation);
-		velocity += down_direction * playerShip.strafe_force * delta;
+#func handle_movement_input(delta):
+#	# Forward Propulsion
+#	if Input.is_action_pressed("main_propulsion"):
+#		if playerShip.fusion_reactor_core.has_energy(10):
+#			main_propulsion(delta, true);
+#		else:
+#			main_propulsion(delta, false);
+#
+#	# Deceleration
+#	if Input.is_action_pressed("main_deceleration"):
+#		velocity = velocity.normalized() * max(0, velocity.length() - playerShip.deceleration_speed * delta)
+#
+#
+#	# Strafe left
+#	if Input.is_action_pressed("ui_left"):
+#		var left_direction = Vector2(-1, 0).rotated(rotation)
+#		velocity += left_direction * playerShip.strafe_force * delta;
+#
+#	# Strafe right
+#	if Input.is_action_pressed("ui_right"):
+#		var right_direction = Vector2(1, 0).rotated(rotation)
+#		velocity += right_direction * playerShip.strafe_force * delta;
+#
+#	# Strafe down
+#	if Input.is_action_pressed("strafe_down"):
+#		var down_direction = Vector2(0, 1).rotated(rotation);
+#		velocity += down_direction * playerShip.strafe_force * delta;
 
 
 
@@ -225,12 +228,12 @@ func handle_item_input(_delta):
 				break;
 
 func handle_input(delta):
-	handle_movement_input(delta);
+#	handle_movement_input(delta);
 	handle_item_input(delta);
 
 func on_shield_hit():
-	fusionReactorCore.energy -= 50;
-	if fusionReactorCore.energy <= 1:
+	playerShip.fusion_reactor_core.energy -= 50;
+	if playerShip.fusion_reactor_core.energy <= 1:
 		energyShield.shield_offline();
 
 # called when Events.emit_signal("active_ship_changed") emitted

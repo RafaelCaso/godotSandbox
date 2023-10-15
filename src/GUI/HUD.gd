@@ -90,6 +90,8 @@ func handle_command_menu():
 				button.rect_size = Vector2(100, 20)
 				commandList.add_child(button)
 
+
 func clear_command_list():
 	for child in commandList.get_children():
 		child.queue_free();
+
