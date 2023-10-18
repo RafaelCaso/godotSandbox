@@ -35,6 +35,7 @@ func _ready() -> void:
 	laser_scene.global_position = self.global_position;
 
 
+
 func _physics_process(delta: float) -> void:
 	if is_being_hit:
 		healthBar.visible = true;

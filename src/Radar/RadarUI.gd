@@ -28,7 +28,8 @@ func remove_object(object):
 
 func _physics_process(_delta: float) -> void:
 	player_sprite.position = size;
-	player_position = player.global_position;
+#	player_position = player.global_position;
+	player_position = PlayerState.active_ship.global_position;
 	
 	for object in objects.keys():
 		if is_instance_valid(object):

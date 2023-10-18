@@ -9,6 +9,16 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Particles2D",
+"class": "CastingParticles2D",
+"language": "GDScript",
+"path": "res://src/Weapons/process_materials/CastingParticles2D.gd"
+}, {
+"base": "Particles2D",
+"class": "CollisionParticles2D",
+"language": "GDScript",
+"path": "res://src/Weapons/process_materials/CollisionParticles2D.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Enemy",
 "language": "GDScript",
@@ -29,16 +39,24 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/Player/Player.gd"
 }, {
+"base": "Area2D",
+"class": "Radar",
+"language": "GDScript",
+"path": "res://src/Radar/Radar.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Ship",
 "language": "GDScript",
 "path": "res://src/Ships/Ship.gd"
 } ]
 _global_script_class_icons={
+"CastingParticles2D": "",
+"CollisionParticles2D": "",
 "Enemy": "",
 "FusionReactorCore": "",
 "Laser": "",
 "Player": "",
+"Radar": "",
 "Ship": ""
 }
 
@@ -65,7 +83,6 @@ FleetManager="*res://src/Utility/FleetManager.gd"
 window/size/width=1920
 window/size/height=1080
 window/size/resizable=false
-window/size/fullscreen=true
 window/size/test_width=1920
 window/size/test_height=1080
 

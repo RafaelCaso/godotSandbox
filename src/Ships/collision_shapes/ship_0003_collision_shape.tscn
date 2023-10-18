@@ -1,0 +1,8 @@
+[gd_scene format=2]
+
+[node name="ship_0003_area" type="Area2D"]
+collision_layer = 67
+collision_mask = 3
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -1, -110, 8, -110, 19, -99, 19, -83, 11, -76, 11, -75, 28, -68, 28, -65, 27, -65, 23, -36, 27, -27, 39, -20, 68, 33, 34, 33, 17, 59, 16, 59, 0, 27, -2, 27, -18, 59, -19, 59, -36, 33, -70, 33, -41, -20, -29, -27, -25, -36, -29, -65, -30, -65, -30, -68, -13, -75, -13, -76, -21, -83, -21, -99, -10, -110 )

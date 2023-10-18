@@ -1,3 +1,4 @@
+class_name Radar
 extends Area2D
 
 var asteroid_icon = preload("res://Assets/Sprites/Radar/radar_asteroid.png");

@@ -1,0 +1,3 @@
+extends Particles2D
+class_name CollisionParticles2D
+

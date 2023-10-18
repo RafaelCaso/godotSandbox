@@ -21,3 +21,5 @@ signal player_hit();
 signal no_health;
 # warning-ignore:unused_signal
 signal active_ship_changed;
+# warning-ignore:unused_signal
+signal connect_camera(remote_path)

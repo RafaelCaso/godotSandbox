@@ -1,16 +1,13 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/World/Planet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/SpaceConstructions/WarpGate.tscn" type="PackedScene" id=3]
-[ext_resource path="res://src/SpaceConstructions/SpaceStation.tscn" type="PackedScene" id=4]
 [ext_resource path="res://src/Items/MissilePickup.tscn" type="PackedScene" id=5]
 [ext_resource path="res://src/Cameras/PlayerCamera.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/World/LocalStar.tscn" type="PackedScene" id=7]
 [ext_resource path="res://src/World/Background.tscn" type="PackedScene" id=8]
 [ext_resource path="res://src/World/AsteroidBig.tscn" type="PackedScene" id=9]
-[ext_resource path="res://src/Enemies/EnemyAB.tscn" type="PackedScene" id=10]
-[ext_resource path="res://src/Enemies/EnemyAA.tscn" type="PackedScene" id=12]
 
 [node name="World" type="Node2D"]
 
@@ -23,43 +20,6 @@ position = Vector2( 1554.96, 1009.2 )
 scale = Vector2( 2.46747, 2.23094 )
 z_index = 1
 collision_mask = 65
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Actors/Player"]
-position = Vector2( 0.998322, -0.420654 )
-remote_path = NodePath("../../../Camera2D")
-update_rotation = false
-
-[node name="Enemies" type="YSort" parent="Actors"]
-
-[node name="EnemyAA" parent="Actors/Enemies" instance=ExtResource( 12 )]
-position = Vector2( -3444.57, 3237.32 )
-
-[node name="EnemyAB" parent="Actors/Enemies" instance=ExtResource( 10 )]
-position = Vector2( 6683.89, 2864.74 )
-
-[node name="EnemyAA2" parent="Actors/Enemies" instance=ExtResource( 12 )]
-position = Vector2( 6719.58, 621.803 )
-
-[node name="EnemyAB2" parent="Actors/Enemies" instance=ExtResource( 10 )]
-position = Vector2( -3739.05, 1157.24 )
-
-[node name="EnemyAA3" parent="Actors/Enemies" instance=ExtResource( 12 )]
-position = Vector2( -4727.36, -8238.89 )
-
-[node name="EnemyAB3" parent="Actors/Enemies" instance=ExtResource( 10 )]
-position = Vector2( -2003.38, -8026.69 )
-
-[node name="EnemyAA4" parent="Actors/Enemies" instance=ExtResource( 12 )]
-position = Vector2( 10248.9, -7170.48 )
-
-[node name="EnemyAB4" parent="Actors/Enemies" instance=ExtResource( 10 )]
-position = Vector2( 12386.2, -5369.22 )
-
-[node name="EnemyAA5" parent="Actors/Enemies" instance=ExtResource( 12 )]
-position = Vector2( -5128.93, 14827 )
-
-[node name="EnemyAB5" parent="Actors/Enemies" instance=ExtResource( 10 )]
-position = Vector2( -1927.53, 15081.2 )
 
 [node name="Background" parent="." instance=ExtResource( 8 )]
 position = Vector2( 235, 141 )
@@ -77,18 +37,14 @@ path = "res://TestWorld.tscn"
 [node name="MissilePickup" parent="." instance=ExtResource( 5 )]
 position = Vector2( 1174, 129 )
 
-[node name="SpaceStation" parent="." instance=ExtResource( 4 )]
-position = Vector2( 452, 2007 )
-z_index = 10
-
-[node name="Camera2D" parent="." instance=ExtResource( 6 )]
-position = Vector2( 957.103, 542.621 )
-rotation = 0.0
-scale = Vector2( 1.10602, 0.90414 )
-
 [node name="LocalStar" parent="." instance=ExtResource( 7 )]
 position = Vector2( 9332, 426 )
 scale = Vector2( 10, 10 )
 
 [node name="AsteroidBig" parent="." instance=ExtResource( 9 )]
 position = Vector2( 264, 737 )
+
+[node name="Camera2D" parent="." instance=ExtResource( 6 )]
+position = Vector2( 957.102, 542.621 )
+rotation = 0.0
+scale = Vector2( 1.10602, 0.90414 )

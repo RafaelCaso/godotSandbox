@@ -27,3 +27,10 @@ func _input(event: InputEvent) -> void:
 			is_planet_selected = true;
 			PlayerState.object_selected = true;
 			$ColorRect.visible = true;
+
+
+func _on_Area2D_body_entered(body: Node) -> void:
+	print(body)
+	
+	if body.is_in_group("player"):
+		print("player entered area2d")

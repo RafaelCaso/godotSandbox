@@ -11,6 +11,7 @@ func create_hit_effect():
 	var world = get_tree().current_scene;
 	world.add_child(effect);
 	effect.global_position = global_position;
+	print(PlayerState.active_ship.current_health)
 
 # Give Player a short invincibility buff after receiving damage
 # Simple boolean flag which is checked in the attacking entity's script
