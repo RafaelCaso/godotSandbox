@@ -7,10 +7,9 @@ onready var stats = $Stats;
 onready var playerDetectionZone = $PlayerDetectionZone;
 onready var hurtBox = $Hurtbox;
 onready var wanderController = $WanderController
-onready var laser_scene = $EnemyLaser
+#onready var laser_scene = $EnemyLaser
 onready var healthBar = $EnemyHealthBar;
 
-signal enemy_died();
 
 # when true: healthBar UI becomes visible
 # not used for handling damage
@@ -22,6 +21,8 @@ enum {
 	CHASE
 }
 
+var laser_scene : LaserBeam = null;
+
 var state = CHASE;
 var velocity = Vector2.ZERO;
 var can_move : bool = true;
@@ -30,8 +31,10 @@ export var acceleration = 300;
 export var max_speed = 50;
 
 func _ready() -> void:
+	stats.connect("enemy_died", self, "_on_Stats_no_health")
 	$Timer.start();
-	laser_scene.configure_laser("laser_0003")
+	laser_scene = LaserBeam.new("laser_0003", "enemy")
+	add_child(laser_scene);
 	laser_scene.global_position = self.global_position;
 
 
@@ -96,7 +99,6 @@ func _on_Stats_no_health() -> void:
 	# not sure why global_position needs to be adjusted, but it does
 	# need to find the source for this
 	loot_box_instance.global_position = global_position - Vector2(100, 50);
-	emit_signal("enemy_died");
 	hurtBox.create_hit_effect();
 	queue_free();
 
@@ -115,9 +117,10 @@ func apply_knockback_from(position: Vector2, force: float) -> void:
 
 
 func _on_Hitbox_area_entered(_area: Area2D) -> void:
+	#****** NEED TO CHANGE TO if area.get_parent().is_in_group("player"): etc
 	PlayerStats.health -= 1;
 	hurtBox.create_hit_effect();
-	Events.emit_signal("player_hit");
+
 	
 
 
@@ -129,8 +132,11 @@ func _on_Timer_timeout() -> void:
 			shoot_at_player(player);
 	else:
 		stop_shooting();
+
 func shoot_at_player(player):
-	laser_scene.look_at(player.global_position);
+	var laser_direction = player.global_position - laser_scene.global_position;
+	var angle = atan2(laser_direction.y, laser_direction.x)
+	laser_scene.global_rotation = angle + (PI/2)
 	laser_scene.is_casting = true;
 
 func stop_shooting():
@@ -139,5 +145,5 @@ func stop_shooting():
 
 func _on_Hitbox_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
-		PlayerState.damage_ship(10);
-		print(body.playerShip.current_health);
+		PlayerState.damage_ship(10, body);
+		Events.emit_signal("player_hit");

@@ -4,11 +4,8 @@
 [ext_resource path="res://src/Player/Player.gd" type="Script" id=2]
 [ext_resource path="res://src/Radar/Radar.tscn" type="PackedScene" id=7]
 
-[node name="Player" type="KinematicBody2D" groups=["player"]]
+[node name="Player" type="Node" groups=["player"]]
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="LaserSpawnPoint" type="Position2D" parent="."]
 position = Vector2( 0, -40 )

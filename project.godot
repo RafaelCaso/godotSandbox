@@ -19,22 +19,17 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/Weapons/process_materials/CollisionParticles2D.gd"
 }, {
-"base": "KinematicBody2D",
-"class": "Enemy",
-"language": "GDScript",
-"path": "res://src/Enemies/Enemy.gd"
-}, {
 "base": "Node",
 "class": "FusionReactorCore",
 "language": "GDScript",
 "path": "res://src/Attributes/FusionReactorCore.gd"
 }, {
 "base": "RayCast2D",
-"class": "Laser",
+"class": "LaserBeam",
 "language": "GDScript",
-"path": "res://src/Weapons/Laser.gd"
+"path": "res://src/Weapons/laser_beam/LaserBeam.gd"
 }, {
-"base": "KinematicBody2D",
+"base": "Node",
 "class": "Player",
 "language": "GDScript",
 "path": "res://src/Player/Player.gd"
@@ -52,9 +47,8 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "CastingParticles2D": "",
 "CollisionParticles2D": "",
-"Enemy": "",
 "FusionReactorCore": "",
-"Laser": "",
+"LaserBeam": "",
 "Player": "",
 "Radar": "",
 "Ship": ""
@@ -228,6 +222,16 @@ b={
 command_menu={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":82,"unicode":0,"echo":false,"script":null)
+ ]
+}
+toggledown={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":44,"unicode":0,"echo":false,"script":null)
+ ]
+}
+toggleup={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":46,"unicode":0,"echo":false,"script":null)
  ]
 }
 

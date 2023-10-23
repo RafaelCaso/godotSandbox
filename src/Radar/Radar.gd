@@ -7,6 +7,7 @@ var station_icon = preload("res://Assets/Sprites/Radar/radar_station.png");
 var warp_gate_icon = preload("res://Assets/Sprites/Radar/radar_warp_gate.png");
 var planet_icon = preload("res://Assets/Sprites/Radar/radar_planet.png");
 var star_icon = preload("res://Assets/Sprites/Radar/radar_star.png");
+var remote_ship_icon = preload("res://Assets/Sprites/Radar/radar_remote_ship.png")
 
 onready var radarUI = $CanvasLayer/RadarUI;
 
@@ -25,3 +26,5 @@ func _on_Radar_body_entered(body: Node) -> void:
 		radarUI.add_object(body, planet_icon);
 	elif body.is_in_group("star"):
 		radarUI.add_object(body, star_icon);
+	elif body.is_in_group("remote"):
+		radarUI.add_object(body, remote_ship_icon);

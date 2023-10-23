@@ -43,12 +43,13 @@ func _on_ShipsBtn_button_up() -> void:
 		var item_count = 0;
 		for ship_key in PlayerState.fleet:
 			var ship = FleetManager.get_ship(ship_key)
-			if ship.classID in SHIP_DIRECTORY.SHIP_DATA:
-				itemList.add_item(ship.ship_name);
-				ships.append(ship)
-				item_count += 1;
-		resize_itemList_rect(item_count);
-		current_open_menu = "ships";
+			if ship != PlayerState.active_ship:
+				if ship.classID in SHIP_DIRECTORY.SHIP_DATA:
+					itemList.add_item(ship.ship_name);
+					ships.append(ship)
+					item_count += 1;
+			resize_itemList_rect(item_count);
+			current_open_menu = "ships";
 	
 func _on_GameBtn_button_up() -> void:
 	if current_open_menu == "game_settings":
@@ -97,6 +98,7 @@ func _on_ItemList_item_selected(index: int) -> void:
 	var selected_ship = ships[index];
 	PlayerState.active_ship = selected_ship;
 	Events.emit_signal("active_ship_changed");
+	print(PlayerState.fleet)
 #	var change_to_ship = FleetManager.get_ship(selected_ship.uuid);
 
 	

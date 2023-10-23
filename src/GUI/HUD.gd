@@ -8,6 +8,7 @@ onready var playerPrompt = $MarginContainer/PlayerPrompt;
 onready var healthProgress = $HealthProgress;
 onready var commandMenu = $CommandMenu;
 onready var commandList = $CommandMenu/ColorRect/VBoxContainer
+onready var speedSlider = $HSlider
 
 func _ready() -> void:
 	Events.connect("shields_toggled", self, "_toggle_shield_sprite");
@@ -18,6 +19,15 @@ func _ready() -> void:
 	var _health_change_connection = PlayerState.connect("ship_health_changed", self, "handle_health_changed");
 	Events.connect("active_ship_changed", self, "handle_ship_changed");
 	Events.connect("command_menu_toggled", self, "handle_command_menu")
+	call_deferred("handle_ship_changed")
+	speedSlider.tick_count = 5
+
+	
+func _process(_delta: float) -> void:
+	if Input.is_action_pressed("toggleup"):
+		speedSlider.value += 10;
+	if Input.is_action_pressed("toggledown"):
+		speedSlider.value -= 10;
 # what on Earth is going on here?
 func _on_Player_energy_changed(new_energy) -> void:
 	Hud.energyBar._on_Player_energy_changed(new_energy);
@@ -58,7 +68,6 @@ func handle_health_changed(current_health):
 	healthProgress.max_value = PlayerState.active_ship.ship_max_health;
 	adjust_health_tween(current_health);
 	$HealthText.text = str(PlayerState.active_ship.current_health) + "/" + str(PlayerState.active_ship.ship_max_health);
-	print("signal detected. Health has changed")
 
 func adjust_health_tween(target_value):
 	$HealthProgress/Tween.stop_all();
@@ -69,11 +78,8 @@ func handle_ship_changed():
 	healthProgress.max_value = PlayerState.active_ship.ship_max_health;
 	healthProgress.value = PlayerState.active_ship.current_health;
 	$HealthText.text = str(PlayerState.active_ship.current_health) + "/" + str(PlayerState.active_ship.ship_max_health);
-
-# I don't like this logic being in process function
-func _process(_delta: float) -> void:
-	if PlayerState.active_ship:
-		$HealthText.text = str(PlayerState.active_ship.current_health) + "/" + str(PlayerState.active_ship.ship_max_health);
+	speedSlider.max_value = PlayerState.active_ship.max_speed
+	speedSlider.value = speedSlider.max_value
 
 func handle_command_menu():
 	if commandMenu.visible:
@@ -88,10 +94,18 @@ func handle_command_menu():
 				var button = Button.new();
 				button.text = ship.ship_name;
 				button.rect_size = Vector2(100, 20)
+				button.connect("button_up", self, "handle_command_btn", [ship_key])
 				commandList.add_child(button)
 
+func handle_command_btn(ship_key):
+	Events.emit_signal("add_remote_ship", ship_key);
 
 func clear_command_list():
 	for child in commandList.get_children():
 		child.queue_free();
 
+func speed_change():
+	pass
+
+func _on_HSlider_value_changed(value: float) -> void:
+	Events.emit_signal("speed_slider_changed", value)

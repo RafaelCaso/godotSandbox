@@ -3,7 +3,7 @@ extends Node
 export var max_health = 10 setget set_max_health;
 var health = max_health setget set_health;
 
-signal no_health;
+signal enemy_died;
 signal health_changed(value);
 signal max_health_changed(value);
 
@@ -20,7 +20,7 @@ func set_health(value):
 	health = value;
 	emit_signal("health_changed", health)
 	if health <= 0:
-		emit_signal("no_health");
+		emit_signal("enemy_died")
 
 func set_max_health(value):
 	max_health = value;

@@ -7,11 +7,18 @@ var min_zoom = Vector2(0.5, 0.5);
 var paused_sprite_fixed_offset = Vector2(0, -100);
 var prompt_player_fixed_offset = Vector2(0, 500);
 
+
 func _ready() -> void:
 	var _pauseConnection = GameManager.connect("game_paused", self, "_on_game_paused");
 	var _unpauseConnection = GameManager.connect("game_unpaused", self, "_on_game_unpaused");
 	var _shakeCameraConnection = Events.connect("player_hit", self, "_on_Player_hit" );
+	var _ship_change = Events.connect("active_ship_changed", self, "handle_ship_change");
 	Events.emit_signal("connect_camera", self.get_path())
+
+
+
+func handle_ship_change():
+	Events.emit_signal("connect_camera", self.get_path());
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

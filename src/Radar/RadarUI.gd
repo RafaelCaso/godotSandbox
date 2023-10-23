@@ -29,8 +29,12 @@ func remove_object(object):
 func _physics_process(_delta: float) -> void:
 	player_sprite.position = size;
 #	player_position = player.global_position;
-	player_position = PlayerState.active_ship.global_position;
 	
+	if PlayerState.active_ship != null and is_instance_valid(PlayerState.active_ship):
+		player_position = PlayerState.active_ship.global_position;
+	else:
+		player_position = Vector2(0, 0)
+
 	for object in objects.keys():
 		if is_instance_valid(object):
 			# if the object's distance relative to the player times the scale is more than the size of our radar, then the icon is invisible

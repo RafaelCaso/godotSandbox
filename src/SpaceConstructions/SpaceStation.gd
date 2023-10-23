@@ -1,13 +1,12 @@
 extends Node2D
 
 onready var sprite = $Sprite;
-onready var laser_scene = $LaserBeam2D;
 onready var station_menu = $StationMenu;
 onready var docking_tween = $DockingTween;
 onready var docking_port = $Sprite/DockingPort
 
 var location_name = "Deep Space Earth";
-
+var laser_scene : LaserBeam;
 var rotation_speed : float = 0.1;
 var docked_rotation_offset = 0.0;
 var is_docking_tween_active = false;
@@ -15,10 +14,16 @@ var is_docking_tween_active = false;
 var player_in_station = false;
 var is_docked = false;
 var player = null;
+var laser_timer : Timer = null;
 
 func _ready() -> void:
-	laser_scene.configure_laser("laser_0004");
+	laser_scene = LaserBeam.new("laser_0004", "player")
+	add_child(laser_scene)
 	laser_scene.global_position = self.global_position;
+	laser_timer = Timer.new();
+	var _connect_laser_timer = laser_timer.connect("timeout", self, "_on_LaserTimer_timeout")
+	add_child(laser_timer)
+	
 
 func _process(delta) -> void:
 	sprite.rotation += rotation_speed * delta;
@@ -41,16 +46,16 @@ func _on_Timer_timeout() -> void:
 	repair_ship();
 
 
-func _on_Area2D_body_entered(body: Node) -> void:
-	if body.is_in_group("player"):
-		player_in_station = true;
-		Events.emit_signal("prompt_player", "Press 'E' to Commence Docking")
-		player = body;
-
-
-func _on_Area2D_body_exited(body: Node) -> void:
-	if body.is_in_group("player"):
-		player_in_station = false;
+#func _on_Area2D_body_entered(body: Node) -> void:
+#	if body.is_in_group("player"):
+#		player_in_station = true;
+#		Events.emit_signal("prompt_player", "Press 'E' to Commence Docking")
+#		player = body;
+#
+#
+#func _on_Area2D_body_exited(body: Node) -> void:
+#	if body.is_in_group("player"):
+#		player_in_station = false;
 
 
 
@@ -58,18 +63,20 @@ func _on_LaserCoverage_body_entered(body: Node) -> void:
 	if body.is_in_group("enemies"):
 		var enemy = body;
 		shoot_at_enemy(enemy);
-		$LaserBeam2D/LaserTimer.start();
+		laser_timer.start(2);
 
 func _on_LaserCoverage_body_exited(body: Node) -> void:
 	if body.is_in_group("enemies"):
 		stop_shooting();
 
 func shoot_at_enemy(enemy : Node):
-	laser_scene.look_at(enemy.global_position);
-	laser_scene.is_casting = true;
+	var laser_direction = enemy.global_position - laser_scene.global_position;
+	var angle = atan2(laser_direction.y, laser_direction.x)
+	laser_scene.global_rotation = angle + (PI/2)
+	laser_scene.set_is_casting(true);
 
 func stop_shooting():
-	laser_scene.is_casting = false;
+	laser_scene.set_is_casting(false);
 
 
 func _on_LaserTimer_timeout() -> void:
@@ -85,7 +92,7 @@ func _input(event: InputEvent) -> void:
 		is_docked = true;
 		player.can_move = false;
 		
-		player.playerShip.velocity = Vector2.ZERO
+		player.velocity = Vector2.ZERO
 		
 		var angle_to_center = atan2(
 			docking_port.global_position.y - sprite.global_position.y,
@@ -125,5 +132,18 @@ func _on_DockingTween_tween_all_completed() -> void:
 	is_docking_tween_active = false;
 	station_menu.visible = true;
 	$DockingArea/Timer.start()
-	if player.playerShip.ship_type == "freighter":
-		player.playerShip.locations_visited.append(location_name);
+	if player.ship_type == "freighter":
+		player.locations_visited.append(location_name);
+
+
+func _on_DockingArea_area_entered(area: Area2D) -> void:
+	if area.get_parent().is_in_group("player"):
+		print("station docking area entered")
+		player_in_station = true;
+		Events.emit_signal("prompt_player", "Press 'E' to Commence Docking")
+		player = area.get_parent();
+
+
+func _on_DockingArea_area_exited(area: Area2D) -> void:
+	if area.get_parent().is_in_group("player"):
+		player_in_station = false;

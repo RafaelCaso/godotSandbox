@@ -29,8 +29,6 @@ func _input(event: InputEvent) -> void:
 			$ColorRect.visible = true;
 
 
-func _on_Area2D_body_entered(body: Node) -> void:
-	print(body)
-	
-	if body.is_in_group("player"):
+func _on_Area2D_area_entered(area: Area2D) -> void:
+	if area.get_parent() == PlayerState.active_ship:
 		print("player entered area2d")

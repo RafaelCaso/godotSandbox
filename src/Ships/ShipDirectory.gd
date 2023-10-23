@@ -16,6 +16,7 @@ const SHIP_DATA = {
 		"rotation_speed": 400,
 		"frc" : "frc_0000",
 		"collision_shape" : "res://src/Ships/collision_shapes/ship_0000_collision_shape.tscn",
+		"lsp1" : "res://src/Ships/laser_spawn_points/ship_0000_lsp1.tscn",
 	},
 	
 	"ship_0001" : {
@@ -33,6 +34,7 @@ const SHIP_DATA = {
 		"rotation_speed": 200,
 		"frc" : "frc_0002",
 		"collision_shape" : "res://src/Ships/collision_shapes/ship_0001_collision_shape.tscn",
+		"lsp1" : "res://src/Ships/laser_spawn_points/ship_0001_lsp1.tscn",
 	},
 	
 	"ship_0002" : {
@@ -50,6 +52,7 @@ const SHIP_DATA = {
 		"rotation_speed": 100,
 		"frc" : "frc_0000",
 		"collision_shape" : "res://src/Ships/collision_shapes/ship_0002_collision_shape.tscn",
+		"lsp1" : "res://src/Ships/laser_spawn_points/ship_0002_lsp1.tscn",
 	},
 	
 	"ship_0003" : {
@@ -67,6 +70,7 @@ const SHIP_DATA = {
 		"rotation_speed": 100,
 		"frc" : "frc_0001",
 		"collision_shape" : "res://src/Ships/collision_shapes/ship_0003_collision_shape.tscn",
+		"lsp1" : "res://src/Ships/laser_spawn_points/ship_0003_lsp1.tscn",
 	},
 	
 	"ship_0004" : {
@@ -84,5 +88,24 @@ const SHIP_DATA = {
 		"rotation_speed": 100,
 		"frc" : "frc_0001",
 		"collision_shape" : "res://src/Ships/collision_shapes/ship_0004_collision_shape.tscn",
+		"lsp1" : "res://src/Ships/laser_spawn_points/ship_0004_lsp1.tscn",
+	},
+	
+	"ship_0005" : {
+		"ship_name" : "Civilian Prototype",
+		"ship_type" : "civilian",
+		"ship_max_health" : 20.0,
+		"laser_capacity" : 0,
+		"carrying_capacity" : 100,
+		"texture_path" : "res://Assets/Sprites/Spaceships/0064CivilianShip.png",
+		"thrust" : 5,
+		"deceleration_speed" : 100,
+		"strafe_force" : 20,
+		"max_speed" : 200,
+		"thrust_energy_consumption" : 11,
+		"rotation_speed": 100,
+		"frc" : "frc_0001",
+		"collision_shape" : "res://src/Ships/collision_shapes/ship_0004_collision_shape.tscn",
+		"lsp1" : "res://src/Ships/laser_spawn_points/ship_0005_lsp1.tscn",
 	}
 }

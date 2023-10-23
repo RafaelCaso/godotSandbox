@@ -28,5 +28,7 @@ shape = SubResource( 1 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="magnet"]
 shape = SubResource( 2 )
 
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="area_entered" from="magnet" to="." method="_on_magnet_area_entered"]
 [connection signal="body_entered" from="magnet" to="." method="_on_magnet_body_entered"]

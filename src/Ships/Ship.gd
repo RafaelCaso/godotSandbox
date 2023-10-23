@@ -32,8 +32,22 @@ var can_move : bool = true;
 var equipped_lasers := [];
 
 var remote_transform : RemoteTransform2D = null;
+var connected_camera_path = "";
+
+var is_remote : bool = false;
+
+var target_position : Vector2 = Vector2();
+var orbit_center : Vector2 = Vector2();
+var orbit_distance := 400.0;
+var traveling : bool = false;
+var orbiting : bool = false;
+var firing : bool = false;
+var action_after_traveling = "";
+var target : Node = null;
+var orbit_speed = 1;
 
 var laser;
+var laser_spawn_point_1;
 # When player acquires a new ship it will be instantiated using Ship.new() and automatically assigned
 # a universally unique identifier and stored in PlayerState.fleet 
 # ********** May need to refactor -> Maybe don't want to add EVERY instantiated ship to fleet? *************
@@ -57,63 +71,36 @@ func _init(object_classID) -> void:
 		self.carrying_capacity = ship_data["carrying_capacity"];
 		self.fusion_reactor_core = FusionReactorCore.new(ship_data["frc"])
 		self.collision_shape = load((ship_data["collision_shape"]))
-		
+		self.laser_spawn_point_1 = load((ship_data["lsp1"]))
 
 	FleetManager.add_ship(self);
+
+func _ready() -> void:
+	var _connectSpeedSlider = Events.connect("speed_slider_changed", self, "handle_speed_slider")
+	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "queue_free")
+	add_to_group("player")
 	
 	sprite = Sprite.new();
 	add_child(sprite);
 	sprite.texture = sprite_texture
 	
-	remote_transform = RemoteTransform2D.new();
-	add_child(remote_transform);
-	
 	var collision_instance = collision_shape.instance();
-	collision_instance.set_monitoring(true)
 	add_child(collision_instance)
 	
+	remote_transform = RemoteTransform2D.new();
+	add_child(remote_transform);
+	Events.connect("connect_camera", self, "connect_camera")
 	
-	
-	laser = Laser.new("laser_0000");
+	laser = LaserBeam.new("laser_0001", "player");
+	var lsp1 = laser_spawn_point_1.instance();
+	add_child(lsp1);
+	laser.global_position = lsp1.global_position
 	add_child(laser);
 	
-#func snippets():
-#	equippedLaser = baseLaser;
-#	equippedLaser.configure_laser(PlayerState.equippedLaserID);
-#	equippedLaser.global_position = laserSpawnPoint.global_position;
-#	equippedLaser.cast_to = equippedLaser.to_local(global_position + (direction_to_mouse + Vector2(5,0).rotated(rotation)) * equippedLaser.max_length);
-#	equippedLaser.global_position = laserSpawnPoint.global_position;
-#
-#	if Input.is_action_pressed("laser") && playerShip.fusion_reactor_core.has_energy(25) && can_move:
-##		*****NEED TO FIGURE OUT BOLT LOGIC
-##		fire_bolt()
-#	if equippedLaser.is_equipped:
-#		playerShip.fusion_reactor_core.deplete_energy(equippedLaser.laser_energy_consumption * delta);
-#		fire_laser();
-#	else:
-#		stop_laser();
-#
-#	func fire_laser():
-#	if not equippedLaser.is_casting:
-#		equippedLaser.set_is_casting(true);
-#
-#	func stop_laser():
-#		if equippedLaser.is_casting:
-#			equippedLaser.set_is_casting(false);
-#	func equip_weapon(weapon):
-#		equippedLaser.configure_laser(weapon)
-#		PlayerState.equippedLaserID = weapon;
-#		equippedLaser.global_position.x = laserSpawnPoint.global_position.x;
-#		equippedLaser.global_position.y = laserSpawnPoint.global_position.y;
-func _ready() -> void:
-	Events.connect("connect_camera", self, "connect_camera")
-	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "queue_free")
-	add_to_group("player")
 	
 func connect_camera(camera_path):
 	remote_transform.remote_path = camera_path;
 	
-
 func _process(delta: float) -> void:
 	var mouse_pos = get_global_mouse_position();
 	var direction_to_mouse = (mouse_pos - global_position);
@@ -122,12 +109,70 @@ func _process(delta: float) -> void:
 		rotation = direction_to_mouse.angle() + PI/2;
 	fusion_reactor_core.set_energy_recharge(fusion_reactor_core.energy_recharge_rate * delta)
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	velocity = move_and_slide(velocity).clamped(max_speed);
+	if is_remote:
+		handle_remote_movement(delta);
+		if orbiting:
+			var angle_change = orbit_speed * delta;
+		
+			var current_angle = (global_position - orbit_center).angle() + angle_change;
+		
+			var new_pos = orbit_center + Vector2(cos(current_angle), sin(current_angle)) * orbit_distance;
+		
+			global_position = new_pos;
+			look_at(orbit_center);
+			rotation += PI/2;
+		
+
+# MOVE_TO_POSITION
+		if traveling:
+			var direction = (target_position - global_position).normalized();
+			var move_distance = max_speed * delta;
+			rotation = direction.angle() + (PI/2);
+
+			if global_position.distance_to(target_position) > move_distance:
+				global_position += direction * move_distance;
+			else:
+				global_position = target_position
+				target_position = Vector2();
+				traveling = false;
+				if action_after_traveling == "orbit":
+					var dir_to_ship = (global_position - orbit_center).normalized();
+					global_position = orbit_center + dir_to_ship * orbit_distance
+					orbiting = true;
 
 func handle_physics_process(delta):
 	handle_movement(delta);
 	
+
+func handle_remote_movement(delta):
+	if Input.is_action_just_pressed("laser"):
+		target_position = get_global_mouse_position();
+		traveling = true;
+		orbiting = false;
+		action_after_traveling = "stop";
+	
+	elif Input.is_action_just_pressed("missile"):
+		orbit_center = get_global_mouse_position();
+		var dir_to_ship = (global_position - orbit_center).normalized();
+		target_position = orbit_center + dir_to_ship * orbit_distance
+		traveling = true;
+		orbiting = false;
+		action_after_traveling = "orbit";
+	
+	if Input.is_action_just_pressed("interact"):
+		if firing:
+			laser.set_is_casting(false)
+			firing = false;
+		elif not firing:
+			firing = true
+			var laser_target = get_global_mouse_position().rotated(rotation)
+			if target and is_instance_valid(target):
+				laser.look_at(target.global_position);
+			else:
+				laser.look_at(laser_target)
+			laser.set_is_casting(true)
 
 func handle_movement(delta):
 	# Forward Propulsion
@@ -159,13 +204,15 @@ func handle_movement(delta):
 	
 	if Input.is_action_pressed("laser"):
 		fusion_reactor_core.deplete_energy(laser.laser_energy_consumption * delta)
-		laser.set_is_casting(true)
+		if fusion_reactor_core.has_energy(25):
+			fire_laser()
+		else:
+			Events.emit_signal("warn_player", "Lasers are offline!")
 	else:
-		laser.set_is_casting(false)
+		stop_laser()
 
 func fire_laser():
 	if not laser.is_casting:
-		
 		laser.set_is_casting(true);
 
 func stop_laser():
@@ -183,6 +230,8 @@ func main_propulsion(delta, hasSufficientEnergy):
 	velocity += direction * main_thrust
 	fusion_reactor_core.deplete_energy(thrust_energy_consumption * delta)
 
+#***** I DON'T THINK ANY OF THESE ARE NECESSARY EXCEPT FOR INCREASE_CURRENT_HEALTH
+#***** WHICH SHOULD BE MOVED TO PLAYERSTATE
 func set_max_health(max_limit_value):
 	ship_max_health = max_limit_value;
 
@@ -193,22 +242,25 @@ func decrease_current_health(change_value):
 	current_health = clamp(current_health - change_value, 0 , ship_max_health);
 	
 	if current_health == 0:
-		Events.emit_signal("no_health");
+		Events.emit_signal("no_health", self);
 
 func increase_current_health(change_value):
 	if current_health != ship_max_health:
 		Events.emit_signal("prompt_player", "Repairing Ship...");
 		current_health = min(current_health + change_value, ship_max_health);
 
-func add_laser(laser_to_equip : Laser):
-	if equipped_lasers.size() < laser_capacity:
-		equipped_lasers.append(laser_to_equip);
-	else:
-		Events.emit_signal("warn_player", "Cannot equip. This ship's weapons bay is at capacity!")
+#func add_laser(laser_to_equip : LaserBeam):
+#	if equipped_lasers.size() < laser_capacity:
+#		equipped_lasers.append(laser_to_equip);
+#	else:
+#		Events.emit_signal("warn_player", "Cannot equip. This ship's weapons bay is at capacity!")
+#
+#func remove_laser(laser_to_unequip : LaserBeam):
+#	if equipped_lasers.has(laser_to_unequip):
+#		equipped_lasers.erase(laser_to_unequip);
 
-func remove_laser(laser_to_unequip : Laser):
-	if equipped_lasers.has(laser_to_unequip):
-		equipped_lasers.erase(laser_to_unequip);
+func handle_speed_slider(speed_val):
+	max_speed = speed_val
 # This might be redundant. Functionality moved to init
 # Can't think of a reason to use this function
 #func configure_ship(body : Ship):

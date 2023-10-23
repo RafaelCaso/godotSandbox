@@ -9,7 +9,7 @@ func add_ship(ship : Ship):
 func get_ship(ship_uuid):
 	return PlayerState.fleet.get(ship_uuid, null);
 
-func _remove_ship(ship_uuid):
+func remove_ship(ship_uuid):
 	var _remove_ship = PlayerState.fleet.erase(ship_uuid);
 
 func generate_uuid() -> String:

@@ -9,11 +9,7 @@ onready var hurtBox = $Hurtbox;
 onready var wanderController = $WanderController
 onready var healthBar = $EnemyHealthBar;
 
-signal enemy_died();
 
-#DON'T THINK I NEED THIS ANYMORE
-#DAMAGE BEING HANDLED THROUGH PlayerState.damage_ship(hurt_value)
-var player_stats = PlayerStats;
 
 # when true: healthBar UI becomes visible
 # not used for handling damage
@@ -25,6 +21,9 @@ enum {
 	WANDER,
 	CHASE
 }
+
+func _ready() -> void:
+	stats.connect("enemy_died", self, "_on_Stats_no_health");
 
 var state = CHASE;
 var can_move : bool = true;
@@ -66,11 +65,6 @@ func _physics_process(delta: float) -> void:
 
 func _on_Hurtbox_area_entered(_area: Area2D) -> void:
 	is_being_hit = true;
-	
-	
-	
-
-
 
 func _on_Stats_no_health() -> void:
 	var loot_box_instance = loot_box_scene.instance();
@@ -78,7 +72,7 @@ func _on_Stats_no_health() -> void:
 	# not sure why global_position needs to be adjusted, but it does
 	# need to find the source for this
 	loot_box_instance.global_position = global_position - Vector2(100, 50);
-	emit_signal("enemy_died");
+#	emit_signal("enemy_died");
 	hurtBox.create_hit_effect();
 	queue_free();
 
@@ -96,13 +90,13 @@ func apply_knockback_from(position: Vector2, force: float) -> void:
 	velocity += knockback_direction.normalized() * force;
 
 
-func _on_Hitbox_area_entered(_area: Area2D) -> void:
-	player_stats.health -= 1;
+func _on_Hitbox_area_entered(area: Area2D) -> void:
+	if area.get_parent().is_in_group("player"):
+		PlayerState.damage_ship(10, area.get_parent())
 	hurtBox.create_hit_effect();
 	
 
 
 func _on_Hitbox_body_entered(body: Node) -> void:
 	if body.is_in_group("player"):
-		PlayerState.damage_ship(10)
-		print(body.playerShip.current_health);
+		PlayerState.damage_ship(10, body)

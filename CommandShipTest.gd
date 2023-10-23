@@ -29,9 +29,6 @@ func _physics_process(delta: float) -> void:
 		rotation += PI/2;
 		
 
-	
-	
-
 # MOVE_TO_POSITION
 	if traveling:
 		var direction = (target_position - global_position).normalized();

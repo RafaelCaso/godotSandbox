@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.869281, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 0.810458, 0.810458, 0.810458, 1, 1, 1, 1, 0.00392157 )
+
+[node name="LaserBeamLine2D" type="Line2D"]
+points = PoolVector2Array( 0, 0, 0, 0 )
+default_color = Color( 0.4, 0.501961, 1, 1 )
+gradient = SubResource( 1 )

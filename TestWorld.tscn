@@ -1,14 +1,14 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/SpaceConstructions/SpaceBarrier.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/Cameras/PlayerCamera.tscn" type="PackedScene" id=3]
-[ext_resource path="res://src/Enemies/EnemyAB.tscn" type="PackedScene" id=4]
-[ext_resource path="res://src/Enemies/EnemyAA.tscn" type="PackedScene" id=5]
+[ext_resource path="res://TestWorld.gd" type="Script" id=4]
 [ext_resource path="res://src/World/Background.tscn" type="PackedScene" id=6]
 [ext_resource path="res://src/SpaceConstructions/WarpGate.tscn" type="PackedScene" id=7]
 
 [node name="TestWorld" type="Node2D"]
+script = ExtResource( 4 )
 
 [node name="SpaceBarrier" parent="." instance=ExtResource( 2 )]
 position = Vector2( 492, 246 )
@@ -17,27 +17,11 @@ collision_layer = 1024
 collision_mask = 0
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 523, 339 )
-
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
-remote_path = NodePath("../../Camera2D")
 
 [node name="Camera2D" parent="." instance=ExtResource( 3 )]
-position = Vector2( 523, 339 )
+position = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
-
-[node name="EnemyAA" parent="." instance=ExtResource( 5 )]
-position = Vector2( -919, -303 )
-
-[node name="EnemyAB" parent="." instance=ExtResource( 4 )]
-position = Vector2( 1960, -157 )
-
-[node name="EnemyAB2" parent="." instance=ExtResource( 4 )]
-position = Vector2( -1001, 1108 )
-
-[node name="EnemyAA2" parent="." instance=ExtResource( 5 )]
-position = Vector2( 1739, 1169 )
 
 [node name="Background" parent="." instance=ExtResource( 6 )]
 

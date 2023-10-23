@@ -1,5 +1,5 @@
 class_name Player
-extends KinematicBody2D
+extends Node
 
 
 
@@ -22,9 +22,9 @@ var taking_damage = false;
 
 func _ready() -> void:
 	$Radar/CanvasLayer/RadarUI.player = self;
-#	var _connectPlayerNoHealth = PlayerStats.connect("no_health", self, "queue_free");
-	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "queue_free")
+	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "destroy_ship")
 	var _connectShipChanged = Events.connect("active_ship_changed", self, "handle_ship_change");
+	var _connectAddRemoteShip = Events.connect("add_remote_ship", self, "add_remote_ship");
 #	energyShield.connect("shield_hit", self, "on_shield_hit")
 	
 	if PlayerState.active_ship == null:
@@ -40,7 +40,22 @@ func _ready() -> void:
 #	playerSprite.texture = playerShip.sprite;
 #	playerSprite.global_position = global_position;
 	# initialize and configure ship weapon and position weapon
+	
+	var test_ship = Ship.new("ship_0001");
+	var test_ship2 = Ship.new("ship_0002");
+	var test_ship3 = Ship.new("ship_0005");
 
+func destroy_ship(ship_to_destroy : Ship):
+	if ship_to_destroy == PlayerState.active_ship:
+		#*******GAME OVER LOGIC************
+		self.queue_free();
+	FleetManager.remove_ship(ship_to_destroy.uuid)
+	ship_to_destroy.queue_free();
+
+func add_remote_ship(ship_key):
+	var remote_ship : Ship = FleetManager.get_ship(ship_key);
+	remote_ship.is_remote = true;
+	add_child(remote_ship);
 
 func _process(_delta: float) -> void:
 	
@@ -87,7 +102,6 @@ func _process(_delta: float) -> void:
 #	playerShip.fusion_reactor_core.set_energy_recharge(playerShip.fusion_reactor_core.energy_recharge_rate * delta)
 
 func _physics_process(delta: float) -> void:
-
 	playerShip.handle_physics_process(delta)
 
 
@@ -145,7 +159,11 @@ func change_ship(ship_uuid : String):
 
 # called when Events.emit_signal("active_ship_changed") emitted
 func handle_ship_change():
+	var current_pos = playerShip.global_position
+	remove_child(playerShip)
 	playerShip = PlayerState.active_ship;
+	playerShip.global_position = current_pos;
+	add_child(playerShip)
 
 
 func fire_bolt():
@@ -154,11 +172,6 @@ func fire_bolt():
 	bolt_instance.global_position = laserSpawnPoint.global_position;
 	bolt_instance.calculate_direction();
 
-# Not being used right now, but I want to move damage functionality
-# to _process so damage is continuous instead of bulk
-# this will require damage values to be lowered
-func take_damage(damage_value):
-	PlayerState.damage_ship(damage_value);
 
 #MOVED TO SHIP SCRIPT*************************************************
 #KEEPING IN CASE SHIT HITS METAPHORICAL FAN****************************
