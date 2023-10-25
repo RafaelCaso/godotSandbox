@@ -7,7 +7,7 @@ var uuid : String;
 
 var sprite : Sprite = null;
 var sprite_texture;
-var collision_shape = null
+var collision_shape = null;
 var ship_name : String;
 var classID : String;
 var ship_type : String;
@@ -16,11 +16,12 @@ var deceleration_speed : float;
 var strafe_force : float;
 var max_speed : float;
 var thrust_energy_consumption : float;
-var laser_capacity : int;
 var carrying_capacity : int;
 # ONLY NEEDED FOR ALTERNATE CONTROL SETTING
 var rotation_speed : float;
 var fusion_reactor_core : FusionReactorCore;
+var weapons_bay : WeaponsBay;
+
 var velocity = Vector2();
 var locations_visited : Array;
 
@@ -29,7 +30,6 @@ var current_health : float setget set_current_health
 
 var can_move : bool = true;
 
-var equipped_lasers := [];
 
 var remote_transform : RemoteTransform2D = null;
 var connected_camera_path = "";
@@ -46,15 +46,17 @@ var action_after_traveling = "";
 var target : Node = null;
 var orbit_speed = 1;
 
-var laser;
-var laser_spawn_point_1;
+#var laser;
+var laser_spawn_points_scene;
+
+var sufficient_energy : bool;
+
 # When player acquires a new ship it will be instantiated using Ship.new() and automatically assigned
 # a universally unique identifier and stored in PlayerState.fleet 
 # ********** May need to refactor -> Maybe don't want to add EVERY instantiated ship to fleet? *************
 func _init(object_classID) -> void:
 	self.uuid = FleetManager.assign_uuid();
 	self.classID = object_classID;
-	self.set_collision_layer_bit(1, true);
 	if object_classID in ship_class_directory.SHIP_DATA:
 		var ship_data = ship_class_directory.SHIP_DATA[object_classID];
 		self.ship_name = ship_data["ship_name"];
@@ -67,46 +69,60 @@ func _init(object_classID) -> void:
 		self.strafe_force = ship_data["strafe_force"];
 		self.max_speed = ship_data["max_speed"];
 		self.thrust_energy_consumption = ship_data["thrust_energy_consumption"];
-		self.laser_capacity = ship_data["laser_capacity"];
-		self.carrying_capacity = ship_data["carrying_capacity"];
+		self.weapons_bay = WeaponsBay.new(self);
+		weapons_bay.laser_capacity = ship_data["laser_capacity"];
 		self.fusion_reactor_core = FusionReactorCore.new(ship_data["frc"])
+		self.carrying_capacity = ship_data["carrying_capacity"];
 		self.collision_shape = load((ship_data["collision_shape"]))
-		self.laser_spawn_point_1 = load((ship_data["lsp1"]))
+		self.laser_spawn_points_scene = load((ship_data["lsp1"]))
+#**** I'M AN IDIOT. JUST CREATE A SCENE/RESOURCE/WHATEVER THAT IS AN ARRAY OF VECTOR2 AND USE THOSE TO POSITION LASERS
+#		weapons_bay.get_laser_spawn_points(laser_spawn_points.instance());
 
 	FleetManager.add_ship(self);
 
 func _ready() -> void:
 	var _connectSpeedSlider = Events.connect("speed_slider_changed", self, "handle_speed_slider")
 	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "queue_free")
+	var _connectWeaponsBayToFRC = weapons_bay.connect("firing", self, "handle_weapons_fire")
 	add_to_group("player")
 	
 	sprite = Sprite.new();
 	add_child(sprite);
 	sprite.texture = sprite_texture
 	
-	var collision_instance = collision_shape.instance();
+	var collision_instance : Area2D = collision_shape.instance();
+	collision_instance.collision_layer = 2
 	add_child(collision_instance)
 	
 	remote_transform = RemoteTransform2D.new();
 	add_child(remote_transform);
 	Events.connect("connect_camera", self, "connect_camera")
 	
-	laser = LaserBeam.new("laser_0001", "player");
-	var lsp1 = laser_spawn_point_1.instance();
-	add_child(lsp1);
-	laser.global_position = lsp1.global_position
-	add_child(laser);
-	
-	
+	add_child(weapons_bay)
+	# BELOW SHOULD MOVE TO INIT?
+	var laser_spawn_points_instance = laser_spawn_points_scene.instance()
+	var laser_spawn_points = laser_spawn_points_instance.get_spawn_points()
+	weapons_bay.set_positions(laser_spawn_points)
+
+func handle_weapons_fire(change_value):
+	if fusion_reactor_core.has_energy(change_value):
+		fusion_reactor_core.deplete_energy(change_value)
+
 func connect_camera(camera_path):
 	remote_transform.remote_path = camera_path;
 	
 func _process(delta: float) -> void:
+	if fusion_reactor_core.has_energy(25):
+		sufficient_energy = true;
+	else:
+		sufficient_energy = false;
+
 	var mouse_pos = get_global_mouse_position();
 	var direction_to_mouse = (mouse_pos - global_position);
 
 	if can_move:
 		rotation = direction_to_mouse.angle() + PI/2;
+
 	fusion_reactor_core.set_energy_recharge(fusion_reactor_core.energy_recharge_rate * delta)
 
 func _physics_process(delta: float) -> void:
@@ -146,7 +162,7 @@ func handle_physics_process(delta):
 	handle_movement(delta);
 	
 
-func handle_remote_movement(delta):
+func handle_remote_movement(_delta):
 	if Input.is_action_just_pressed("laser"):
 		target_position = get_global_mouse_position();
 		traveling = true;
@@ -160,19 +176,6 @@ func handle_remote_movement(delta):
 		traveling = true;
 		orbiting = false;
 		action_after_traveling = "orbit";
-	
-	if Input.is_action_just_pressed("interact"):
-		if firing:
-			laser.set_is_casting(false)
-			firing = false;
-		elif not firing:
-			firing = true
-			var laser_target = get_global_mouse_position().rotated(rotation)
-			if target and is_instance_valid(target):
-				laser.look_at(target.global_position);
-			else:
-				laser.look_at(laser_target)
-			laser.set_is_casting(true)
 
 func handle_movement(delta):
 	# Forward Propulsion
@@ -203,21 +206,16 @@ func handle_movement(delta):
 		velocity += down_direction * strafe_force * delta;
 	
 	if Input.is_action_pressed("laser"):
-		fusion_reactor_core.deplete_energy(laser.laser_energy_consumption * delta)
-		if fusion_reactor_core.has_energy(25):
-			fire_laser()
-		else:
-			Events.emit_signal("warn_player", "Lasers are offline!")
+		if can_move:
+			weapons_bay.fire(delta)
 	else:
-		stop_laser()
+		weapons_bay.cease_fire();
+	
+	if Input.is_action_just_pressed("missile"):
+		if can_move:
+			var mouse_pos = get_global_mouse_position();
+			weapons_bay.missile_fire(mouse_pos)
 
-func fire_laser():
-	if not laser.is_casting:
-		laser.set_is_casting(true);
-
-func stop_laser():
-		if laser.is_casting:
-			laser.set_is_casting(false);
 
 func main_propulsion(delta, hasSufficientEnergy):
 	# Convert the current rotation to a vector2 direction and apply forward thrust
@@ -241,23 +239,13 @@ func set_current_health(current_health_value):
 func decrease_current_health(change_value):
 	current_health = clamp(current_health - change_value, 0 , ship_max_health);
 	
-	if current_health == 0:
+	if current_health <= 0:
 		Events.emit_signal("no_health", self);
 
 func increase_current_health(change_value):
 	if current_health != ship_max_health:
 		Events.emit_signal("prompt_player", "Repairing Ship...");
 		current_health = min(current_health + change_value, ship_max_health);
-
-#func add_laser(laser_to_equip : LaserBeam):
-#	if equipped_lasers.size() < laser_capacity:
-#		equipped_lasers.append(laser_to_equip);
-#	else:
-#		Events.emit_signal("warn_player", "Cannot equip. This ship's weapons bay is at capacity!")
-#
-#func remove_laser(laser_to_unequip : LaserBeam):
-#	if equipped_lasers.has(laser_to_unequip):
-#		equipped_lasers.erase(laser_to_unequip);
 
 func handle_speed_slider(speed_val):
 	max_speed = speed_val
@@ -281,3 +269,24 @@ func handle_speed_slider(speed_val):
 #		body.carrying_capacity = ship_data["carrying_capacity"];
 #	else:
 #		print("Error: Ship key not found in SHIP_DATA");
+
+
+#	# ********ONLY NEEDED FOR ALTERNATE CONTROL STYLE ***********
+## ********NEED TESTING RE: WHICH IS BETTER? KEYBOARD ROTATE VS FOLLOW MOUSE *********
+## ******* CERTAIN SHIPS USE THIS EG. CARRIERS, DESTROYERS ********
+#func rotate_left(delta):
+#	rotation_degrees -= playerShip.rotation_speed * delta;
+#
+#func rotate_right(delta):
+#	rotation_degrees += playerShip.rotation_speed * delta;
+
+#func main_propulsion(delta, hasSufficientEnergy):
+#	# Convert the current rotation to a vector2 direction and apply forward thrust
+#	var thrust;
+#	if hasSufficientEnergy:
+#		thrust = playerShip.thrust;
+#	else:
+#		thrust = playerShip.thrust / 5;
+#	var direction = Vector2(0, -1).rotated(rotation)
+#	velocity += direction * thrust
+#	playerShip.fusion_reactor_core.deplete_energy(playerShip.thrust_energy_consumption * delta)

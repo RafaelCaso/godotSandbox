@@ -43,7 +43,7 @@ func detonate():
 
 func _on_HitBox_body_entered(body: Node) -> void:
 	if body.is_in_group("enemies"):
-		body.stats.health -= 5;
+		body.stats.health -= 50;
 	queue_free();
 
 

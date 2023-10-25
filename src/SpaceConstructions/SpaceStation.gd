@@ -46,18 +46,6 @@ func _on_Timer_timeout() -> void:
 	repair_ship();
 
 
-#func _on_Area2D_body_entered(body: Node) -> void:
-#	if body.is_in_group("player"):
-#		player_in_station = true;
-#		Events.emit_signal("prompt_player", "Press 'E' to Commence Docking")
-#		player = body;
-#
-#
-#func _on_Area2D_body_exited(body: Node) -> void:
-#	if body.is_in_group("player"):
-#		player_in_station = false;
-
-
 
 func _on_LaserCoverage_body_entered(body: Node) -> void:
 	if body.is_in_group("enemies"):
@@ -138,7 +126,6 @@ func _on_DockingTween_tween_all_completed() -> void:
 
 func _on_DockingArea_area_entered(area: Area2D) -> void:
 	if area.get_parent().is_in_group("player"):
-		print("station docking area entered")
 		player_in_station = true;
 		Events.emit_signal("prompt_player", "Press 'E' to Commence Docking")
 		player = area.get_parent();

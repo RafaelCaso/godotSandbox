@@ -104,8 +104,5 @@ func clear_command_list():
 	for child in commandList.get_children():
 		child.queue_free();
 
-func speed_change():
-	pass
-
 func _on_HSlider_value_changed(value: float) -> void:
 	Events.emit_signal("speed_slider_changed", value)

@@ -3,7 +3,7 @@
 [sub_resource type="CircleShape2D" id=1]
 radius = 40.0
 
-[node name="ship_0001_area" type="Area2D"]
+[node name="ship_0001_area" type="Area2D" groups=["player"]]
 collision_layer = 323
 collision_mask = 3
 

@@ -1,6 +1,8 @@
 extends Node2D
 
+onready var weapons_bay_inst = preload("res://WeaponsBay.tscn")
+
 func _ready() -> void:
-	var laser = LaserBeam.new("laser_0004");
-	laser.global_position = Vector2(365, 478)
-	add_child(laser)
+	var ship = Ship.new("ship_0000");
+	PlayerState.active_ship = ship
+

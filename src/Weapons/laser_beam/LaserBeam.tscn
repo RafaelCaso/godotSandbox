@@ -4,5 +4,5 @@
 
 [node name="LaserBeam" type="RayCast2D"]
 position = Vector2( 365, 478 )
-collision_mask = 9
+collision_mask = 0
 script = ExtResource( 1 )

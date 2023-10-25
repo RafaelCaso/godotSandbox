@@ -93,6 +93,7 @@ func apply_knockback_from(position: Vector2, force: float) -> void:
 func _on_Hitbox_area_entered(area: Area2D) -> void:
 	if area.get_parent().is_in_group("player"):
 		PlayerState.damage_ship(10, area.get_parent())
+		Events.emit_signal("player_hit")
 	hurtBox.create_hit_effect();
 	
 

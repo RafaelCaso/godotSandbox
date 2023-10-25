@@ -23,9 +23,8 @@ func repair_ship(change_value):
 		printerr("No ship in active_ship slot");
 
 func damage_ship(change_value, ship_to_damage : Ship):
-	if ship_to_damage == active_ship:
-		emit_signal("ship_health_changed", active_ship.current_health)
 	if ship_to_damage.uuid in fleet:
+		emit_signal("ship_health_changed", active_ship.current_health)
 		ship_to_damage.decrease_current_health(change_value)
 	else:
 		printerr("No ship in active_ship slot");

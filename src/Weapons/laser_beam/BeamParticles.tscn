@@ -1,22 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Assets/Sprites/Weapons/0065BeamParticle.png" type="Texture" id=1]
-
-[sub_resource type="ParticlesMaterial" id=7]
-emission_shape = 2
-emission_box_extents = Vector3( 1, 1, 1 )
-flag_disable_z = true
-gravity = Vector3( 0, 0, 0 )
-orbit_velocity = 0.0
-orbit_velocity_random = 0.0
-tangential_accel = 100.0
-scale = 0.25
-scale_random = 0.5
+[ext_resource path="res://src/Weapons/laser_beam/BeamParticles.tres" type="Material" id=2]
 
 [node name="BeamParticles" type="Particles2D"]
 rotation = 1.5708
 emitting = false
 lifetime = 0.3
 local_coords = false
-process_material = SubResource( 7 )
-texture = ExtResource( 1 )
+process_material = ExtResource( 2 )
