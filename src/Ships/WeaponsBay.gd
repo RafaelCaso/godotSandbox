@@ -48,6 +48,22 @@ func _ready() -> void:
 #	test_laser6.is_equipped = true;
 #	add_child(test_laser6)
 #	add_laser(test_laser6)
+#	var test_laser7 = LaserBeam.new("laser_0002", "player")
+#	test_laser7.is_equipped = true;
+#	add_child(test_laser7)
+#	add_laser(test_laser7)
+#	var test_laser8 = LaserBeam.new("laser_0002", "player")
+#	test_laser8.is_equipped = true;
+#	add_child(test_laser8)
+#	add_laser(test_laser8)
+#	var test_laser9 = LaserBeam.new("laser_0002", "player")
+#	test_laser9.is_equipped = true;
+#	add_child(test_laser9)
+#	add_laser(test_laser9)
+#	var test_laser10 = LaserBeam.new("laser_0002", "player")
+#	test_laser10.is_equipped = true;
+#	add_child(test_laser10)
+#	add_laser(test_laser10)
 #*******END TESTING ONLY BLOCK*******************************************
 	
 	call_deferred("_deferred_get_parent")

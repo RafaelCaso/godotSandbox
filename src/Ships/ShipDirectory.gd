@@ -105,7 +105,7 @@ const SHIP_DATA = {
 		"thrust_energy_consumption" : 11,
 		"rotation_speed": 100,
 		"frc" : "frc_0001",
-		"collision_shape" : "res://src/Ships/collision_shapes/ship_0004_collision_shape.tscn",
+		"collision_shape" : "res://src/Ships/collision_shapes/ship_0005_collision_shape.tscn",
 		"lsp1" : "res://src/Ships/laser_spawn_points/ship_0005_lsp1.tscn",
 	}
 }

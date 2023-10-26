@@ -21,6 +21,7 @@ var carrying_capacity : int;
 var rotation_speed : float;
 var fusion_reactor_core : FusionReactorCore;
 var weapons_bay : WeaponsBay;
+var remote_control : RemoteControl;
 
 var velocity = Vector2();
 var locations_visited : Array;
@@ -103,6 +104,14 @@ func _ready() -> void:
 	var laser_spawn_points_instance = laser_spawn_points_scene.instance()
 	var laser_spawn_points = laser_spawn_points_instance.get_spawn_points()
 	weapons_bay.set_positions(laser_spawn_points)
+	
+	#***NOT SURE IF 'ELSE' STATEMENT IS NECESSARY. MY CONCERN IS TAKING CONTROL
+	# OF A SHIP THAT WAS PREVIOUSLY SET TO REMOTE
+	if is_remote:
+		remote_control = RemoteControl.new();
+		add_child(remote_control)
+	else:
+		is_remote = false;
 
 func handle_weapons_fire(change_value):
 	if fusion_reactor_core.has_energy(change_value):
@@ -160,7 +169,7 @@ func _physics_process(delta: float) -> void:
 
 func handle_physics_process(delta):
 	handle_movement(delta);
-	
+
 
 func handle_remote_movement(_delta):
 	if Input.is_action_just_pressed("laser"):

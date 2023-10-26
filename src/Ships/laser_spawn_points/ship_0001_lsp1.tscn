@@ -2,5 +2,5 @@
 
 [ext_resource path="res://src/Ships/laser_spawn_points/ship_0001_lsp1.gd" type="Script" id=1]
 
-[node name="Position2D" type="Node"]
+[node name="Node" type="Node"]
 script = ExtResource( 1 )
