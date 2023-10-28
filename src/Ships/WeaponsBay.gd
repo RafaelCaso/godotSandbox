@@ -79,9 +79,9 @@ func position_lasers(lasers):
 	var i = 1;
 	for laser in lasers:
 		if is_only_one_laser_equipped():
-			laser.global_position = positions[0];
+			laser.global_position = parent.global_position + positions[0];
 		else:
-			laser.global_position = positions[i];
+			laser.global_position = parent.global_position + positions[i];
 			i += 1;
 	i = 1 # RESETTING INCASE I NEED TO CALL FUNC A SECOND TIME
 

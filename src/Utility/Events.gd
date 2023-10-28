@@ -27,3 +27,6 @@ signal no_health(destroyed_ship);
 signal active_ship_changed;
 # warning-ignore:unused_signal
 signal connect_camera(remote_path)
+
+# warning-ignore:unused_signal
+signal command_given(command, ship, optionals)

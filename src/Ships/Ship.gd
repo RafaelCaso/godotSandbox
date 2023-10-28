@@ -71,25 +71,22 @@ func _init(object_classID) -> void:
 		self.max_speed = ship_data["max_speed"];
 		self.thrust_energy_consumption = ship_data["thrust_energy_consumption"];
 		self.weapons_bay = WeaponsBay.new(self);
-		weapons_bay.laser_capacity = ship_data["laser_capacity"];
+		self.weapons_bay.laser_capacity = ship_data["laser_capacity"];
 		self.fusion_reactor_core = FusionReactorCore.new(ship_data["frc"])
 		self.carrying_capacity = ship_data["carrying_capacity"];
 		self.collision_shape = load((ship_data["collision_shape"]))
 		self.laser_spawn_points_scene = load((ship_data["lsp1"]))
-#**** I'M AN IDIOT. JUST CREATE A SCENE/RESOURCE/WHATEVER THAT IS AN ARRAY OF VECTOR2 AND USE THOSE TO POSITION LASERS
-#		weapons_bay.get_laser_spawn_points(laser_spawn_points.instance());
-
 	FleetManager.add_ship(self);
 
 func _ready() -> void:
 	var _connectSpeedSlider = Events.connect("speed_slider_changed", self, "handle_speed_slider")
 	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "queue_free")
 	var _connectWeaponsBayToFRC = weapons_bay.connect("firing", self, "handle_weapons_fire")
-	add_to_group("player")
+	self.add_to_group("player")
 	
-	sprite = Sprite.new();
+	self.sprite = Sprite.new();
 	add_child(sprite);
-	sprite.texture = sprite_texture
+	self.sprite.texture = self.sprite_texture
 	
 	var collision_instance : Area2D = collision_shape.instance();
 	collision_instance.collision_layer = 2
@@ -108,17 +105,19 @@ func _ready() -> void:
 	#***NOT SURE IF 'ELSE' STATEMENT IS NECESSARY. MY CONCERN IS TAKING CONTROL
 	# OF A SHIP THAT WAS PREVIOUSLY SET TO REMOTE
 	if is_remote:
+		add_to_group("remote");
 		remote_control = RemoteControl.new();
+		remote_control.connect("command_issued", self, "handle_command_issued")
 		add_child(remote_control)
 	else:
 		is_remote = false;
 
 func handle_weapons_fire(change_value):
-	if fusion_reactor_core.has_energy(change_value):
-		fusion_reactor_core.deplete_energy(change_value)
+	if self.fusion_reactor_core.has_energy(change_value):
+		self.fusion_reactor_core.deplete_energy(change_value)
 
 func connect_camera(camera_path):
-	remote_transform.remote_path = camera_path;
+	self.remote_transform.remote_path = camera_path;
 	
 func _process(delta: float) -> void:
 	if fusion_reactor_core.has_energy(25):
@@ -130,14 +129,14 @@ func _process(delta: float) -> void:
 	var direction_to_mouse = (mouse_pos - global_position);
 
 	if can_move:
-		rotation = direction_to_mouse.angle() + PI/2;
+		if ! is_remote:
+			rotation = direction_to_mouse.angle() + PI/2;
 
 	fusion_reactor_core.set_energy_recharge(fusion_reactor_core.energy_recharge_rate * delta)
 
 func _physics_process(delta: float) -> void:
 	velocity = move_and_slide(velocity).clamped(max_speed);
 	if is_remote:
-		handle_remote_movement(delta);
 		if orbiting:
 			var angle_change = orbit_speed * delta;
 		
@@ -148,8 +147,6 @@ func _physics_process(delta: float) -> void:
 			global_position = new_pos;
 			look_at(orbit_center);
 			rotation += PI/2;
-		
-
 # MOVE_TO_POSITION
 		if traveling:
 			var direction = (target_position - global_position).normalized();
@@ -160,31 +157,41 @@ func _physics_process(delta: float) -> void:
 				global_position += direction * move_distance;
 			else:
 				global_position = target_position
-				target_position = Vector2();
+#				target_position = Vector2.ZERO;
 				traveling = false;
 				if action_after_traveling == "orbit":
 					var dir_to_ship = (global_position - orbit_center).normalized();
 					global_position = orbit_center + dir_to_ship * orbit_distance
 					orbiting = true;
+				if action_after_traveling == "attack":
+					self.weapons_bay.fire(delta);
+
+
 
 func handle_physics_process(delta):
 	handle_movement(delta);
 
-
-func handle_remote_movement(_delta):
-	if Input.is_action_just_pressed("laser"):
-		target_position = get_global_mouse_position();
-		traveling = true;
-		orbiting = false;
-		action_after_traveling = "stop";
-	
-	elif Input.is_action_just_pressed("missile"):
-		orbit_center = get_global_mouse_position();
-		var dir_to_ship = (global_position - orbit_center).normalized();
-		target_position = orbit_center + dir_to_ship * orbit_distance
-		traveling = true;
-		orbiting = false;
-		action_after_traveling = "orbit";
+func handle_command_issued(coords, command_ship_uuid, command):
+	if command_ship_uuid == self.uuid:
+		if command == "MOVE_TO_POSITION":
+			target_position = coords
+			traveling = true;
+			orbiting = false;
+			action_after_traveling = "stop";
+		if command == "ORBIT":
+			orbit_center = coords;
+			var dir_to_ship = (global_position - orbit_center).normalized();
+			target_position = orbit_center + dir_to_ship * orbit_distance
+			traveling = true;
+			orbiting = false;
+			action_after_traveling = "orbit"
+		if command == "ATTACK":
+			orbit_center = coords;
+			var dir_to_ship = (global_position - orbit_center).normalized();
+			target_position = orbit_center + dir_to_ship * orbit_center;
+			traveling = true;
+			orbiting = false;
+			action_after_traveling = "attack"
 
 func handle_movement(delta):
 	# Forward Propulsion

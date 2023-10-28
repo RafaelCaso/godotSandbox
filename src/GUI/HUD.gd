@@ -30,7 +30,7 @@ func _process(_delta: float) -> void:
 		speedSlider.value -= 10;
 # what on Earth is going on here?
 func _on_Player_energy_changed(new_energy) -> void:
-	Hud.energyBar._on_Player_energy_changed(new_energy);
+	Hud.energyBar._on_Player_energy_changed(PlayerState.active_ship.fusion_reactor_core.current_energy);
 
 # this needs to change or be called differently
 # problem is when player changes this will be the inverse of shield status
@@ -94,11 +94,49 @@ func handle_command_menu():
 				var button = Button.new();
 				button.text = ship.ship_name;
 				button.rect_size = Vector2(100, 20)
-				button.connect("button_up", self, "handle_command_btn", [ship_key])
+				button.connect("button_up", self, "handle_ship_select_btn", [ship_key])
 				commandList.add_child(button)
 
-func handle_command_btn(ship_key):
-	Events.emit_signal("add_remote_ship", ship_key);
+func handle_ship_select_btn(ship_key):
+	clear_command_list();
+	var move_to_pos_btn = Button.new();
+	var orbit_pos_btn = Button.new();
+	var open_fire_btn = Button.new();
+	
+	move_to_pos_btn.text = "Move To Position";
+	orbit_pos_btn.text = "Orbit Position";
+	open_fire_btn.text = "Open Fire";
+	
+	move_to_pos_btn.connect("button_up", self, "handle_move_to_pos_btn", [ship_key]);
+	orbit_pos_btn.connect("button_up", self, "handle_orbit_pos_btn", [ship_key]);
+	open_fire_btn.connect("button_up", self, "handle_open_fire_btn", [ship_key]);
+	
+	commandList.add_child(move_to_pos_btn);
+	commandList.add_child(orbit_pos_btn);
+	commandList.add_child(open_fire_btn);
+
+func handle_open_fire_btn(ship_key):
+	add_ship_to_tree(ship_key);
+	Events.emit_signal("command_given", "ATTACK", ship_key, null)
+	commandMenu.visible = false;
+	clear_command_list();
+
+func handle_orbit_pos_btn(ship_key):
+	add_ship_to_tree(ship_key);
+	Events.emit_signal("command_given", "ORBIT", ship_key, null)
+	commandMenu.visible = false;
+	clear_command_list();
+	
+func handle_move_to_pos_btn(ship_key):
+	add_ship_to_tree(ship_key);
+	Events.emit_signal("command_given", "MOVE_TO_POSITION", ship_key, null)
+	commandMenu.visible = false;
+	clear_command_list();
+
+func add_ship_to_tree(ship_uuid):
+	if PlayerState.fleet[ship_uuid].get_parent() == null:
+		Events.emit_signal("add_remote_ship", ship_uuid);
+
 
 func clear_command_list():
 	for child in commandList.get_children():
@@ -106,3 +144,4 @@ func clear_command_list():
 
 func _on_HSlider_value_changed(value: float) -> void:
 	Events.emit_signal("speed_slider_changed", value)
+
