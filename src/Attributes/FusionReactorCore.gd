@@ -12,6 +12,7 @@ var uuid : String;
 var classID : String;
 var energy_minimum = 0;
 var energy_recharge_rate;
+var original_max_energy;
 
 signal no_energy;
 signal has_energy;
@@ -27,6 +28,7 @@ func _init(object_classID) -> void:
 		max_energy = frc_data["max_energy"];
 		energy_recharge_rate = frc_data["energy_recharge_rate"]
 	set_energy(max_energy)
+	original_max_energy = max_energy;
 	
 func set_max_energy(value):
 	max_energy = value;

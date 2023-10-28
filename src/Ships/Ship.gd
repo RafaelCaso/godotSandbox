@@ -22,6 +22,8 @@ var rotation_speed : float;
 var fusion_reactor_core : FusionReactorCore;
 var weapons_bay : WeaponsBay;
 var remote_control : RemoteControl;
+var radar : Radar;
+var shield : Shield;
 
 var velocity = Vector2();
 var locations_visited : Array;
@@ -95,6 +97,11 @@ func _ready() -> void:
 	remote_transform = RemoteTransform2D.new();
 	add_child(remote_transform);
 	Events.connect("connect_camera", self, "connect_camera")
+
+#**** GOTTA GO INTO SHIELD SCRIPT AND BUILD COMPONENTS IN SCRIPT	
+	shield = Shield.new();
+	shield.connect("shield_hit", self, "on_shield_hit");
+	add_child(shield)
 	
 	add_child(weapons_bay)
 	# BELOW SHOULD MOVE TO INIT?
@@ -110,7 +117,16 @@ func _ready() -> void:
 		remote_control.connect("command_issued", self, "handle_command_issued")
 		add_child(remote_control)
 	else:
+# ******* GOTTA FIGURE OUT HOW TO ADD RADAR IN SCRIPT
+#		radar = Radar.new();
+#		add_child(radar)
 		is_remote = false;
+
+func on_shield_hit():
+	self.fusion_reactor_core.deplete_energy(15)
+	if self.fusion_reactor_core.energy <= 35:
+		shield.shield_offline();
+
 
 func handle_weapons_fire(change_value):
 	if self.fusion_reactor_core.has_energy(change_value):
@@ -231,6 +247,14 @@ func handle_movement(delta):
 		if can_move:
 			var mouse_pos = get_global_mouse_position();
 			weapons_bay.missile_fire(mouse_pos)
+	
+	if Input.is_action_just_pressed("shields"):
+		if shield.shields_active:
+			shield.shields_down();
+			self.fusion_reactor_core.set_max_energy(fusion_reactor_core.original_max_energy)
+		else:
+			shield.shields_up();
+			self.fusion_reactor_core.set_max_energy(75)
 
 
 func main_propulsion(delta, hasSufficientEnergy):

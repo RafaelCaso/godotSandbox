@@ -27,9 +27,11 @@ func _ready() -> void:
 		playerShip = Ship.new("ship_0000");
 		add_child(playerShip)
 		PlayerState.active_ship = playerShip;
+		$Radar.global_position = PlayerState.active_ship.global_position;
 
 	else:
 		playerShip = PlayerState.active_ship;
+		$Radar.global_position = PlayerState.active_ship.global_position;
 	
 	var _test_ship = Ship.new("ship_0001");
 	var _test_ship2 = Ship.new("ship_0002");

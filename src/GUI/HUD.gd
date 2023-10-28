@@ -3,6 +3,7 @@ extends CanvasLayer
 onready var energyText = $EnergyText;
 onready var energyBar = $EnergyBar;
 onready var shieldsUpSprite = $ShieldsUpSprite;
+onready var shieldsDownSprite = $ShieldsDownSprite;
 onready var tacticalMenu = $TacticalMenu;
 onready var playerPrompt = $MarginContainer/PlayerPrompt;
 onready var healthProgress = $HealthProgress;
@@ -12,6 +13,8 @@ onready var speedSlider = $HSlider
 
 func _ready() -> void:
 	Events.connect("shields_toggled", self, "_toggle_shield_sprite");
+	Events.connect("shields_offline", self, "_toggle_shield_offline");
+	Events.connect("shields_back_online", self, "_toggle_shield_back_online");
 	Events.connect("tactical_menu_toggled", self, "_toggle_tactical_menu");
 	Events.connect("prompt_player", self, "_on_player_prompt");
 	Events.connect("warn_player", self, "_on_player_warn");
@@ -22,20 +25,28 @@ func _ready() -> void:
 	call_deferred("handle_ship_changed")
 	speedSlider.tick_count = 5
 
+func _toggle_shield_back_online():
+	shieldsDownSprite.visible = false;
+
+func _toggle_shield_offline():
+	shieldsUpSprite.visible = false;
+	shieldsDownSprite.visible = true;
 	
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("toggleup"):
 		speedSlider.value += 10;
 	if Input.is_action_pressed("toggledown"):
 		speedSlider.value -= 10;
-# what on Earth is going on here?
+
+# what on Earth is going on here? Some crazy incestuous relationship that just shouldn't be
+# burn it with fire!
 func _on_Player_energy_changed(new_energy) -> void:
 	Hud.energyBar._on_Player_energy_changed(PlayerState.active_ship.fusion_reactor_core.current_energy);
 
 # this needs to change or be called differently
 # problem is when player changes this will be the inverse of shield status
-func _toggle_shield_sprite():
-	shieldsUpSprite.visible = not shieldsUpSprite.visible;
+func _toggle_shield_sprite(shield_active):
+	shieldsUpSprite.visible = shield_active;
 
 func _toggle_tactical_menu():
 	tacticalMenu.visible =! tacticalMenu.visible;

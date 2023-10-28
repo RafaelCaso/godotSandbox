@@ -111,7 +111,7 @@ func _physics_process(_delta: float) -> void:
 			#**************** THIS NEEDS TO BE HANDLED BETTER ************
 			if collided_object.is_in_group("player"):
 				PlayerState.damage_ship(laser_damage, collided_object.get_parent());
-			else:
+			elif collided_object.is_in_group("enemies"):
 				collided_object.stats.health -= laser_damage;
 			
 			cast_point = to_local(get_collision_point())

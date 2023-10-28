@@ -4,6 +4,10 @@ extends Node
 # warning-ignore:unused_signal
 signal shields_toggled(shield_is_active);
 # warning-ignore:unused_signal
+signal shields_offline
+# warning-ignore:unused_signal
+signal shields_back_online
+# warning-ignore:unused_signal
 signal tactical_menu_toggled();
 # warning-ignore:unused_signal
 signal command_menu_toggled;
