@@ -113,18 +113,35 @@ func handle_ship_select_btn(ship_key):
 	var move_to_pos_btn = Button.new();
 	var orbit_pos_btn = Button.new();
 	var open_fire_btn = Button.new();
+	var follow_btn = Button.new();
+	var recall_btn = Button.new();
 	
 	move_to_pos_btn.text = "Move To Position";
 	orbit_pos_btn.text = "Orbit Position";
 	open_fire_btn.text = "Open Fire";
+	follow_btn.text = "Follow";
+	recall_btn.text = "Recall Ship"
 	
 	move_to_pos_btn.connect("button_up", self, "handle_move_to_pos_btn", [ship_key]);
 	orbit_pos_btn.connect("button_up", self, "handle_orbit_pos_btn", [ship_key]);
 	open_fire_btn.connect("button_up", self, "handle_open_fire_btn", [ship_key]);
+	follow_btn.connect("button_up", self, "handle_follow_btn", [ship_key]);
+	recall_btn.connect("button_up", self, "handle_recall_btn", [ ship_key]);
 	
 	commandList.add_child(move_to_pos_btn);
 	commandList.add_child(orbit_pos_btn);
 	commandList.add_child(open_fire_btn);
+	commandList.add_child(follow_btn);
+	commandList.add_child(recall_btn);
+
+func handle_recall_btn(ship_key):
+	FleetManager.get_ship(ship_key).queue_free()
+
+func handle_follow_btn(ship_key):
+	add_ship_to_tree(ship_key);
+	Events.emit_signal("command_given", "FOLLOW", ship_key, null)
+	commandMenu.visible = false;
+	clear_command_list();
 
 func handle_open_fire_btn(ship_key):
 	add_ship_to_tree(ship_key);

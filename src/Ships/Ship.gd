@@ -38,6 +38,7 @@ var remote_transform : RemoteTransform2D = null;
 var connected_camera_path = "";
 
 var is_remote : bool = false;
+var weapons_target;
 
 var target_position : Vector2 = Vector2();
 var orbit_center : Vector2 = Vector2();
@@ -45,6 +46,7 @@ var orbit_distance := 400.0;
 var traveling : bool = false;
 var orbiting : bool = false;
 var firing : bool = false;
+var following : bool = false;
 var action_after_traveling = "";
 var target : Node = null;
 var orbit_speed = 1;
@@ -78,11 +80,15 @@ func _init(object_classID) -> void:
 		self.carrying_capacity = ship_data["carrying_capacity"];
 		self.collision_shape = load((ship_data["collision_shape"]))
 		self.laser_spawn_points_scene = load((ship_data["lsp1"]))
+		
+		var laser_spawn_points_instance = laser_spawn_points_scene.instance()
+		var laser_spawn_points = laser_spawn_points_instance.get_spawn_points()
+		weapons_bay.set_positions(laser_spawn_points)
+		
 	FleetManager.add_ship(self);
 
 func _ready() -> void:
 	var _connectSpeedSlider = Events.connect("speed_slider_changed", self, "handle_speed_slider")
-	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "queue_free")
 	var _connectWeaponsBayToFRC = weapons_bay.connect("firing", self, "handle_weapons_fire")
 	self.add_to_group("player")
 	
@@ -97,30 +103,33 @@ func _ready() -> void:
 	remote_transform = RemoteTransform2D.new();
 	add_child(remote_transform);
 	Events.connect("connect_camera", self, "connect_camera")
-
-#**** GOTTA GO INTO SHIELD SCRIPT AND BUILD COMPONENTS IN SCRIPT	
+	
 	shield = Shield.new();
-	shield.connect("shield_hit", self, "on_shield_hit");
+	var _shsc = shield.connect("shield_hit", self, "on_shield_hit");
 	add_child(shield)
 	
 	add_child(weapons_bay)
 	# BELOW SHOULD MOVE TO INIT?
-	var laser_spawn_points_instance = laser_spawn_points_scene.instance()
-	var laser_spawn_points = laser_spawn_points_instance.get_spawn_points()
-	weapons_bay.set_positions(laser_spawn_points)
+
 	
 	#***NOT SURE IF 'ELSE' STATEMENT IS NECESSARY. MY CONCERN IS TAKING CONTROL
 	# OF A SHIP THAT WAS PREVIOUSLY SET TO REMOTE
 	if is_remote:
 		add_to_group("remote");
 		remote_control = RemoteControl.new();
-		remote_control.connect("command_issued", self, "handle_command_issued")
+		var _rcsc = remote_control.connect("command_issued", self, "handle_command_issued")
+		var _rcsc2 = remote_control.connect("weapons_target_acquired", self, "update_weapons_target")
 		add_child(remote_control)
 	else:
 # ******* GOTTA FIGURE OUT HOW TO ADD RADAR IN SCRIPT
 #		radar = Radar.new();
 #		add_child(radar)
 		is_remote = false;
+
+
+func update_weapons_target(pos):
+	if is_instance_valid(pos):
+		weapons_target = pos;
 
 func on_shield_hit():
 	self.fusion_reactor_core.deplete_energy(15)
@@ -173,19 +182,31 @@ func _physics_process(delta: float) -> void:
 				global_position += direction * move_distance;
 			else:
 				global_position = target_position
-#				target_position = Vector2.ZERO;
 				traveling = false;
 				if action_after_traveling == "orbit":
 					var dir_to_ship = (global_position - orbit_center).normalized();
 					global_position = orbit_center + dir_to_ship * orbit_distance
 					orbiting = true;
 				if action_after_traveling == "attack":
-					self.weapons_bay.fire(delta);
+					firing = true;
+		if firing and is_instance_valid(weapons_target):
+			rotation = (weapons_target.global_position - global_position).angle() + (PI/2)
+			self.weapons_bay.fire(delta);
+		else:
+			self.weapons_bay.cease_fire();
+		
+		if following:
+			var dir_to_player = (PlayerState.active_ship.global_position - self.global_position).normalized();
+			var move_distance = max_speed * delta;
+			if global_position.distance_to(PlayerState.active_ship.global_position) > 400:
+				global_position += (dir_to_player * move_distance);
+				rotation = dir_to_player.angle() + (PI/2);
 
 
 
 func handle_physics_process(delta):
-	handle_movement(delta);
+	if can_move:
+		handle_movement(delta);
 
 func handle_command_issued(coords, command_ship_uuid, command):
 	if command_ship_uuid == self.uuid:
@@ -193,6 +214,7 @@ func handle_command_issued(coords, command_ship_uuid, command):
 			target_position = coords
 			traveling = true;
 			orbiting = false;
+			following = false;
 			action_after_traveling = "stop";
 		if command == "ORBIT":
 			orbit_center = coords;
@@ -200,14 +222,16 @@ func handle_command_issued(coords, command_ship_uuid, command):
 			target_position = orbit_center + dir_to_ship * orbit_distance
 			traveling = true;
 			orbiting = false;
+			following = false;
 			action_after_traveling = "orbit"
 		if command == "ATTACK":
-			orbit_center = coords;
-			var dir_to_ship = (global_position - orbit_center).normalized();
-			target_position = orbit_center + dir_to_ship * orbit_center;
+			target_position = coords;
 			traveling = true;
 			orbiting = false;
+			following = false;
 			action_after_traveling = "attack"
+		if command == "FOLLOW":
+			following = true
 
 func handle_movement(delta):
 	# Forward Propulsion
@@ -319,14 +343,3 @@ func handle_speed_slider(speed_val):
 #
 #func rotate_right(delta):
 #	rotation_degrees += playerShip.rotation_speed * delta;
-
-#func main_propulsion(delta, hasSufficientEnergy):
-#	# Convert the current rotation to a vector2 direction and apply forward thrust
-#	var thrust;
-#	if hasSufficientEnergy:
-#		thrust = playerShip.thrust;
-#	else:
-#		thrust = playerShip.thrust / 5;
-#	var direction = Vector2(0, -1).rotated(rotation)
-#	velocity += direction * thrust
-#	playerShip.fusion_reactor_core.deplete_energy(playerShip.thrust_energy_consumption * delta)

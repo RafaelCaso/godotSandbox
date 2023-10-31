@@ -1,15 +1,11 @@
 class_name Player
 extends Node
 
-
-
 onready var playerShip : Ship = null;
 
 #var bolt = preload("res://src/Weapons/PlasmaBolt.tscn");
 
 var weapon_pressed = false;
-
-
 
 var velocity = Vector2();
 var can_move = true;
@@ -20,7 +16,6 @@ func _ready() -> void:
 	var _connectPlayerNoHealthRevamp = Events.connect("no_health", self, "destroy_ship")
 	var _connectShipChanged = Events.connect("active_ship_changed", self, "handle_ship_change");
 	var _connectAddRemoteShip = Events.connect("add_remote_ship", self, "add_remote_ship");
-#	energyShield.connect("shield_hit", self, "on_shield_hit")
 	
 	if PlayerState.active_ship == null:
 		#initialize and configure player ship
@@ -52,17 +47,6 @@ func add_remote_ship(ship_key):
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("test_button"):
 		GameManager.goto_scene("res://World2.tscn");
-	
-#	if Input.is_action_just_pressed("shields"):
-#		if energyShield.shields_active == true:
-#			energyShield.shields_down();
-#			playerShip.fusion_reactor_core.set_max_energy(100)
-#		elif energyShield.shields_active == false:
-#			playerShip.fusion_reactor_core.set_max_energy(energyShield.required_frc_energy);
-#			energyShield.play_animation();
-#			energyShield.shields_up()
-
-#	playerShip.fusion_reactor_core.set_energy_recharge(playerShip.fusion_reactor_core.energy_recharge_rate * delta)
 
 func _physics_process(delta: float) -> void:
 	playerShip.handle_physics_process(delta)
@@ -74,21 +58,6 @@ func _physics_process(delta: float) -> void:
 
 func add_weapon(weapon):
 	PlayerState.weapons.append(weapon);
-
-
-
-# THIS NEEDS TO CHANGE TO ADD OBJECT REFERENCE TO PlayerState.fleet
-# eg. FleetManager.add_ship(uuid)
-#func add_ship(ship : Ship):
-#	FleetManager.add_ship(ship);
-
-# THIS NEEDS TO CHANGE TO ACCESS OBJECT REFERENCE DIRECTLY FROM PlayerState.fleet
-# eg. playerShip = FleetManager.get_ship(uuid)
-# NO MORE configure_ship()
-#func change_ship(ship_uuid : String):
-#	var new_ship = FleetManager.get_ship(ship_uuid);
-#	PlayerState.active_ship = new_ship
-#	playerShip = new_ship;
 
 
 
@@ -115,10 +84,6 @@ func add_weapon(weapon):
 #	handle_movement_input(delta);
 #	handle_item_input(delta);
 
-#func on_shield_hit():
-#	playerShip.fusion_reactor_core.energy -= 50;
-#	if playerShip.fusion_reactor_core.energy <= 1:
-#		energyShield.shield_offline();
 
 # called when Events.emit_signal("active_ship_changed") emitted
 func handle_ship_change():

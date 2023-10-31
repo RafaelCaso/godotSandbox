@@ -62,7 +62,6 @@ func _physics_process(delta: float) -> void:
 				var collision_info = move_and_collide(velocity);
 				
 				if collision_info:
-					print("EnemyAB.gd Line 47: collision detected")
 					state = WANDER;
 					
 			CHASE:

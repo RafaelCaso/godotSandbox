@@ -16,10 +16,10 @@ var sprite : AnimatedSprite
 
 func _init() -> void:
 	area2D = fighter_shield_cs.instance()
-	area2D.connect("area_entered", self, "_on_Area2D_area_entered")
+	var _a2d = area2D.connect("area_entered", self, "_on_Area2D_area_entered")
 	
 	sprite = fighter_shield_sprite.instance()
-	sprite.connect("animation_finished", self, "_on_AnimatedSprite_animation_finished")
+	var _ssc = sprite.connect("animation_finished", self, "_on_AnimatedSprite_animation_finished")
 	
 	add_child(area2D)	
 	add_child(sprite);
